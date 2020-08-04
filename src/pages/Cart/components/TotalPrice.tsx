@@ -18,10 +18,18 @@ const TotalPrice: React.FC<ITotalPriceProps> = ({ price, tip = 0 }) => {
       <Box className={classes.priceArea}>
         {Boolean(tip) && (
           <>
-            <Typography align="right" className={classes.tipInfo}>
+            <Typography
+              color="textSecondary"
+              align="right"
+              className={classes.tipInfo}
+            >
               {t("cart_subtotal")} {t("price_euro", { price: price - tip })}
             </Typography>
-            <Typography align="right" className={classes.tipInfo}>
+            <Typography
+              color="textSecondary"
+              align="right"
+              className={classes.tipInfo}
+            >
               {t("cart_tip")} {t("price_euro", { price: tip })}
             </Typography>
           </>
@@ -29,7 +37,11 @@ const TotalPrice: React.FC<ITotalPriceProps> = ({ price, tip = 0 }) => {
         <Typography align="right" variant="h5">
           {t("price_euro", { price })}
         </Typography>
-        <Typography className={classes.tipInfo}>
+        <Typography
+          className={classes.fontFamily}
+          color="textSecondary"
+          variant="body1"
+        >
           {t("cart_vat_included")} - {t("cart_tip_not_included")}
         </Typography>
       </Box>
@@ -52,7 +64,10 @@ const useStyles = makeStyles((theme: Theme) =>
     priceArea: {},
     tipInfo: {
       fontSize: 9,
-      color: theme.palette.text.secondary,
+      fontFamily: theme.typography.fontFamily,
+    },
+    fontFamily: {
+      fontFamily: theme.typography.fontFamily,
     },
   })
 );

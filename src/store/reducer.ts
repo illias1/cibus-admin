@@ -6,6 +6,7 @@ import {
   addToCart,
   removeItemFromCart,
   setCartItemsStatus,
+  setGroupOrderPlaced,
 } from "./actions";
 import {
   LOCAL_STORAGE_USER_NAME,
@@ -51,4 +52,8 @@ export const reducer = reducerWithInitialState(initialState)
       ...item,
       status,
     })),
+  }))
+  .case(setGroupOrderPlaced, (state, payload) => ({
+    ...state,
+    groupCartOrderPlaced: payload,
   }));

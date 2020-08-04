@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     name: {
       position: "absolute",
-      maxWidth: theme.spacing(15),
+      maxWidth: theme.spacing(18),
     },
     tipButton: {
       alignSelf: "flex-end",

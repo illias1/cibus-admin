@@ -1,7 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { theme } from "./utils/theme";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { augmentedTheme, CustomTheme } from "./utils/customCreateTheme";
 
 const MenuPage = lazy(() => import("./pages/Menu"));
 const HomePage = lazy(() => import("./pages/Home"));
@@ -9,8 +10,9 @@ const CartPage = lazy(() => import("./pages/Cart"));
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider<CustomTheme> theme={augmentedTheme}>
       <BrowserRouter>
+        <CssBaseline />
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route

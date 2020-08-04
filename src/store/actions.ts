@@ -12,3 +12,6 @@ export const removeItemFromCart = actionCreator<string>("removeItemFromCart");
 export const setCartItemsStatus = actionCreator<TCartItemStatus>(
   "setCartItemsStatus"
 );
+export const setGroupOrderPlaced = actionCreator<boolean>(
+  "setGroupOrderPlaced"
+);

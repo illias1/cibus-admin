@@ -1,16 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
-import { useTypedSelector } from "../../store/types";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
 import { useTranslation } from "react-i18next";
 // componetns
 import GroupTab from "./components/GroupTab";
 import IndividualTab from "./components/IndividualTab";
 import CartHeader from "./components/CartHeader";
 import TabPanel from "./components/TabPanel";
+import { CustomTabs, CustomTab } from "./components/CustomTabs";
 
 function a11yProps(index: number) {
   return {
@@ -31,15 +27,18 @@ const Cart: React.FC<ICartProps> = ({ ...props }) => {
   return (
     <div>
       <CartHeader />
-      <Tabs
+      <CustomTabs
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
         className={classes.tabLabel}
       >
-        <Tab label={t("cart_individual_order_tab_label")} {...a11yProps(0)} />
-        <Tab label={t("cart_table_order_tab_label")} {...a11yProps(1)} />
-      </Tabs>
+        <CustomTab
+          label={t("cart_individual_order_tab_label")}
+          {...a11yProps(0)}
+        />
+        <CustomTab label={t("cart_table_order_tab_label")} {...a11yProps(1)} />
+      </CustomTabs>
       <TabPanel value={value} index={0}>
         <IndividualTab />
       </TabPanel>

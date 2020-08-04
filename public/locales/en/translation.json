@@ -1,6 +1,8 @@
 {
   "general_skip_button": "Skip",
   "general_confirm": "Confirm",
+  "menu_allergy_info_label": "Allergy Info",
+  "menu_special_instructions_label": "Special Instructions",
   "guide_welcome_message": "Hi {{userName}}, Weclome to cibus.online",
   "guide_explanation_message": "If you are new here, please check  \n “How this menu works” so you can \n have a pleasant experience at  \n Eleven Madison Park",
   "guide_main_action_button": "How this menu works",

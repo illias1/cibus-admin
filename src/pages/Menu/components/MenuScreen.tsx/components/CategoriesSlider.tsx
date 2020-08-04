@@ -22,7 +22,7 @@ const CategoriesSlider: React.FC<ICategoriesSliderProps> = ({ categories }) => {
     );
     window.document.documentElement.style.setProperty(
       "--color-background",
-      theme.palette.primary.main
+      theme.palette.action.selected
     );
   }, [theme.palette.primary.contrastText, theme.palette.primary.main]);
 
@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     chip: {
       marginRight: theme.spacing(3),
-      color: theme.palette.text.secondary,
+      color: theme.palette.text.disabled,
+      fontSize: theme.typography.h6.fontSize,
     },
   })
 );

@@ -5,6 +5,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { Box } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
+import { CustomTheme } from "../../../../../utils/customCreateTheme";
 
 type TItem = {
   title: string;
@@ -22,14 +23,12 @@ const Item: React.FC<TItem> = ({ title, price, ingredients, onClick }) => {
     <Card className={classes.root} onClick={onClick}>
       <Box className={classes.content}>
         <Box className={classes.tileAndPrice}>
-          <Typography className={classes.title} variant="h6">
-            {title}
-          </Typography>
-          <Typography variant="body2">{t("price_euro", { price })}</Typography>
+          <Typography variant="h6">{title}</Typography>
+          <Typography variant="body1">{t("price_euro", { price })}</Typography>
         </Box>
         <Typography
           className={classes.ingredients}
-          variant="body2"
+          variant="body1"
           color="textSecondary"
         >
           {ingredients}
@@ -44,7 +43,7 @@ const Item: React.FC<TItem> = ({ title, price, ingredients, onClick }) => {
   );
 };
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: CustomTheme) =>
   createStyles({
     root: {
       display: "flex",
@@ -61,22 +60,19 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: 107,
       height: 100,
     },
-    title: {
-      fontSize: "17px",
-      letterSpacing: 0,
-    },
+
     tileAndPrice: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
     },
     ingredients: {
-      fontSize: "11px",
       overflow: "hidden",
       textOverflow: "ellipsis",
       display: "-webkit-box",
       "-webkit-line-clamp": 2 /* numb,r of lines to show */,
       "-webkit-box-orient": "vertical",
+      fontFamily: theme.typography.secondaryFontFamily,
     },
   })
 );

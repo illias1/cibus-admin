@@ -33,4 +33,5 @@ export const initialState: TStore = {
       localStorage.getItem(LOCAL_STORAGE_CART) || "[]"
     ) as TCartItem[]) || [],
   groupCart: sampleGroupCart,
+  groupCartOrderPlaced: false,
 };

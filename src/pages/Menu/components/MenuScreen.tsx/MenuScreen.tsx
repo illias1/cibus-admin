@@ -48,7 +48,7 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
             <Typography
               id={`category-${category}`}
               className={classes.title}
-              variant="h6"
+              variant="h4"
             >
               {category}
             </Typography>
@@ -106,8 +106,8 @@ const sampleItems: { category: string; items: TItems[] }[] = [
     category: "Entrees",
     items: [
       {
-        title: "sample title",
-        price: 12,
+        title: " title",
+        price: 12.23,
         ingredients: [
           "Salad with Lynnhaven Farm Chèvre Frais",
           "Rye Crumble and Nasturtirum",
@@ -116,7 +116,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
       },
       {
         title: "sample title1",
-        price: 12,
+        price: 1,
         ingredients: [
           "Salad with Lynnhaven Farm Chèvre Frais",
           "Rye Crumble and Nasturtirum",
@@ -125,7 +125,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
       },
       {
         title: "sample title",
-        price: 12,
+        price: 32,
         ingredients: [
           "Salad with Lynnhaven Farm Chèvre Frais",
           "Rye Crumble and Nasturtirum",

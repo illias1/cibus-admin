@@ -6,6 +6,7 @@ export type TStore = {
   userAlreadyVisited: boolean;
   cart: TCartItem[];
   groupCart: TGroupCartItem[];
+  groupCartOrderPlaced: boolean;
 };
 
 export type TCartItem = {

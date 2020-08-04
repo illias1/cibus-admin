@@ -42,10 +42,16 @@ const IndividualTab: React.FC<IIndividualTabProps> = ({ ...props }) => {
             title={item.item.title}
             ingredients={item.item.ingredients}
             price={item.item.price}
+            quantity={item.quantity}
           />
         ))}
       </Box>
-      <CartTotal price={40.95} />
+      <CartTotal
+        price={cartItems.reduce(
+          (prev, curr): number => prev + curr.quantity * curr.item.price,
+          0
+        )}
+      />
 
       <TwoButtons
         onCLickLeft={() => {

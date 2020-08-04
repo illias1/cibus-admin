@@ -1,7 +1,13 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Typography, TextField, Button, Box } from "@material-ui/core";
+import {
+  Typography,
+  TextField,
+  Button,
+  Box,
+  ButtonBase,
+} from "@material-ui/core";
 import { TItems } from "../MenuScreen";
 import { useTranslation } from "react-i18next";
 import { StyledButton } from "../../../../../components/Button";
@@ -10,7 +16,7 @@ import { addToCart } from "../../../../../store/actions";
 import { useTypedSelector } from "../../../../../store/types";
 import { useHistory, useParams } from "react-router-dom";
 import { TParams } from "../../../../../types";
-
+import image from "../../../../../assets/popup.png";
 type IItemPopupProps = {
   items: TItems;
   handleClose: () => void;
@@ -31,14 +37,25 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
     <Container className={classes.root}>
       <div
         style={{
-          background: `linear-gradient( rgba(256, 256, 256, 0), rgba(256, 256, 256, 1)), url(https://via.placeholder.com/900)`,
+          background: `linear-gradient( rgba(256, 256, 256, 0), rgba(256, 256, 256, 1)), url(${image})`,
         }}
         className={classes.image}
       />
       <Container>
         <Typography variant="h4">{title}</Typography>
-        <Typography>{ingredients}</Typography>
-        <Typography>{allergy}</Typography>
+        <Typography color="textSecondary" variant="body2">
+          {ingredients}
+        </Typography>
+        <Typography className={classes.paragraph} variant="body1">
+          {t("menu_allergy_info_label")}
+        </Typography>
+
+        <Typography color="textSecondary" variant="body2">
+          {allergy}
+        </Typography>
+        <Typography className={classes.paragraph} variant="body1">
+          {t("menu_special_instructions_label")}
+        </Typography>
         <TextField
           id="standard-textarea"
           placeholder={t("item_popup_note_placeholder")}
@@ -48,13 +65,28 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
 
         <Box className={classes.priceZone}>
           <Box>
-            <Button variant="outlined">-</Button>
+            <ButtonBase
+              className={classes.mathBtn}
+              onClick={() => {
+                if (quantity > 1) {
+                  setquantity(quantity - 1);
+                }
+              }}
+            >
+              -
+            </ButtonBase>
             {quantity}
-            <Button variant="outlined">+</Button>
+            <ButtonBase
+              className={classes.mathBtn}
+              onClick={() => setquantity(quantity + 1)}
+            >
+              +
+            </ButtonBase>
           </Box>
-          <Typography>{price}</Typography>
+          <Typography variant="h5">{t("price_euro", { price })}</Typography>
         </Box>
         <StyledButton
+          className={classes.cartBtn}
           disabled={
             cartItems.findIndex((item) => item.item.title === title) < 0
               ? false
@@ -97,6 +129,23 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-around",
+      height: theme.spacing(10),
+      alignItems: "center",
+    },
+    mathBtn: {
+      minWidth: "18px",
+      height: "18px",
+      border: "2px solid #929EA5",
+      borderRadius: 1,
+      margin: "0 10px",
+    },
+    paragraph: {
+      marginTop: theme.spacing(2),
+    },
+    cartBtn: {
+      margin: "auto",
+      display: "block",
+      width: "80%",
     },
   })
 );

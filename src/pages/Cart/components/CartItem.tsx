@@ -14,9 +14,10 @@ type TItem = {
   title: string;
   price: number;
   ingredients?: string[];
+  quantity: number;
 };
 
-const Item: React.FC<TItem> = ({ title, price, ingredients }) => {
+const Item: React.FC<TItem> = ({ title, price, ingredients, quantity }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -24,16 +25,19 @@ const Item: React.FC<TItem> = ({ title, price, ingredients }) => {
     <Card className={classes.root}>
       <Box className={classes.content}>
         <Box className={classes.horizontal}>
-          <Typography className={classes.title} variant="h6">
-            {title}
-          </Typography>
-          <Typography variant="body2">
-            {t("price_euro", { price: price })}
-          </Typography>
+          <Typography variant="h6">{title}</Typography>
+          <Box>
+            <Typography variant="body1">
+              {t("price_euro", { price: price })}
+            </Typography>
+            <Typography align="right" variant="body1">
+              {quantity > 1 && `x${quantity}`}
+            </Typography>
+          </Box>
         </Box>
         <Typography
           className={classes.ingredients}
-          variant="body2"
+          variant="body1"
           color="textSecondary"
         >
           {ingredients}
@@ -96,17 +100,13 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: 107,
       height: 100,
     },
-    title: {
-      fontSize: "17px",
-      letterSpacing: 0,
-    },
+
     horizontal: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
     },
     ingredients: {
-      fontSize: "11px",
       overflow: "hidden",
       textOverflow: "ellipsis",
       display: "-webkit-box",
@@ -116,8 +116,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       textTransform: "none",
-      fontSize: theme.typography.caption.fontSize,
+      fontSize: theme.typography.body1.fontSize,
       padding: 0,
+      fontFamily: theme.typography.fontFamily,
     },
     iconButton: {
       padding: 0,

@@ -15,10 +15,10 @@ const CartHeader: React.FC<ICartHeaderProps> = ({ ...props }) => {
       }}
       className={classes.root}
     >
-      <Typography align="center" className={classes.text} variant="h6">
+      <Typography align="center" className={classes.text} variant="h5">
         Eleven Madison Park
       </Typography>
-      <Typography align="center" className={classes.text} variant="body1">
+      <Typography align="center" className={classes.text} variant="h6">
         11 Madison Ave, New York, NY 10010,
       </Typography>
     </div>

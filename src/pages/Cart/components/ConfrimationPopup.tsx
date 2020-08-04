@@ -70,7 +70,11 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "space-evenly",
       flexDirection: "column",
       alignItems: "center",
+      "&:focus": {
+        outline: "none",
+      },
     },
+
     button: {
       textTransform: "none",
     },
