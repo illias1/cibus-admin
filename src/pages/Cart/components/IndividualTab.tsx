@@ -7,7 +7,6 @@ import Box from "@material-ui/core/Box";
 import { useHistory, useParams } from "react-router-dom";
 import { TParams } from "../../../types";
 // components
-import { StyledButton } from "../../../components/Button";
 import TwoButtons from "./TwoButtons";
 import CartTotal from "./TotalPrice";
 import CartItem from "./CartItem";
