@@ -4,7 +4,6 @@ import { Box, Typography } from "@material-ui/core";
 import { useTypedSelector, TGroupCartItem } from "../../../store/types";
 import CartItem from "./CartGroupItem";
 import TotalPrice from "./TotalPrice";
-import { theme } from "../../../utils/theme";
 import { useTranslation } from "react-i18next";
 import TwoButtons from "./TwoButtons";
 import { StyledButton } from "../../../components/Button";

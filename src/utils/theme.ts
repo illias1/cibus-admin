@@ -56,10 +56,10 @@ export const theme = createMuiTheme({
       // color: "rgba(0, 0, 0, 0.54)",
     },
     button: {
-      fontSize: "0.875rem",
+      fontSize: "20px",
       textTransform: "uppercase",
       fontWeight: 500,
-      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      // fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       // color: "rgba(0, 0, 0, 0.87)",
     },
   },
@@ -103,7 +103,7 @@ export const theme = createMuiTheme({
     },
     secondary: {
       light: "#ff4081",
-      main: "#f50057",
+      main: "#FFCC00",
       dark: "#c51162",
       contrastText: "#fff",
     },

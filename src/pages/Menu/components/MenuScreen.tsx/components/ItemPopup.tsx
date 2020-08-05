@@ -1,13 +1,7 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import {
-  Typography,
-  TextField,
-  Button,
-  Box,
-  ButtonBase,
-} from "@material-ui/core";
+import { Typography, TextField, Box, ButtonBase } from "@material-ui/core";
 import { TItems } from "../MenuScreen";
 import { useTranslation } from "react-i18next";
 import { StyledButton } from "../../../../../components/Button";
@@ -96,7 +90,7 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
             dispatch(
               addToCart({
                 status: "added",
-                item: { title, price, ingredients, allergy },
+                item: { title, price, ingredients, allergy, img: "" },
                 quantity,
               })
             );
@@ -119,7 +113,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "80%",
       borderRadius: theme.spacing(3),
       height: "80%",
-      overflow: "hidden",
+      overflowY: "scroll",
     },
     image: {
       width: "100%",
@@ -143,7 +137,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(2),
     },
     cartBtn: {
-      margin: "auto",
+      margin: "0 auto 1em",
       display: "block",
       width: "80%",
     },

@@ -24,7 +24,7 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
   return (
     <Container
       style={{
-        background: `linear-gradient(0deg, #000000 0%, #080808 18%, #2D2D2D69 100%), url(${background})`,
+        background: `linear-gradient(0deg, #000000 0%, #080808 18%, #2D2D2D69 100%), url(${background}) no-repeat center`,
       }}
     >
       <Box className={classes.main}>
@@ -38,11 +38,14 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
               onChange={(e) => setname(e.target.value)}
             />
           </form>
-          <Typography className={classes.text}>
+          <Typography variant="h6" className={classes.text}>
             We need your name to personalize your order and keep track of the
             tab.
           </Typography>
-          <Typography className={classes.text}>Table #{tableNumber}</Typography>
+          <div className={classes.divider} />
+          <Typography variant="h6" className={classes.text}>
+            Table #{tableNumber}
+          </Typography>
         </Box>
       </Box>
     </Container>
@@ -67,6 +70,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     text: {
       color: "white",
+      marginTop: theme.spacing(2),
+    },
+    divider: {
+      width: "50%",
+      border: "1px solid white",
+      margin: `${theme.spacing(1)}px auto`,
     },
   })
 );

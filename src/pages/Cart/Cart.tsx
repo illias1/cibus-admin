@@ -25,7 +25,7 @@ const Cart: React.FC<ICartProps> = ({ ...props }) => {
     setValue(newValue);
   };
   return (
-    <div>
+    <>
       <CartHeader />
       <CustomTabs
         value={value}
@@ -45,7 +45,7 @@ const Cart: React.FC<ICartProps> = ({ ...props }) => {
       <TabPanel value={value} index={1}>
         <GroupTab />
       </TabPanel>
-    </div>
+    </>
   );
 };
 

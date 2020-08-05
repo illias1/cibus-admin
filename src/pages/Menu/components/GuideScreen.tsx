@@ -38,12 +38,18 @@ const GuideScreen: React.FC<IGuideScreenProps> = ({ ...props }) => {
       <Box className={classes.main}>
         <Typography className={classes.text} variant="h4" component="h2">
           {t("guide_welcome_message", { userName })}
+          <Typography color="secondary" variant="h4" component="h2">
+            cibus.online
+          </Typography>
         </Typography>
 
-        <Typography className={classes.text}>
-          {t("guide_explanation_message")}
+        <Typography variant="h6" className={classes.text}>
+          <Typography variant="h6" className={classes.secondaryText}>
+            {t("guide_explanation_message")}
+          </Typography>
+          Eleven Madison Park
         </Typography>
-        <StyledButton onCLick={() => {}}>
+        <StyledButton className={classes.button} onCLick={() => {}}>
           {t("guide_main_action_button")}
         </StyledButton>
       </Box>
@@ -60,10 +66,23 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     text: {
       color: "white",
-      marginBottom: theme.spacing(10),
+      marginBottom: theme.spacing(8),
     },
     main: {
-      paddingTop: "100%",
+      bottom: theme.spacing(6),
+      width: "80%",
+      position: "absolute",
+      left: "50%",
+      transform: "translate(-50%, 0)",
+    },
+    secondaryText: {
+      color: "white",
+      opacity: 0.7,
+    },
+    button: {
+      height: "65px",
+      backgroundColor: theme.palette.action.selected,
+      width: "100%",
     },
   })
 );

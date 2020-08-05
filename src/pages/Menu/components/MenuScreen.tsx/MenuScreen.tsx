@@ -20,6 +20,7 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
     ingredients: [],
     price: 0,
     allergy: [],
+    img: "",
   });
   return (
     <>
@@ -37,6 +38,7 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
             price: items!.price,
             title: items.title,
             ingredients: items?.ingredients,
+            img: items.img,
           }}
         />
       </Modal>
@@ -52,11 +54,11 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
             >
               {category}
             </Typography>
-            {items.map(({ title, price, ingredients, allergy }, index) => (
+            {items.map(({ title, price, ingredients, allergy, img }, index) => (
               <MenuItem
                 onClick={(e) => {
                   setpopupOpen(true);
-                  setitems({ title, price, ingredients, allergy });
+                  setitems({ title, price, ingredients, allergy, img });
                 }}
                 key={index}
                 title={title}
@@ -99,6 +101,7 @@ export type TItems = {
   price: number;
   ingredients: string[];
   allergy: string[];
+  img: string;
 };
 
 const sampleItems: { category: string; items: TItems[] }[] = [
@@ -113,24 +116,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
-      },
-      {
-        title: "sample title1",
-        price: 1,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-      },
-      {
-        title: "sample title",
-        price: 32,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
+        img: "",
       },
     ],
   },
@@ -145,6 +131,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
       {
         title: "sample title",
@@ -154,6 +141,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
       {
         title: "sample title",
@@ -163,6 +151,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
     ],
   },
@@ -177,6 +166,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
       {
         title: "sample title",
@@ -186,6 +176,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
       {
         title: "sample title",
@@ -195,6 +186,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
     ],
   },
@@ -209,6 +201,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
       {
         title: "sample title",
@@ -218,6 +211,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
       {
         title: "sample title",
@@ -227,6 +221,7 @@ const sampleItems: { category: string; items: TItems[] }[] = [
           "Rye Crumble and Nasturtirum",
         ],
         allergy: ["Clean", "No alllergies"],
+        img: "",
       },
     ],
   },

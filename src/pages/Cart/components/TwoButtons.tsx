@@ -43,14 +43,14 @@ const useStyles = makeStyles((theme: Theme) =>
     buttons: {
       display: "flex",
       justifyContent: "space-evenly",
-      padding: "0 15px",
+      padding: "0 5px",
       width: "100%",
       boxSizing: "border-box",
       marginTop: theme.spacing(2),
     },
     button: {
       width: "100%",
-      margin: "0 7px",
+      margin: "0 3px",
     },
   })
 );

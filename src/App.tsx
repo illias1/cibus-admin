@@ -8,12 +8,23 @@ const MenuPage = lazy(() => import("./pages/Menu"));
 const HomePage = lazy(() => import("./pages/Home"));
 const CartPage = lazy(() => import("./pages/Cart"));
 
+const Loader: React.FC = ({ ...props }) => {
+  return (
+    <div className="container">
+      <div className="yellow"></div>
+      <div className="red"></div>
+      <div className="blue"></div>
+      <div className="violet"></div>
+    </div>
+  );
+};
+
 function App() {
   return (
     <ThemeProvider<CustomTheme> theme={augmentedTheme}>
       <BrowserRouter>
         <CssBaseline />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loader />}>
           <Switch>
             <Route
               exact
