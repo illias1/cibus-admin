@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import CardMedia from "@material-ui/core/CardMedia";
 import { IMAGE_OVERLAY_COLOR } from "../../../utils/_constants";
 type TItem = {
   title: string;

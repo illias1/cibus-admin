@@ -10,7 +10,6 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
 import { useDispatch } from "react-redux";
 import { removeItemFromCart } from "../../../store/actions";
-import CardMedia from "@material-ui/core/CardMedia";
 import { TCartItemStatus } from "../../../store/types";
 import { IMAGE_OVERLAY_COLOR } from "../../../utils/_constants";
 type TItem = {

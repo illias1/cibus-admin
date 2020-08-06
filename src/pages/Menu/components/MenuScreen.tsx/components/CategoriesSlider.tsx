@@ -25,6 +25,7 @@ const CategoriesSlider: React.FC<ICategoriesSliderProps> = ({ categories }) => {
     theme.palette.primary.main,
   ]);
 
+  const [clicked, setclicked] = React.useState<boolean>(false);
   return (
     <Box id="categoriesContainer" className={classes.root}>
       <Scrollspy
@@ -33,7 +34,7 @@ const CategoriesSlider: React.FC<ICategoriesSliderProps> = ({ categories }) => {
         componentTag="div"
         offset={100}
         onUpdate={(item) => {
-          if ((item as unknown) as HTMLAnchorElement) {
+          if (((item as unknown) as HTMLAnchorElement) && !clicked) {
             const leftOffset = document.getElementById(
               `label-${((item as unknown) as HTMLAnchorElement).id}`
             )?.offsetLeft!;
@@ -47,6 +48,13 @@ const CategoriesSlider: React.FC<ICategoriesSliderProps> = ({ categories }) => {
             key={i}
             className={classes.chip}
             href={`#category-${cat}`}
+            // needed to actually scroll sincr the onUpdate method would block it
+            onClick={() => {
+              setclicked(true);
+              setTimeout(() => {
+                setclicked(false);
+              }, 2000);
+            }}
           >
             {cat}
           </a>
