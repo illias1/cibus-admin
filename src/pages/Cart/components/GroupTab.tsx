@@ -10,6 +10,7 @@ import { StyledButton } from "../../../components/Button";
 import ConfrimationPopup from "./ConfrimationPopup";
 import { useDispatch } from "react-redux";
 import { setGroupOrderPlaced } from "../../../store/actions";
+import { convertNumberToPrecision } from "../../../utils/numberToPrecision";
 
 type IGroupTabProps = {};
 
@@ -17,28 +18,22 @@ const calculateGroupTotal = (
   groupCart: TGroupCartItem[],
   propertyToCalculate: Exclude<keyof TGroupCartItem, "customerName">
 ) =>
-  Number(
-    groupCart
-      .reduce((prev, curr): number => prev + curr[propertyToCalculate], 0)
-      .toPrecision(3)
+  convertNumberToPrecision(
+    groupCart.reduce((prev, curr): number => prev + curr[propertyToCalculate], 0)
   );
 
 const GroupTab: React.FC<IGroupTabProps> = ({ ...props }) => {
-  const { cart, groupCart } = useTypedSelector((state) => state);
+  const { cart, groupCart, groupCartOrderPlaced } = useTypedSelector((state) => state);
   const classes = useStyles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const groupOrderPlaced = useTypedSelector(
-    (state) => state.groupCartOrderPlaced
-  );
+  const groupOrderPlaced = useTypedSelector((state) => state.groupCartOrderPlaced);
   const [open, setopen] = React.useState<boolean>(false);
   const handleClose = () => {
     setopen(false);
   };
   const myOrderTotal = Number(
-    cart
-      .reduce((prev, curr): number => prev + curr.item.price * curr.quantity, 0)
-      .toPrecision(3)
+    cart.reduce((prev, curr): number => prev + curr.item.price * curr.quantity, 0).toPrecision(3)
   );
   const othersOrderTotal = calculateGroupTotal(groupCart, "price");
   const othersTipTotal = calculateGroupTotal(groupCart, "tip");
@@ -53,6 +48,7 @@ const GroupTab: React.FC<IGroupTabProps> = ({ ...props }) => {
       />
       <Box>
         <CartItem
+          orderPlaced={groupCartOrderPlaced}
           tip={myTip}
           title="My order"
           myOrder={true}
@@ -60,16 +56,14 @@ const GroupTab: React.FC<IGroupTabProps> = ({ ...props }) => {
         />
         {groupCart.map((customer) => (
           <CartItem
+            orderPlaced={groupCartOrderPlaced}
             tip={customer.tip}
             price={customer.price}
             title={customer.customerName}
           />
         ))}
       </Box>
-      <TotalPrice
-        tip={myTip + othersTipTotal}
-        price={othersOrderTotal + myOrderTotal}
-      />
+      <TotalPrice tip={myTip + othersTipTotal} price={othersOrderTotal + myOrderTotal} />
       <Typography variant="caption" align="center">
         {t("cart_order_placement_override_explanation")}
       </Typography>

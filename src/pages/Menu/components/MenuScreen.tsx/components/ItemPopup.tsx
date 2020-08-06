@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Typography, TextField, Box, ButtonBase } from "@material-ui/core";
-import { TItems } from "../MenuScreen";
 import { useTranslation } from "react-i18next";
 import { StyledButton } from "../../../../../components/Button";
 import { useDispatch } from "react-redux";
@@ -11,13 +10,15 @@ import { useTypedSelector } from "../../../../../store/types";
 import { useHistory, useParams } from "react-router-dom";
 import { TParams } from "../../../../../types";
 import image from "../../../../../assets/popup.png";
+import { TItems } from "../../../../../sampleData";
+
 type IItemPopupProps = {
   items: TItems;
   handleClose: () => void;
 };
 
 const ItemPopup: React.FC<IItemPopupProps> = ({
-  items: { title, price, ingredients, allergy },
+  items: { title, price, ingredients, allergy, notes, cal, img },
   handleClose,
 }) => {
   const dispatch = useDispatch();
@@ -70,10 +71,7 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
               -
             </ButtonBase>
             {quantity}
-            <ButtonBase
-              className={classes.mathBtn}
-              onClick={() => setquantity(quantity + 1)}
-            >
+            <ButtonBase className={classes.mathBtn} onClick={() => setquantity(quantity + 1)}>
               +
             </ButtonBase>
           </Box>
@@ -81,17 +79,14 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
         </Box>
         <StyledButton
           className={classes.cartBtn}
-          disabled={
-            cartItems.findIndex((item) => item.item.title === title) < 0
-              ? false
-              : true
-          }
+          disabled={cartItems.findIndex((item) => item.item.title === title) < 0 ? false : true}
           onCLick={() => {
             dispatch(
               addToCart({
                 status: "added",
-                item: { title, price, ingredients, allergy, img: "" },
+                item: { title, price, ingredients, allergy, img: "", notes, cal },
                 quantity,
+                img,
               })
             );
             history.push(`/${restaurantId}/${tableNumber}/cart`);

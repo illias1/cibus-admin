@@ -10,14 +10,19 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
 import { useDispatch } from "react-redux";
 import { removeItemFromCart } from "../../../store/actions";
+import CardMedia from "@material-ui/core/CardMedia";
+import { TCartItemStatus } from "../../../store/types";
+import { IMAGE_OVERLAY_COLOR } from "../../../utils/_constants";
 type TItem = {
   title: string;
   price: number;
   ingredients?: string[];
+  img: string;
   quantity: number;
+  status: TCartItemStatus;
 };
 
-const Item: React.FC<TItem> = ({ title, price, ingredients, quantity }) => {
+const Item: React.FC<TItem> = ({ title, price, ingredients, quantity, img, status }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -25,21 +30,17 @@ const Item: React.FC<TItem> = ({ title, price, ingredients, quantity }) => {
     <Card className={classes.root}>
       <Box className={classes.content}>
         <Box className={classes.horizontal}>
-          <Typography variant="h6">{title}</Typography>
+          <Typography className={classes.title} variant="h6">
+            {title}
+          </Typography>
           <Box>
-            <Typography variant="body1">
-              {t("price_euro", { price: price })}
-            </Typography>
+            <Typography variant="body1">{t("price_euro", { price: price })}</Typography>
             <Typography align="right" variant="body1">
               {quantity > 1 && `x${quantity}`}
             </Typography>
           </Box>
         </Box>
-        <Typography
-          className={classes.ingredients}
-          variant="body1"
-          color="textSecondary"
-        >
+        <Typography className={classes.ingredients} variant="body1" color="textSecondary">
           {ingredients}
         </Typography>
         <Box className={classes.horizontal}>
@@ -63,22 +64,30 @@ const Item: React.FC<TItem> = ({ title, price, ingredients, quantity }) => {
           <Skeleton variant="rect" animation="wave" className={classes.cover} />
         )}
       > */}
-      <img
+      {/* <img
         className={classes.cover}
-        src="https://via.placeholder.com/110x100"
+        src={img}
         alt="sdf"
         // onLoad={() => {
         // setimageLoaded(true);
         // console.log("image loaded");
         // }}
         // onError={() => console.log("image load errror")}
-      />
+      /> */}
       {/* </Suspense> */}
 
-      {/* <CardMedia
+      <div
         className={classes.cover}
-        image="https://via.placeholder.com/110x100"
-      /> */}
+        style={{
+          backgroundImage: `linear-gradient(${IMAGE_OVERLAY_COLOR}, ${IMAGE_OVERLAY_COLOR}), url(${img})`,
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+        }}
+      >
+        <Typography align="center" variant="body1">
+          {status === "added" ? t("cart_order_not_placed_yet") : t("cart_order_placed")}
+        </Typography>
+      </div>
     </Card>
   );
 };
@@ -98,13 +107,27 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cover: {
       minWidth: 107,
+      maxWidth: 107,
       height: 100,
+      position: "relative",
+      color: theme.palette.getContrastText(IMAGE_OVERLAY_COLOR),
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
 
     horizontal: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
+      alignItems: "center",
+    },
+    title: {
+      textOverflow: "ellipsis",
+      "-webkit-box-orient": "vertical",
+      "-webkit-line-clamp": 1,
+      display: "-webkit-box",
+      overflow: "hidden",
     },
     ingredients: {
       overflow: "hidden",

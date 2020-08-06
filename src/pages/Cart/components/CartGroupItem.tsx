@@ -7,23 +7,23 @@ import Box from "@material-ui/core/Box";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CardMedia from "@material-ui/core/CardMedia";
+import { IMAGE_OVERLAY_COLOR } from "../../../utils/_constants";
 type TItem = {
   title: string;
   price: number;
   myOrder?: boolean;
   tip: number;
+  orderPlaced: boolean;
 };
 
-const Item: React.FC<TItem> = ({ title, price, myOrder = false, tip }) => {
+const Item: React.FC<TItem> = ({ title, price, myOrder = false, tip, orderPlaced }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   return (
     <Card className={classes.root}>
       <Box className={classes.content}>
         <Typography variant="h5" className={classes.name}>
-          {myOrder
-            ? t("cart_my_order")
-            : t("cart_friend_s_order", { name: title })}
+          {myOrder ? t("cart_my_order") : t("cart_friend_s_order", { name: title })}
         </Typography>
         <Box className={classes.tipButton}>
           {myOrder ? (
@@ -46,10 +46,11 @@ const Item: React.FC<TItem> = ({ title, price, myOrder = false, tip }) => {
           </Typography>
         </Box>
       </Box>
-      <CardMedia
-        className={classes.cover}
-        image="https://via.placeholder.com/110x100"
-      />
+      <div className={classes.cover}>
+        <Typography variant="body1" align="center">
+          {orderPlaced ? t("cart_order_placed") : t("cart_waiting_to_place_order_automatically")}
+        </Typography>
+      </div>
     </Card>
   );
 };
@@ -71,7 +72,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cover: {
       minWidth: 107,
+      maxWidth: 107,
       height: 100,
+      backgroundColor: IMAGE_OVERLAY_COLOR,
+      color: theme.palette.getContrastText(IMAGE_OVERLAY_COLOR),
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
     name: {
       position: "absolute",

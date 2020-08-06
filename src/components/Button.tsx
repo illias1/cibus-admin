@@ -3,9 +3,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 type IButtonProps = {
-  onCLick:
-    | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
-    | undefined;
+  onCLick: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
   color?: "inherit" | "primary" | "secondary" | "default" | undefined;
   disabled?: boolean;
   className?: string;
@@ -39,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       borderRadius: theme.spacing(6),
       textTransform: "none",
+      padding: "6px 5px",
     },
   })
 );

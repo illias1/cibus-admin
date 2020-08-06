@@ -28,5 +28,8 @@
   "cart_pay_my_order": "Pay My Order",
   "cart_place_table_order": "Place Table's Order",
   "cart_after_order_place_message": "You order has been placed. We will start processing when your friends at your party place their order.",
-  "cart_table_order_override_confirmation_request": "Please confirm to order the whole table order."
+  "cart_table_order_override_confirmation_request": "Please confirm to order the whole table order.",
+  "cart_order_not_placed_yet": "Order not placed yet",
+  "cart_order_placed": "Order Placed",
+  "cart_waiting_to_place_order_automatically": "Waiting for your friends to place order automatically"
 }

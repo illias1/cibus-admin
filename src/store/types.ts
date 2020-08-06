@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux";
-import { TItems } from "../pages/Menu/components/MenuScreen.tsx/MenuScreen";
+import { TItems } from "../sampleData";
 
 export type TStore = {
   userName: string;
@@ -13,6 +13,7 @@ export type TCartItem = {
   item: TItems;
   status: TCartItemStatus;
   quantity: number;
+  img: string;
 };
 export type TCartItemStatus = "added" | "placed";
 

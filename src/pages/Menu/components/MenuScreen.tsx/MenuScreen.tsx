@@ -7,6 +7,7 @@ import MenuItem from "./components/MenuItem";
 import CategoriesSlider from "./components/CategoriesSlider";
 import ItemPopup from "./components/ItemPopup";
 import background from "../../../../assets/background.png";
+import { TItems, sampleItems } from "../../../../sampleData";
 type IMenuScreenProps = {};
 
 const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
@@ -21,6 +22,8 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
     price: 0,
     allergy: [],
     img: "",
+    notes: [],
+    cal: "",
   });
   return (
     <>
@@ -39,6 +42,8 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
             title: items.title,
             ingredients: items?.ingredients,
             img: items.img,
+            cal: items.cal,
+            notes: items.notes,
           }}
         />
       </Modal>
@@ -47,23 +52,20 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
       <Box className={classes.root}>
         {sampleItems.map(({ items, category }, i) => (
           <React.Fragment key={category}>
-            <Typography
-              id={`category-${category}`}
-              className={classes.title}
-              variant="h4"
-            >
+            <Typography id={`category-${category}`} className={classes.title} variant="h4">
               {category}
             </Typography>
-            {items.map(({ title, price, ingredients, allergy, img }, index) => (
+            {items.map(({ title, price, ingredients, allergy, img, cal, notes }, index) => (
               <MenuItem
                 onClick={(e) => {
                   setpopupOpen(true);
-                  setitems({ title, price, ingredients, allergy, img });
+                  setitems({ title, price, ingredients, allergy, img, cal, notes });
                 }}
                 key={index}
                 title={title}
                 ingredients={ingredients}
                 price={price}
+                img={img}
               />
             ))}
           </React.Fragment>
@@ -95,134 +97,3 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default MenuScreen;
-
-export type TItems = {
-  title: string;
-  price: number;
-  ingredients: string[];
-  allergy: string[];
-  img: string;
-};
-
-const sampleItems: { category: string; items: TItems[] }[] = [
-  {
-    category: "Entrees",
-    items: [
-      {
-        title: " title",
-        price: 12.23,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-    ],
-  },
-  {
-    category: "Meal",
-    items: [
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-    ],
-  },
-  {
-    category: "Dessert",
-    items: [
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-    ],
-  },
-  {
-    category: "Aperitifs",
-    items: [
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-      {
-        title: "sample title",
-        price: 12,
-        ingredients: [
-          "Salad with Lynnhaven Farm Chèvre Frais",
-          "Rye Crumble and Nasturtirum",
-        ],
-        allergy: ["Clean", "No alllergies"],
-        img: "",
-      },
-    ],
-  },
-];

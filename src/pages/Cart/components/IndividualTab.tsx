@@ -12,6 +12,7 @@ import CartTotal from "./TotalPrice";
 import CartItem from "./CartItem";
 import ConfrimationPopup from "./ConfrimationPopup";
 import { setCartItemsStatus } from "../../../store/actions";
+import { convertNumberToPrecision } from "../../../utils/numberToPrecision";
 
 type IIndividualTabProps = {};
 
@@ -39,6 +40,8 @@ const IndividualTab: React.FC<IIndividualTabProps> = ({ ...props }) => {
       <Box className={classes.items}>
         {cartItems.map((item) => (
           <CartItem
+            status={item.status}
+            img={item.img}
             title={item.item.title}
             ingredients={item.item.ingredients}
             price={item.item.price}
@@ -47,9 +50,8 @@ const IndividualTab: React.FC<IIndividualTabProps> = ({ ...props }) => {
         ))}
       </Box>
       <CartTotal
-        price={cartItems.reduce(
-          (prev, curr): number => prev + curr.quantity * curr.item.price,
-          0
+        price={convertNumberToPrecision(
+          cartItems.reduce((prev, curr): number => prev + curr.quantity * curr.item.price, 0)
         )}
       />
 
@@ -60,11 +62,7 @@ const IndividualTab: React.FC<IIndividualTabProps> = ({ ...props }) => {
         onCLickRight={() => setopen(true)}
         leftLabel="cart_add_more"
         rightLabel="cart_place_my_order"
-        rightDisable={
-          cartItems.findIndex((item) => item.status === "added") < 0
-            ? true
-            : false
-        }
+        rightDisable={cartItems.findIndex((item) => item.status === "added") < 0 ? true : false}
       />
     </div>
   );

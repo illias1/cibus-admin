@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  useTheme,
-} from "@material-ui/core/styles";
+import { makeStyles, Theme, createStyles, useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Scrollspy from "react-scrollspy";
 
@@ -24,18 +19,35 @@ const CategoriesSlider: React.FC<ICategoriesSliderProps> = ({ categories }) => {
       "--color-background",
       theme.palette.action.selected
     );
-  }, [theme.palette.primary.contrastText, theme.palette.primary.main]);
+  }, [
+    theme.palette.action.selected,
+    theme.palette.primary.contrastText,
+    theme.palette.primary.main,
+  ]);
 
   return (
-    <Box className={classes.root}>
+    <Box id="categoriesContainer" className={classes.root}>
       <Scrollspy
         items={categories.map((cat) => `category-${cat}`)}
         currentClassName="activeCategoryClass"
         componentTag="div"
         offset={100}
+        onUpdate={(item) => {
+          if ((item as unknown) as HTMLAnchorElement) {
+            const leftOffset = document.getElementById(
+              `label-${((item as unknown) as HTMLAnchorElement).id}`
+            )?.offsetLeft!;
+            document.getElementById("categoriesContainer")!.scrollLeft = +leftOffset - 50;
+          }
+        }}
       >
         {categories.map((cat, i) => (
-          <a key={i} className={classes.chip} href={`#category-${cat}`}>
+          <a
+            id={`label-category-${cat}`}
+            key={i}
+            className={classes.chip}
+            href={`#category-${cat}`}
+          >
             {cat}
           </a>
         ))}
