@@ -28,8 +28,8 @@ export const theme = createMuiTheme({
       // color: "rgba(0, 0, 0, 0.87)",
     },
     subtitle1: {
-      fontSize: "1rem",
-      fontWeight: 400,
+      fontSize: "16px",
+      fontWeight: 200,
       // fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       lineHeight: "1.5em",
       // color: "rgba(0, 0, 0, 0.87)",

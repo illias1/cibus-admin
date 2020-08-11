@@ -33,10 +33,7 @@ const Cart: React.FC<ICartProps> = ({ ...props }) => {
         aria-label="simple tabs example"
         className={classes.tabLabel}
       >
-        <CustomTab
-          label={t("cart_individual_order_tab_label")}
-          {...a11yProps(0)}
-        />
+        <CustomTab label={t("cart_individual_order_tab_label")} {...a11yProps(0)} />
         <CustomTab label={t("cart_table_order_tab_label")} {...a11yProps(1)} />
       </CustomTabs>
       <TabPanel value={value} index={0}>

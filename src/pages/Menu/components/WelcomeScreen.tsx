@@ -32,18 +32,17 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
           cibus.online
         </Typography>
         <Box className={classes.bottom}>
+          <Typography variant="subtitle1" className={classes.aboveFormText}>
+            Our guest this evening is:
+          </Typography>
           <form onSubmit={handleSubmit}>
-            <StyledInput
-              placeholder="Name"
-              onChange={(e) => setname(e.target.value)}
-            />
+            <StyledInput placeholder="Name" onChange={(e) => setname(e.target.value)} />
           </form>
-          <Typography variant="h6" className={classes.text}>
-            We need your name to personalize your order and keep track of the
-            tab.
+          <Typography variant="subtitle1" className={classes.text}>
+            We need your name to personalize your order and keep track of the tab.
           </Typography>
           <div className={classes.divider} />
-          <Typography variant="h6" className={classes.text}>
+          <Typography variant="subtitle1" className={classes.text}>
             Table #{tableNumber}
           </Typography>
         </Box>
@@ -76,6 +75,11 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "50%",
       border: "1px solid white",
       margin: `${theme.spacing(1)}px auto`,
+    },
+    aboveFormText: {
+      color: theme.palette.common.white,
+      marginBottom: theme.spacing(2),
+      fontSize: 16,
     },
   })
 );

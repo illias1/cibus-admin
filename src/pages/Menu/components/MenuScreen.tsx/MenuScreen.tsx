@@ -1,6 +1,8 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { Typography, Box } from "@material-ui/core";
+import Fab from "@material-ui/core/Fab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import Modal from "@material-ui/core/Modal";
 // components
 import MenuItem from "./components/MenuItem";
@@ -8,10 +10,16 @@ import CategoriesSlider from "./components/CategoriesSlider";
 import ItemPopup from "./components/ItemPopup";
 import background from "../../../../assets/background.png";
 import { TItems, sampleItems } from "../../../../sampleData";
+
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import { useHistory, useParams } from "react-router-dom";
+import { TParams } from "../../../../types";
 type IMenuScreenProps = {};
 
 const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const { restaurantId, tableNumber } = useParams<TParams>();
   const [popupOpen, setpopupOpen] = React.useState<boolean>(false);
   const handleClose = () => {
     setpopupOpen(false);
@@ -47,7 +55,29 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
           }}
         />
       </Modal>
-      <img src={background} className={classes.image} alt="header" />
+      <Fab
+        onClick={() => history.push(`/${restaurantId}/${tableNumber}/cart`)}
+        className={classes.cartFAB}
+        color="primary"
+        aria-label="add"
+      >
+        <ShoppingBasketIcon />
+      </Fab>
+      <div
+        style={{
+          backgroundImage: `url(${background})`,
+          backgroundPositionY: "bottom",
+          backgroundSize: "cover",
+        }}
+        className={classes.image}
+      >
+        <Typography variant="h5" className={classes.restName}>
+          Eleven Madison Park
+        </Typography>
+        <Typography variant="h6" className={classes.restAddress}>
+          11 Madison Ave, New York, NY 10010,
+        </Typography>
+      </div>
       <CategoriesSlider categories={sampleItems.map((item) => item.category)} />
       <Box className={classes.root}>
         {sampleItems.map(({ items, category }, i) => (
@@ -81,6 +111,11 @@ const useStyles = makeStyles((theme: Theme) =>
       borderBottomLeftRadius: theme.spacing(6),
       borderBottomRightRadius: theme.spacing(6),
       width: "100%",
+      height: "599px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-end",
     },
     root: {
       padding: "18px 23px",
@@ -92,6 +127,19 @@ const useStyles = makeStyles((theme: Theme) =>
     modal: {
       display: "flex",
       alignItems: "center",
+    },
+    cartFAB: {
+      position: "fixed",
+      bottom: "9px",
+      right: "9px",
+      background: "grey",
+    },
+    restName: {
+      color: theme.palette.common.white,
+    },
+    restAddress: {
+      color: theme.palette.text.hint,
+      marginBottom: theme.spacing(4),
     },
   })
 );
