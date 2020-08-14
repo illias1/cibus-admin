@@ -25,13 +25,12 @@ const sampleGroupCart: TGroupCartItem[] = [
 
 export const initialState: TStore = {
   userName: localStorage.getItem(LOCAL_STORAGE_USER_NAME) || "",
-  userAlreadyVisited: localStorage.getItem(LOCAL_STORAGE_USER_ALREADY_VISITED)
-    ? true
-    : false,
-  cart:
-    (JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_CART) || "[]"
-    ) as TCartItem[]) || [],
+  userAlreadyVisited: localStorage.getItem(LOCAL_STORAGE_USER_ALREADY_VISITED) ? true : false,
+  cart: (JSON.parse(localStorage.getItem(LOCAL_STORAGE_CART) || "[]") as TCartItem[]) || [],
   groupCart: sampleGroupCart,
   groupCartOrderPlaced: false,
+  feedback: {
+    open: false,
+    message: "",
+  },
 };

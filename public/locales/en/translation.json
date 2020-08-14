@@ -31,5 +31,6 @@
   "cart_table_order_override_confirmation_request": "Please confirm to order the whole table order.",
   "cart_order_not_placed_yet": "Order not placed yet",
   "cart_order_placed": "Order Placed",
-  "cart_waiting_to_place_order_automatically": "Waiting for your friends to place order automatically"
+  "cart_waiting_to_place_order_automatically": "Waiting for your friends to place order automatically",
+  "feedback_item_added_to_cart": "Added to cart!"
 }

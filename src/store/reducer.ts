@@ -7,6 +7,7 @@ import {
   removeItemFromCart,
   setCartItemsStatus,
   setGroupOrderPlaced,
+  setFeedback,
 } from "./actions";
 import {
   LOCAL_STORAGE_USER_NAME,
@@ -27,10 +28,7 @@ export const reducer = reducerWithInitialState(initialState)
     return { ...state, userAlreadyVisited };
   })
   .case(addToCart, (state, payload) => {
-    localStorage.setItem(
-      LOCAL_STORAGE_CART,
-      JSON.stringify([...state.cart, payload])
-    );
+    localStorage.setItem(LOCAL_STORAGE_CART, JSON.stringify([...state.cart, payload]));
     return {
       ...state,
       cart: [...state.cart, payload],
@@ -56,4 +54,8 @@ export const reducer = reducerWithInitialState(initialState)
   .case(setGroupOrderPlaced, (state, payload) => ({
     ...state,
     groupCartOrderPlaced: payload,
+  }))
+  .case(setFeedback, (state, feedback) => ({
+    ...state,
+    feedback,
   }));

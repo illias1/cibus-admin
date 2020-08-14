@@ -7,6 +7,10 @@ export type TStore = {
   cart: TCartItem[];
   groupCart: TGroupCartItem[];
   groupCartOrderPlaced: boolean;
+  feedback: {
+    open: boolean;
+    message: string;
+  };
 };
 
 export type TCartItem = {

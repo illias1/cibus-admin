@@ -14,11 +14,14 @@ import { TItems, sampleItems } from "../../../../sampleData";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { useHistory, useParams } from "react-router-dom";
 import { TParams } from "../../../../types";
+import Badge from "@material-ui/core/Badge";
+import { useTypedSelector } from "../../../../store/types";
 type IMenuScreenProps = {};
 
 const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
   const classes = useStyles();
   const history = useHistory();
+  const cartItemsLength = useTypedSelector((state) => state.cart.length);
   const { restaurantId, tableNumber } = useParams<TParams>();
   const [popupOpen, setpopupOpen] = React.useState<boolean>(false);
   const handleClose = () => {
@@ -55,14 +58,15 @@ const MenuScreen: React.FC<IMenuScreenProps> = ({ ...props }) => {
           }}
         />
       </Modal>
-      <Fab
-        onClick={() => history.push(`/${restaurantId}/${tableNumber}/cart`)}
-        className={classes.cartFAB}
-        color="primary"
-        aria-label="add"
-      >
-        <ShoppingBasketIcon />
-      </Fab>
+      <Badge className={classes.cartFAB} badgeContent={cartItemsLength} color="primary">
+        <Fab
+          onClick={() => history.push(`/${restaurantId}/${tableNumber}/cart`)}
+          color="secondary"
+          aria-label="add"
+        >
+          <ShoppingBasketIcon />
+        </Fab>
+      </Badge>
       <div
         style={{
           backgroundImage: `url(${background})`,
@@ -131,8 +135,7 @@ const useStyles = makeStyles((theme: Theme) =>
     cartFAB: {
       position: "fixed",
       bottom: "9px",
-      right: "9px",
-      background: "grey",
+      right: "12px",
     },
     restName: {
       color: theme.palette.common.white,

@@ -5,10 +5,8 @@ import { Typography, TextField, Box, ButtonBase } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import { StyledButton } from "../../../../../components/Button";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../../../../store/actions";
+import { addToCart, setFeedback } from "../../../../../store/actions";
 import { useTypedSelector } from "../../../../../store/types";
-import { useHistory, useParams } from "react-router-dom";
-import { TParams } from "../../../../../types";
 import image from "../../../../../assets/popup.png";
 import { TItems } from "../../../../../sampleData";
 
@@ -23,10 +21,8 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
 }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const history = useHistory();
   const cartItems = useTypedSelector((state) => state.cart);
   const { t } = useTranslation();
-  const { restaurantId, tableNumber } = useParams<TParams>();
   const [quantity, setquantity] = React.useState<number>(1);
   return (
     <Container className={classes.root}>
@@ -75,7 +71,7 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
               +
             </ButtonBase>
           </Box>
-          <Typography variant="h5">{t("price_euro", { price })}</Typography>
+          <Typography variant="h5">{t("price_euro", { price: price * quantity })}</Typography>
         </Box>
         <StyledButton
           className={classes.cartBtn}
@@ -89,8 +85,13 @@ const ItemPopup: React.FC<IItemPopupProps> = ({
                 img,
               })
             );
-            history.push(`/${restaurantId}/${tableNumber}/cart`);
             handleClose();
+            dispatch(
+              setFeedback({
+                open: true,
+                message: t("feedback_item_added_to_cart"),
+              })
+            );
           }}
         >
           Add to Cart
