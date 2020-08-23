@@ -3,7 +3,7 @@ import React from "react";
 type ISampleProps = {};
 
 const Sample: React.FC<ISampleProps> = ({ ...props }) => {
-  return <div></div>;
+  return <div>Sample</div>;
 };
 
 export default Sample;
