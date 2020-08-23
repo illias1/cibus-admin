@@ -1,3 +1,5 @@
 import { TStore } from "./types";
 
-export const initialState: TStore = {};
+export const initialState: TStore = {
+  orders: [],
+};
