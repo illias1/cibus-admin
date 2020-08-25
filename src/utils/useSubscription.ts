@@ -49,7 +49,7 @@ export const useSubscriptionByItself = <ItemType, VariablesType extends {} = {}>
       }
     }
     return unsubscribe;
-  }, [config]);
+  }, []);
 
   return [item];
 };

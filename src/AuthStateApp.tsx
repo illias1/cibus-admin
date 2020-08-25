@@ -1,6 +1,6 @@
 import React from "react";
 // Authentication
-import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
+import { AmplifyAuthenticator, AmplifySignUp, AmplifyConfirmSignIn } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import { Typography, makeStyles, Theme, createStyles } from "@material-ui/core";
 import App from "./App";
@@ -31,6 +31,11 @@ const AuthStateApp: React.FunctionComponent = () => {
           slot="sign-up"
           formFields={[{ type: "email" }, { type: "password" }]}
         />
+        <AmplifyConfirmSignIn
+          formFields={[]}
+          headerText="Confirm your email by clicking the link in your email"
+          slot="confirm-sign-up"
+        ></AmplifyConfirmSignIn>
       </AmplifyAuthenticator>
     </div>
   );

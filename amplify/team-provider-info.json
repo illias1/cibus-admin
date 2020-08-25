@@ -10,6 +10,12 @@
             "StackName": "amplify-cibusadmin-dev-05236",
             "StackId": "arn:aws:cloudformation:ap-northeast-2:284311343196:stack/amplify-cibusadmin-dev-05236/5d822a60-e0dc-11ea-989d-0a9c82f11f34",
             "AmplifyAppId": "d2fobp5hjbp7pd"
+        },
+        "categories": {
+            "auth": {
+                "cibusadmin15af6c37": {},
+                "userPoolGroups": {}
+            }
         }
     }
 }

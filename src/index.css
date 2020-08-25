@@ -1,18 +1,5 @@
-:root {
-  --color-text: black;
-  --color-background: lightgray;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-.activeCategoryClass {
-  background-color: var(--color-background);
-  color: var(--color-text) !important;
-  padding: 1em;
-  border-radius: 3em;
-}
-
-a {
-  text-decoration: none;
+html,
+body,
+#root {
+  height: 100%;
 }

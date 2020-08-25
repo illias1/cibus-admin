@@ -1,0 +1,237 @@
+type User @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Admin"] }]) {
+  id: ID!
+  email: String!
+  name: String
+  properties: [Property] @connection(keyName: "propertyByUser", fields: ["id"])
+}
+
+type Property
+  @model
+  @key(fields: ["name"])
+  @key(name: "propertyByUser", fields: ["ownerId"])
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: groups, groups: ["Admin"], operations: [create, update, delete, read] }
+      { allow: public, provider: iam, operations: [read] }
+    ]
+  ) {
+  name: String!
+  ownerId: ID!
+  menu: [MenuItem!]! @connection(keyName: "menuItemsByProperty", fields: ["name"])
+  orders: [Order!]! @connection(keyName: "orderByPropertyByStatus", fields: ["name"])
+  tables: [String]!
+}
+
+type MenuItem
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: iam, operations: [read] }
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: groups, groups: ["Admin"], operations: [create, update, delete, read] }
+    ]
+  )
+  @key(name: "menuItemsByProperty", fields: ["propertyName"], queryField: "menuItemsByProperty") {
+  id: ID!
+  propertyName: String!
+  i18n: [I18nMenuItem!]!
+  price: Float!
+  status: MenuItemStatus!
+  allergyInfo: String
+  callories: String
+  image: String
+}
+type I18nMenuItem {
+  language: Language!
+  name: String!
+  category: String
+  description: String
+}
+
+enum MenuItemStatus {
+  AVAILABLE
+  OUT_OF_STOCK
+}
+
+type Order
+  @model(subscriptions: null)
+  @auth(rules: [{ allow: public, provider: iam, operations: [read, create] }, { allow: private }])
+  @aws_iam
+  @aws_cognito_user_pools
+  @key(
+    name: "orderByProperty"
+    fields: ["propertyName", "createdAt"]
+    queryField: "orderByPropertyByCreatedAt"
+  )
+  @key(
+    name: "orderByPropertyByStatus"
+    fields: ["propertyName", "status"]
+    queryField: "orderByPropertyByStatus"
+  ) {
+  id: ID!
+  propertyName: String!
+  orderItem: [OrderItem!]!
+  createdAt: String!
+  status: String!
+  tableName: String
+}
+
+type Subscription {
+  onCreateOrder(propertyName: String): Order @aws_subscribe(mutations: ["createOrder"])
+  onUpdateOrder(id: ID, propertyName: String): Order @aws_subscribe(mutations: ["updateOrder"])
+}
+# cannot be enum in order to sort
+# AWAITING and ACCEPTED need to start with same letter to fetch these to categories at admin init
+# enum OrderStatus {
+#   ACCEPTED
+#   REJECTED
+#   AWAITING
+#   COMPLETED
+# }
+
+type OrderItem {
+  name: String!
+  price: Float!
+  quantity: Int!
+  allergyInfo: String
+  customerComment: String
+}
+
+enum Language {
+  ar
+  az
+  be
+  bg
+  bn
+  bs
+  ca
+  cs
+  da
+  de
+  en
+  es
+  et
+  fa
+  fi
+  fr
+  gl
+  el
+  he
+  hi
+  hr
+  hu
+  hy
+  it
+  id
+  ja
+  ka
+  kk
+  ko
+  ky
+  lt
+  lv
+  mk
+  mn
+  ms
+  nb
+  nl
+  nn
+  pl
+  pt
+  ro
+  ru
+  sk
+  sl
+  sr
+  sv
+  th
+  tr
+  uk
+  ur
+  uz
+  zh
+  vi
+}
+
+# mutation createUser {
+#   createUser(input: {name: "khomko illia"}) {
+#     name
+#   }
+# }
+
+# query listusers {
+#   listUsers {
+#     items {
+#       name
+#       owner
+#       properties {
+#         items {
+#           name
+#         }
+#       }
+#       id
+#     }
+#   }
+# }
+
+# mutation createProperty {
+#   createProperty(input: {name: "prop2", ownerId: "user1", menu: {categories: {name: "", menuItems: {name: "", price: 1.5, status: AVAILABLE}}}}) {
+#     name
+#   }
+# }
+
+# query listProperties {
+#   listPropertys {
+#     items {
+#       name
+#       menu {
+#         categories {
+#           name
+#         }
+#       }
+#       orders {
+#         items {
+#           id
+#           orderItem {
+#             name
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
+
+# mutation createOrder {
+#   createOrder(input: {propertyName: "prop2", orderItem: [{name: "item3", price: 1.5, quantity: 10}, {name: "item4", price: 1.5, quantity: 10}]}) {
+#     id
+#   }
+# }
+
+# query listOrders {
+#   listOrders {
+#     items {
+#       id
+#       propertyName
+#       createdAt
+#     }
+#   }
+# }
+
+# mutation deleteOrder {
+#   deleteOrder(input: {id: "415e85ff-aab4-4c90-b319-044d41324ece"}) {
+#     id
+#   }
+# }
+
+# query ordersByProp {
+#   orderByProperty(propertyName: "prop2") {
+#     items {
+#       id
+#       orderItem {
+#         name
+#       }
+#       createdAt
+#     }
+#   }
+# }
