@@ -55,14 +55,12 @@ const navigationTabs: Record<"left" | "right", TNavTabs> = {
 
 type INavigationLayoutProps = {};
 
-const NavigationLayout: React.FC<INavigationLayoutProps> = ({ ...props }) => {
+const NavigationLayout: React.FC<INavigationLayoutProps> = ({ children }) => {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
       <Box className={classes.sidebar}>{navigationTabs.left.map(tabMapping)}</Box>
-      <Box className={classes.center}>
-        <Navigator />
-      </Box>
+      <Box className={classes.center}>{children}</Box>
       <Box className={classes.sidebar}>
         <Link style={{ top: 10 }} className={classes.cornerIcon} to="/">
           <HomeIcon fontSize="large" />
