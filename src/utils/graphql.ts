@@ -4,6 +4,7 @@ export const getPropertyAtInit = /* GraphQL */ `
       name
       ownerId
       tables
+      open
       createdAt
       updatedAt
       menu {

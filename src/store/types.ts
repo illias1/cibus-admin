@@ -3,6 +3,10 @@ import { GetOrderQuery } from "../API";
 
 export type TStore = {
   orders: GetOrderQuery["getOrder"][];
+  selectedProperty: {
+    name: string;
+    open: boolean;
+  };
 };
 
 export type OrderStatus = "ACCEPTED" | "REJECTED" | "AWAITING" | "COMPLETED";
