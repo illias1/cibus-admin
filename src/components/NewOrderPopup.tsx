@@ -1,25 +1,40 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { Box, Typography } from "@material-ui/core";
+import Modal from "@material-ui/core/Modal";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+
 import { useTranslation } from "react-i18next";
 import { useTypedSelector, OrderStatus } from "../store/types";
 
 type INewOrderPopupProps = {
   handlePopupClose: () => void;
+  open: boolean;
 };
 
-const NewOrderPopup: React.FC<INewOrderPopupProps> = ({ handlePopupClose }) => {
+const NewOrderPopup: React.FC<INewOrderPopupProps> = ({ handlePopupClose, open }) => {
   const classes = useStyles();
   const awaitingOrdersNumber = useTypedSelector(
     (state) => state.orders.filter((order) => (order?.status as OrderStatus) === "AWAITING").length
   );
   const { t } = useTranslation();
-  return (
+  const body = (
     <Box onClick={handlePopupClose} className={classes.root}>
       <div className={classes.counter}>{awaitingOrdersNumber}</div>
       <Typography variant="h3">{t("NEW_ORDER")}</Typography>
       <Typography>{t("tap_anywhere_to_accept")}</Typography>
     </Box>
+  );
+  return (
+    <Modal
+      // className={classes.modal}
+      open={open}
+      onClose={handlePopupClose}
+      aria-labelledby="new-order-popup"
+      aria-describedby="a-notification-about-new-incoming-order"
+    >
+      {body}
+    </Modal>
   );
 };
 

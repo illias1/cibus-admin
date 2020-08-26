@@ -52,11 +52,12 @@ export const onCreateUser = /* GraphQL */ `
       properties {
         items {
           name
+          NonUniqueName
+          open
           ownerId
           tables
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -75,11 +76,12 @@ export const onUpdateUser = /* GraphQL */ `
       properties {
         items {
           name
+          NonUniqueName
+          open
           ownerId
           tables
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -98,11 +100,12 @@ export const onDeleteUser = /* GraphQL */ `
       properties {
         items {
           name
+          NonUniqueName
+          open
           ownerId
           tables
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -110,14 +113,15 @@ export const onDeleteUser = /* GraphQL */ `
   }
 `;
 export const onCreateProperty = /* GraphQL */ `
-  subscription OnCreateProperty($owner: String) {
-    onCreateProperty(owner: $owner) {
+  subscription OnCreateProperty($ownerId: String) {
+    onCreateProperty(ownerId: $ownerId) {
       name
+      NonUniqueName
+      open
       ownerId
       tables
       createdAt
       updatedAt
-      owner
       menu {
         items {
           id
@@ -127,6 +131,7 @@ export const onCreateProperty = /* GraphQL */ `
           allergyInfo
           callories
           image
+          notes
           createdAt
           updatedAt
           owner
@@ -148,14 +153,15 @@ export const onCreateProperty = /* GraphQL */ `
   }
 `;
 export const onUpdateProperty = /* GraphQL */ `
-  subscription OnUpdateProperty($owner: String) {
-    onUpdateProperty(owner: $owner) {
+  subscription OnUpdateProperty($ownerId: String) {
+    onUpdateProperty(ownerId: $ownerId) {
       name
+      NonUniqueName
+      open
       ownerId
       tables
       createdAt
       updatedAt
-      owner
       menu {
         items {
           id
@@ -165,6 +171,7 @@ export const onUpdateProperty = /* GraphQL */ `
           allergyInfo
           callories
           image
+          notes
           createdAt
           updatedAt
           owner
@@ -186,14 +193,15 @@ export const onUpdateProperty = /* GraphQL */ `
   }
 `;
 export const onDeleteProperty = /* GraphQL */ `
-  subscription OnDeleteProperty($owner: String) {
-    onDeleteProperty(owner: $owner) {
+  subscription OnDeleteProperty($ownerId: String) {
+    onDeleteProperty(ownerId: $ownerId) {
       name
+      NonUniqueName
+      open
       ownerId
       tables
       createdAt
       updatedAt
-      owner
       menu {
         items {
           id
@@ -203,6 +211,7 @@ export const onDeleteProperty = /* GraphQL */ `
           allergyInfo
           callories
           image
+          notes
           createdAt
           updatedAt
           owner
@@ -239,6 +248,7 @@ export const onCreateMenuItem = /* GraphQL */ `
       allergyInfo
       callories
       image
+      notes
       createdAt
       updatedAt
       owner
@@ -261,6 +271,7 @@ export const onUpdateMenuItem = /* GraphQL */ `
       allergyInfo
       callories
       image
+      notes
       createdAt
       updatedAt
       owner
@@ -283,6 +294,7 @@ export const onDeleteMenuItem = /* GraphQL */ `
       allergyInfo
       callories
       image
+      notes
       createdAt
       updatedAt
       owner

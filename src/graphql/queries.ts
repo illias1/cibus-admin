@@ -14,11 +14,12 @@ export const getUser = /* GraphQL */ `
       properties {
         items {
           name
+          NonUniqueName
+          open
           ownerId
           tables
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -51,11 +52,12 @@ export const getProperty = /* GraphQL */ `
   query GetProperty($name: String!) {
     getProperty(name: $name) {
       name
+      NonUniqueName
+      open
       ownerId
       tables
       createdAt
       updatedAt
-      owner
       menu {
         items {
           id
@@ -65,6 +67,7 @@ export const getProperty = /* GraphQL */ `
           allergyInfo
           callories
           image
+          notes
           createdAt
           updatedAt
           owner
@@ -102,11 +105,12 @@ export const listPropertys = /* GraphQL */ `
     ) {
       items {
         name
+        NonUniqueName
+        open
         ownerId
         tables
         createdAt
         updatedAt
-        owner
         menu {
           nextToken
         }
@@ -134,6 +138,7 @@ export const getMenuItem = /* GraphQL */ `
       allergyInfo
       callories
       image
+      notes
       createdAt
       updatedAt
       owner
@@ -161,6 +166,7 @@ export const listMenuItems = /* GraphQL */ `
         allergyInfo
         callories
         image
+        notes
         createdAt
         updatedAt
         owner
@@ -198,6 +204,7 @@ export const menuItemsByProperty = /* GraphQL */ `
         allergyInfo
         callories
         image
+        notes
         createdAt
         updatedAt
         owner

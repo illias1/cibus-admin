@@ -68,32 +68,26 @@ export type DeleteUserInput = {
 
 export type CreatePropertyInput = {
   name: string,
+  NonUniqueName: string,
+  open: boolean,
   ownerId: string,
   tables: Array< string | null >,
 };
 
 export type ModelPropertyConditionInput = {
-  ownerId?: ModelIDInput | null,
+  NonUniqueName?: ModelStringInput | null,
+  open?: ModelBooleanInput | null,
   tables?: ModelStringInput | null,
   and?: Array< ModelPropertyConditionInput | null > | null,
   or?: Array< ModelPropertyConditionInput | null > | null,
   not?: ModelPropertyConditionInput | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
 };
 
 export enum MenuItemStatus {
@@ -104,6 +98,8 @@ export enum MenuItemStatus {
 
 export type UpdatePropertyInput = {
   name: string,
+  NonUniqueName?: string | null,
+  open?: boolean | null,
   ownerId?: string | null,
   tables?: Array< string | null > | null,
 };
@@ -121,6 +117,7 @@ export type CreateMenuItemInput = {
   allergyInfo?: string | null,
   callories?: string | null,
   image?: string | null,
+  notes?: string | null,
 };
 
 export type I18nMenuItemInput = {
@@ -194,6 +191,7 @@ export type ModelMenuItemConditionInput = {
   allergyInfo?: ModelStringInput | null,
   callories?: ModelStringInput | null,
   image?: ModelStringInput | null,
+  notes?: ModelStringInput | null,
   and?: Array< ModelMenuItemConditionInput | null > | null,
   or?: Array< ModelMenuItemConditionInput | null > | null,
   not?: ModelMenuItemConditionInput | null,
@@ -225,6 +223,7 @@ export type UpdateMenuItemInput = {
   allergyInfo?: string | null,
   callories?: string | null,
   image?: string | null,
+  notes?: string | null,
 };
 
 export type DeleteMenuItemInput = {
@@ -280,8 +279,26 @@ export type ModelUserFilterInput = {
   not?: ModelUserFilterInput | null,
 };
 
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
 export type ModelPropertyFilterInput = {
   name?: ModelStringInput | null,
+  NonUniqueName?: ModelStringInput | null,
+  open?: ModelBooleanInput | null,
   ownerId?: ModelIDInput | null,
   tables?: ModelStringInput | null,
   and?: Array< ModelPropertyFilterInput | null > | null,
@@ -303,6 +320,7 @@ export type ModelMenuItemFilterInput = {
   allergyInfo?: ModelStringInput | null,
   callories?: ModelStringInput | null,
   image?: ModelStringInput | null,
+  notes?: ModelStringInput | null,
   and?: Array< ModelMenuItemFilterInput | null > | null,
   or?: Array< ModelMenuItemFilterInput | null > | null,
   not?: ModelMenuItemFilterInput | null,
@@ -348,11 +366,12 @@ export type CreateUserMutation = {
       items:  Array< {
         __typename: "Property",
         name: string,
+        NonUniqueName: string,
+        open: boolean,
         ownerId: string,
         tables: Array< string | null >,
         createdAt: string,
         updatedAt: string,
-        owner: string | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -378,11 +397,12 @@ export type UpdateUserMutation = {
       items:  Array< {
         __typename: "Property",
         name: string,
+        NonUniqueName: string,
+        open: boolean,
         ownerId: string,
         tables: Array< string | null >,
         createdAt: string,
         updatedAt: string,
-        owner: string | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -408,11 +428,12 @@ export type DeleteUserMutation = {
       items:  Array< {
         __typename: "Property",
         name: string,
+        NonUniqueName: string,
+        open: boolean,
         ownerId: string,
         tables: Array< string | null >,
         createdAt: string,
         updatedAt: string,
-        owner: string | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -428,11 +449,12 @@ export type CreatePropertyMutation = {
   createProperty:  {
     __typename: "Property",
     name: string,
+    NonUniqueName: string,
+    open: boolean,
     ownerId: string,
     tables: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
     menu:  {
       __typename: "ModelMenuItemConnection",
       items:  Array< {
@@ -444,6 +466,7 @@ export type CreatePropertyMutation = {
         allergyInfo: string | null,
         callories: string | null,
         image: string | null,
+        notes: string | null,
         createdAt: string,
         updatedAt: string,
         owner: string | null,
@@ -475,11 +498,12 @@ export type UpdatePropertyMutation = {
   updateProperty:  {
     __typename: "Property",
     name: string,
+    NonUniqueName: string,
+    open: boolean,
     ownerId: string,
     tables: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
     menu:  {
       __typename: "ModelMenuItemConnection",
       items:  Array< {
@@ -491,6 +515,7 @@ export type UpdatePropertyMutation = {
         allergyInfo: string | null,
         callories: string | null,
         image: string | null,
+        notes: string | null,
         createdAt: string,
         updatedAt: string,
         owner: string | null,
@@ -522,11 +547,12 @@ export type DeletePropertyMutation = {
   deleteProperty:  {
     __typename: "Property",
     name: string,
+    NonUniqueName: string,
+    open: boolean,
     ownerId: string,
     tables: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
     menu:  {
       __typename: "ModelMenuItemConnection",
       items:  Array< {
@@ -538,6 +564,7 @@ export type DeletePropertyMutation = {
         allergyInfo: string | null,
         callories: string | null,
         image: string | null,
+        notes: string | null,
         createdAt: string,
         updatedAt: string,
         owner: string | null,
@@ -582,6 +609,7 @@ export type CreateMenuItemMutation = {
     allergyInfo: string | null,
     callories: string | null,
     image: string | null,
+    notes: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -610,6 +638,7 @@ export type UpdateMenuItemMutation = {
     allergyInfo: string | null,
     callories: string | null,
     image: string | null,
+    notes: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -638,6 +667,7 @@ export type DeleteMenuItemMutation = {
     allergyInfo: string | null,
     callories: string | null,
     image: string | null,
+    notes: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -737,11 +767,12 @@ export type GetUserQuery = {
       items:  Array< {
         __typename: "Property",
         name: string,
+        NonUniqueName: string,
+        open: boolean,
         ownerId: string,
         tables: Array< string | null >,
         createdAt: string,
         updatedAt: string,
-        owner: string | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -782,11 +813,12 @@ export type GetPropertyQuery = {
   getProperty:  {
     __typename: "Property",
     name: string,
+    NonUniqueName: string,
+    open: boolean,
     ownerId: string,
     tables: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
     menu:  {
       __typename: "ModelMenuItemConnection",
       items:  Array< {
@@ -798,6 +830,7 @@ export type GetPropertyQuery = {
         allergyInfo: string | null,
         callories: string | null,
         image: string | null,
+        notes: string | null,
         createdAt: string,
         updatedAt: string,
         owner: string | null,
@@ -834,11 +867,12 @@ export type ListPropertysQuery = {
     items:  Array< {
       __typename: "Property",
       name: string,
+      NonUniqueName: string,
+      open: boolean,
       ownerId: string,
       tables: Array< string | null >,
       createdAt: string,
       updatedAt: string,
-      owner: string | null,
       menu:  {
         __typename: "ModelMenuItemConnection",
         nextToken: string | null,
@@ -873,6 +907,7 @@ export type GetMenuItemQuery = {
     allergyInfo: string | null,
     callories: string | null,
     image: string | null,
+    notes: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -904,6 +939,7 @@ export type ListMenuItemsQuery = {
       allergyInfo: string | null,
       callories: string | null,
       image: string | null,
+      notes: string | null,
       createdAt: string,
       updatedAt: string,
       owner: string | null,
@@ -939,6 +975,7 @@ export type MenuItemsByPropertyQuery = {
       allergyInfo: string | null,
       callories: string | null,
       image: string | null,
+      notes: string | null,
       createdAt: string,
       updatedAt: string,
       owner: string | null,
@@ -1134,11 +1171,12 @@ export type OnCreateUserSubscription = {
       items:  Array< {
         __typename: "Property",
         name: string,
+        NonUniqueName: string,
+        open: boolean,
         ownerId: string,
         tables: Array< string | null >,
         createdAt: string,
         updatedAt: string,
-        owner: string | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -1163,11 +1201,12 @@ export type OnUpdateUserSubscription = {
       items:  Array< {
         __typename: "Property",
         name: string,
+        NonUniqueName: string,
+        open: boolean,
         ownerId: string,
         tables: Array< string | null >,
         createdAt: string,
         updatedAt: string,
-        owner: string | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -1192,11 +1231,12 @@ export type OnDeleteUserSubscription = {
       items:  Array< {
         __typename: "Property",
         name: string,
+        NonUniqueName: string,
+        open: boolean,
         ownerId: string,
         tables: Array< string | null >,
         createdAt: string,
         updatedAt: string,
-        owner: string | null,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -1204,18 +1244,19 @@ export type OnDeleteUserSubscription = {
 };
 
 export type OnCreatePropertySubscriptionVariables = {
-  owner?: string | null,
+  ownerId?: string | null,
 };
 
 export type OnCreatePropertySubscription = {
   onCreateProperty:  {
     __typename: "Property",
     name: string,
+    NonUniqueName: string,
+    open: boolean,
     ownerId: string,
     tables: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
     menu:  {
       __typename: "ModelMenuItemConnection",
       items:  Array< {
@@ -1227,6 +1268,7 @@ export type OnCreatePropertySubscription = {
         allergyInfo: string | null,
         callories: string | null,
         image: string | null,
+        notes: string | null,
         createdAt: string,
         updatedAt: string,
         owner: string | null,
@@ -1250,18 +1292,19 @@ export type OnCreatePropertySubscription = {
 };
 
 export type OnUpdatePropertySubscriptionVariables = {
-  owner?: string | null,
+  ownerId?: string | null,
 };
 
 export type OnUpdatePropertySubscription = {
   onUpdateProperty:  {
     __typename: "Property",
     name: string,
+    NonUniqueName: string,
+    open: boolean,
     ownerId: string,
     tables: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
     menu:  {
       __typename: "ModelMenuItemConnection",
       items:  Array< {
@@ -1273,6 +1316,7 @@ export type OnUpdatePropertySubscription = {
         allergyInfo: string | null,
         callories: string | null,
         image: string | null,
+        notes: string | null,
         createdAt: string,
         updatedAt: string,
         owner: string | null,
@@ -1296,18 +1340,19 @@ export type OnUpdatePropertySubscription = {
 };
 
 export type OnDeletePropertySubscriptionVariables = {
-  owner?: string | null,
+  ownerId?: string | null,
 };
 
 export type OnDeletePropertySubscription = {
   onDeleteProperty:  {
     __typename: "Property",
     name: string,
+    NonUniqueName: string,
+    open: boolean,
     ownerId: string,
     tables: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
     menu:  {
       __typename: "ModelMenuItemConnection",
       items:  Array< {
@@ -1319,6 +1364,7 @@ export type OnDeletePropertySubscription = {
         allergyInfo: string | null,
         callories: string | null,
         image: string | null,
+        notes: string | null,
         createdAt: string,
         updatedAt: string,
         owner: string | null,
@@ -1362,6 +1408,7 @@ export type OnCreateMenuItemSubscription = {
     allergyInfo: string | null,
     callories: string | null,
     image: string | null,
+    notes: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -1389,6 +1436,7 @@ export type OnUpdateMenuItemSubscription = {
     allergyInfo: string | null,
     callories: string | null,
     image: string | null,
+    notes: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -1416,6 +1464,7 @@ export type OnDeleteMenuItemSubscription = {
     allergyInfo: string | null,
     callories: string | null,
     image: string | null,
+    notes: string | null,
     createdAt: string,
     updatedAt: string,
     owner: string | null,

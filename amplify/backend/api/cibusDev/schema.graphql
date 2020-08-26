@@ -11,12 +11,14 @@ type Property
   @key(name: "propertyByUser", fields: ["ownerId"])
   @auth(
     rules: [
-      { allow: owner, operations: [create, update, delete, read] }
+      { allow: owner, ownerField: "ownerId", operations: [create, update, delete, read] }
       { allow: groups, groups: ["Admin"], operations: [create, update, delete, read] }
       { allow: public, provider: iam, operations: [read] }
     ]
   ) {
   name: String!
+  NonUniqueName: String!
+  open: Boolean!
   ownerId: ID!
   menu: [MenuItem!]! @connection(keyName: "menuItemsByProperty", fields: ["name"])
   orders: [Order!]! @connection(keyName: "orderByPropertyByStatus", fields: ["name"])
@@ -41,6 +43,7 @@ type MenuItem
   allergyInfo: String
   callories: String
   image: String
+  notes: String
 }
 type I18nMenuItem {
   language: Language!

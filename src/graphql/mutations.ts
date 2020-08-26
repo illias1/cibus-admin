@@ -17,11 +17,12 @@ export const createUser = /* GraphQL */ `
       properties {
         items {
           name
+          NonUniqueName
+          open
           ownerId
           tables
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -43,11 +44,12 @@ export const updateUser = /* GraphQL */ `
       properties {
         items {
           name
+          NonUniqueName
+          open
           ownerId
           tables
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -69,11 +71,12 @@ export const deleteUser = /* GraphQL */ `
       properties {
         items {
           name
+          NonUniqueName
+          open
           ownerId
           tables
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -87,11 +90,12 @@ export const createProperty = /* GraphQL */ `
   ) {
     createProperty(input: $input, condition: $condition) {
       name
+      NonUniqueName
+      open
       ownerId
       tables
       createdAt
       updatedAt
-      owner
       menu {
         items {
           id
@@ -101,6 +105,7 @@ export const createProperty = /* GraphQL */ `
           allergyInfo
           callories
           image
+          notes
           createdAt
           updatedAt
           owner
@@ -128,11 +133,12 @@ export const updateProperty = /* GraphQL */ `
   ) {
     updateProperty(input: $input, condition: $condition) {
       name
+      NonUniqueName
+      open
       ownerId
       tables
       createdAt
       updatedAt
-      owner
       menu {
         items {
           id
@@ -142,6 +148,7 @@ export const updateProperty = /* GraphQL */ `
           allergyInfo
           callories
           image
+          notes
           createdAt
           updatedAt
           owner
@@ -169,11 +176,12 @@ export const deleteProperty = /* GraphQL */ `
   ) {
     deleteProperty(input: $input, condition: $condition) {
       name
+      NonUniqueName
+      open
       ownerId
       tables
       createdAt
       updatedAt
-      owner
       menu {
         items {
           id
@@ -183,6 +191,7 @@ export const deleteProperty = /* GraphQL */ `
           allergyInfo
           callories
           image
+          notes
           createdAt
           updatedAt
           owner
@@ -222,6 +231,7 @@ export const createMenuItem = /* GraphQL */ `
       allergyInfo
       callories
       image
+      notes
       createdAt
       updatedAt
       owner
@@ -247,6 +257,7 @@ export const updateMenuItem = /* GraphQL */ `
       allergyInfo
       callories
       image
+      notes
       createdAt
       updatedAt
       owner
@@ -272,6 +283,7 @@ export const deleteMenuItem = /* GraphQL */ `
       allergyInfo
       callories
       image
+      notes
       createdAt
       updatedAt
       owner
