@@ -5,4 +5,5 @@ const actionCreator = actionCreatorFactory();
 
 export const setSelectedProperty = actionCreator<TStore["selectedProperty"]>("setSelectedProperty");
 export const setOrders = actionCreator<TStore["orders"]>("setOrders");
-export const addAwaitingOrder = actionCreator<TStore["orders"][0]>("addAwaitingOrder");
+export const addRequestedOrder = actionCreator<TStore["orders"][0]>("addRequestedOrder");
+export const updateOrderStatus = actionCreator<TStore["orders"][0]>("updateOrder");

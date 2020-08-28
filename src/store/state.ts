@@ -6,5 +6,6 @@ export const initialState: TStore = {
   selectedProperty: {
     name: localStorage.getItem(LOCAL_STORAGE_PROPERTY) || "",
     open: false,
+    currency: "",
   },
 };

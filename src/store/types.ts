@@ -6,9 +6,17 @@ export type TStore = {
   selectedProperty: {
     name: string;
     open: boolean;
+    currency: string;
   };
 };
 
-export type OrderStatus = "ACCEPTED" | "REJECTED" | "AWAITING" | "COMPLETED";
+export type OrderStatus = "READY" | "DENIED" | "REQUESTED" | "RECEIVED" | "PAYED";
+export const OrderStatusEnum = {
+  READY: "READY",
+  DENIED: "DENIED",
+  REQUESTED: "REQUESTED",
+  RECEIVED: "RECEIVED",
+  PAYED: "PAYED",
+};
 
 export const useTypedSelector: TypedUseSelectorHook<TStore> = useSelector;

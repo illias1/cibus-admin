@@ -1,6 +1,6 @@
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { initialState } from "./state";
-import { setOrders, addAwaitingOrder, setSelectedProperty } from "./actions";
+import { setOrders, setSelectedProperty, updateOrderStatus, addRequestedOrder } from "./actions";
 import { LOCAL_STORAGE_PROPERTY } from "../utils/_constants";
 
 export const reducer = reducerWithInitialState(initialState)
@@ -15,7 +15,19 @@ export const reducer = reducerWithInitialState(initialState)
     ...state,
     orders,
   }))
-  .case(addAwaitingOrder, (state, newAwaitingOrder) => ({
+  .case(addRequestedOrder, (state, newRequestedOrder) => ({
     ...state,
-    orders: [...state.orders, newAwaitingOrder],
-  }));
+    orders: [...state.orders, newRequestedOrder],
+  }))
+  // @ts-ignore
+  .case(updateOrderStatus, (state, payload) => {
+    // @ts-ignore
+    const index = state.orders.findIndex((item) => item?.id === payload.id);
+    console.log("index", index);
+    const ret = state.orders.slice(0);
+    ret[index] = payload;
+    return {
+      ...state,
+      orders: ret,
+    };
+  });
