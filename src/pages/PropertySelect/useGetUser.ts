@@ -24,7 +24,7 @@ export const getUser = /* GraphQL */ `
           tables
           createdAt
           updatedAt
-          owner
+          currency
         }
         nextToken
       }

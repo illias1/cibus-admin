@@ -14,13 +14,13 @@ type INewOrderPopupProps = {
 
 const NewOrderPopup: React.FC<INewOrderPopupProps> = ({ handlePopupClose, open }) => {
   const classes = useStyles();
-  const awaitingOrdersNumber = useTypedSelector(
-    (state) => state.orders.filter((order) => (order?.status as OrderStatus) === "AWAITING").length
+  const REQUESTEDOrdersNumber = useTypedSelector(
+    (state) => state.orders.filter((order) => (order?.status as OrderStatus) === "REQUESTED").length
   );
   const { t } = useTranslation();
   const body = (
     <Box onClick={handlePopupClose} className={classes.root}>
-      <div className={classes.counter}>{awaitingOrdersNumber}</div>
+      <div className={classes.counter}>{REQUESTEDOrdersNumber}</div>
       <Typography variant="h3">{t("NEW_ORDER")}</Typography>
       <Typography>{t("tap_anywhere_to_accept")}</Typography>
     </Box>

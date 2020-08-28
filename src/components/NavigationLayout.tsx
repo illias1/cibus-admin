@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
-import Navigator from "./Navigator";
 
 // icons
 import ReceiptIcon from "@material-ui/icons/Receipt";
@@ -61,7 +60,7 @@ const NavigationLayout: React.FC<INavigationLayoutProps> = ({ children }) => {
     <Box className={classes.root}>
       <Box className={classes.sidebar}>{navigationTabs.left.map(tabMapping)}</Box>
       <Box className={classes.center}>{children}</Box>
-      <Box className={classes.sidebar}>
+      <Box style={{ right: 0 }} className={classes.sidebar}>
         <Link style={{ top: 10 }} className={classes.cornerIcon} to="/">
           <HomeIcon fontSize="large" />
         </Link>
@@ -80,8 +79,10 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-around",
-      width: 60,
+      width: 70,
       margin: 10,
+      height: "100vh",
+      position: "fixed",
     },
     center: {
       flexGrow: 1,

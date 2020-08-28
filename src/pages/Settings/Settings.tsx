@@ -13,7 +13,9 @@ const Settings: React.FC<ISettingsProps> = ({ ...props }) => {
   return (
     <div>
       <AmplifySignOut button-text={t("sign_out")}></AmplifySignOut>
-      <Button onClick={() => dispatch(setSelectedProperty({ name: "", open: false }))}>
+      <Button
+        onClick={() => dispatch(setSelectedProperty({ name: "", open: false, currency: "" }))}
+      >
         Go to properties list
       </Button>
     </div>

@@ -8,5 +8,9 @@
   "no_new_orders_today": "No new orders today!",
   "no_orders_being_deliverd_today": "No orders being deliverd today!",
   "accept_the_orders_to_start_preparing_them": "Accept the orders to start preparing them.",
-  "sign_out": "Sign out"
+  "sign_out": "Sign out",
+  "table_#": "Table # {{number}}",
+  "confirm_order": "Confirm Order",
+  "order_ready": "Order Ready",
+  "order_payed": "Order Payed"
 }

@@ -19,7 +19,7 @@ const PropertySelect = lazy(() => import("../pages/PropertySelect"));
 const Navigator: React.FC = ({ ...props }) => {
   const selectedProperty = useTypedSelector((store) => store.selectedProperty);
 
-  if (selectedProperty) {
+  if (selectedProperty.name) {
     return (
       <Suspense fallback={<Loader />}>
         <Switch>

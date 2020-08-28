@@ -29,6 +29,7 @@ const PrepareOrder: React.FC<IPrepareOrderProps> = ({ ...props }) => {
                       setSelectedProperty({
                         name: item?.name,
                         open: item.open,
+                        currency: item.currency,
                       })
                     )
                   }
