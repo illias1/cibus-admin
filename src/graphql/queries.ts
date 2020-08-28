@@ -10,7 +10,6 @@ export const getUser = /* GraphQL */ `
       name
       createdAt
       updatedAt
-      owner
       properties {
         items {
           name
@@ -18,6 +17,7 @@ export const getUser = /* GraphQL */ `
           open
           ownerId
           tables
+          currency
           createdAt
           updatedAt
         }
@@ -27,11 +27,7 @@ export const getUser = /* GraphQL */ `
   }
 `;
 export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListUsers($filter: ModelUserFilterInput, $limit: Int, $nextToken: String) {
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -56,6 +52,7 @@ export const getProperty = /* GraphQL */ `
       open
       ownerId
       tables
+      currency
       createdAt
       updatedAt
       menu {
@@ -81,6 +78,7 @@ export const getProperty = /* GraphQL */ `
           createdAt
           status
           tableName
+          priceTotal
           updatedAt
         }
         nextToken
@@ -109,6 +107,7 @@ export const listPropertys = /* GraphQL */ `
         open
         ownerId
         tables
+        currency
         createdAt
         updatedAt
         menu {
@@ -146,11 +145,7 @@ export const getMenuItem = /* GraphQL */ `
   }
 `;
 export const listMenuItems = /* GraphQL */ `
-  query ListMenuItems(
-    $filter: ModelMenuItemFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListMenuItems($filter: ModelMenuItemFilterInput, $limit: Int, $nextToken: String) {
     listMenuItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -228,16 +223,13 @@ export const getOrder = /* GraphQL */ `
       createdAt
       status
       tableName
+      priceTotal
       updatedAt
     }
   }
 `;
 export const listOrders = /* GraphQL */ `
-  query ListOrders(
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListOrders($filter: ModelOrderFilterInput, $limit: Int, $nextToken: String) {
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -252,6 +244,7 @@ export const listOrders = /* GraphQL */ `
         createdAt
         status
         tableName
+        priceTotal
         updatedAt
       }
       nextToken
@@ -288,6 +281,44 @@ export const orderByPropertyByCreatedAt = /* GraphQL */ `
         createdAt
         status
         tableName
+        priceTotal
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const orderByPropertyByCreatedAtByStatus = /* GraphQL */ `
+  query OrderByPropertyByCreatedAtByStatus(
+    $propertyName: String
+    $createdAtStatus: ModelOrderOrderByPropertyByCreatedAtByStatusCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    orderByPropertyByCreatedAtByStatus(
+      propertyName: $propertyName
+      createdAtStatus: $createdAtStatus
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        propertyName
+        orderItem {
+          name
+          price
+          quantity
+          allergyInfo
+          customerComment
+        }
+        createdAt
+        status
+        tableName
+        priceTotal
         updatedAt
       }
       nextToken
@@ -324,6 +355,7 @@ export const orderByPropertyByStatus = /* GraphQL */ `
         createdAt
         status
         tableName
+        priceTotal
         updatedAt
       }
       nextToken

@@ -17,6 +17,7 @@ export const onCreateOrder = /* GraphQL */ `
       createdAt
       status
       tableName
+      priceTotal
       updatedAt
     }
   }
@@ -36,6 +37,7 @@ export const onUpdateOrder = /* GraphQL */ `
       createdAt
       status
       tableName
+      priceTotal
       updatedAt
     }
   }
@@ -56,6 +58,7 @@ export const onCreateUser = /* GraphQL */ `
           open
           ownerId
           tables
+          currency
           createdAt
           updatedAt
         }
@@ -80,6 +83,7 @@ export const onUpdateUser = /* GraphQL */ `
           open
           ownerId
           tables
+          currency
           createdAt
           updatedAt
         }
@@ -104,6 +108,7 @@ export const onDeleteUser = /* GraphQL */ `
           open
           ownerId
           tables
+          currency
           createdAt
           updatedAt
         }
@@ -120,6 +125,7 @@ export const onCreateProperty = /* GraphQL */ `
       open
       ownerId
       tables
+      currency
       createdAt
       updatedAt
       menu {
@@ -145,6 +151,7 @@ export const onCreateProperty = /* GraphQL */ `
           createdAt
           status
           tableName
+          priceTotal
           updatedAt
         }
         nextToken
@@ -160,6 +167,7 @@ export const onUpdateProperty = /* GraphQL */ `
       open
       ownerId
       tables
+      currency
       createdAt
       updatedAt
       menu {
@@ -185,6 +193,7 @@ export const onUpdateProperty = /* GraphQL */ `
           createdAt
           status
           tableName
+          priceTotal
           updatedAt
         }
         nextToken
@@ -200,6 +209,7 @@ export const onDeleteProperty = /* GraphQL */ `
       open
       ownerId
       tables
+      currency
       createdAt
       updatedAt
       menu {
@@ -225,6 +235,7 @@ export const onDeleteProperty = /* GraphQL */ `
           createdAt
           status
           tableName
+          priceTotal
           updatedAt
         }
         nextToken

@@ -21,6 +21,7 @@ export const createUser = /* GraphQL */ `
           open
           ownerId
           tables
+          currency
           createdAt
           updatedAt
         }
@@ -48,6 +49,7 @@ export const updateUser = /* GraphQL */ `
           open
           ownerId
           tables
+          currency
           createdAt
           updatedAt
         }
@@ -75,6 +77,7 @@ export const deleteUser = /* GraphQL */ `
           open
           ownerId
           tables
+          currency
           createdAt
           updatedAt
         }
@@ -94,6 +97,7 @@ export const createProperty = /* GraphQL */ `
       open
       ownerId
       tables
+      currency
       createdAt
       updatedAt
       menu {
@@ -119,6 +123,7 @@ export const createProperty = /* GraphQL */ `
           createdAt
           status
           tableName
+          priceTotal
           updatedAt
         }
         nextToken
@@ -137,6 +142,7 @@ export const updateProperty = /* GraphQL */ `
       open
       ownerId
       tables
+      currency
       createdAt
       updatedAt
       menu {
@@ -162,6 +168,7 @@ export const updateProperty = /* GraphQL */ `
           createdAt
           status
           tableName
+          priceTotal
           updatedAt
         }
         nextToken
@@ -180,6 +187,7 @@ export const deleteProperty = /* GraphQL */ `
       open
       ownerId
       tables
+      currency
       createdAt
       updatedAt
       menu {
@@ -205,6 +213,7 @@ export const deleteProperty = /* GraphQL */ `
           createdAt
           status
           tableName
+          priceTotal
           updatedAt
         }
         nextToken
@@ -308,6 +317,7 @@ export const updateOrder = /* GraphQL */ `
       createdAt
       status
       tableName
+      priceTotal
       updatedAt
     }
   }
@@ -330,6 +340,7 @@ export const deleteOrder = /* GraphQL */ `
       createdAt
       status
       tableName
+      priceTotal
       updatedAt
     }
   }
@@ -352,6 +363,7 @@ export const createOrder = /* GraphQL */ `
       createdAt
       status
       tableName
+      priceTotal
       updatedAt
     }
   }
