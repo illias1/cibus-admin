@@ -35,6 +35,7 @@ const AuthStateApp: React.FunctionComponent = () => {
           formFields={[]}
           headerText="Confirm your email by clicking the link in your email"
           slot="confirm-sign-up"
+          handleSubmit={(state) => setAuthState(AuthState["SignIn"])}
         ></AmplifyConfirmSignIn>
       </AmplifyAuthenticator>
     </div>
