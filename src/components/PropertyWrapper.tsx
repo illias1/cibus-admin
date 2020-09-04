@@ -35,7 +35,7 @@ const App: React.FC<{}> = ({ children }) => {
   };
   const [audio, state, controls] = useAudio({
     src:
-      "https://amplify-cibusadmin-dev-05236-deployment.s3.ap-northeast-2.amazonaws.com/jumun.mp3",
+      "https://amplify-cibusadmin-prod-205815-deployment.s3.ap-northeast-2.amazonaws.com/md3gw-wvz7l.mp3",
     autoPlay: false,
   });
   const { loading, data, error } = useQuery<GetPropertyQuery, GetPropertyAtInitVariables>(
