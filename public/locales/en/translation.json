@@ -12,5 +12,14 @@
   "table_#": "Table # {{number}}",
   "confirm_order": "Confirm Order",
   "order_ready": "Order Ready",
-  "order_payed": "Order Payed"
+  "order_payed": "Order Payed",
+  "menu_form_price": "Price",
+  "menu_form_callories": "Callories",
+  "menu_form_notes": "Notes",
+  "menu_form_category": "Category",
+  "menu_form_description": "Description",
+  "menu_form_language": "Language",
+  "menu_form_name": "Name",
+  "menu_form_add_category": "Add {{newCategory}}",
+  "language": "Language"
 }
