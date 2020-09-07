@@ -21,5 +21,11 @@
   "menu_form_language": "Language",
   "menu_form_name": "Name",
   "menu_form_add_category": "Add {{newCategory}}",
-  "language": "Language"
+  "language": "Language",
+  "save": "Save",
+  "menu_page_translated_languages": "Your menu is translated to the following languages :",
+  "menu_page_new_translation": "Add new translation",
+  "menu_page_your_translation_in": "Your translation in:",
+  "menu_create_new_item": "Create new item",
+  "menu_hide_the_form": "Hide the form"
 }

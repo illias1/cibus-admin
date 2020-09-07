@@ -86,7 +86,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     center: {
       flexGrow: 1,
-      textAlign: "center",
       // -width is calculated by summing the 2x sidebar width + 4x margin
       maxWidth: "calc(100% - 180px)",
       margin: "auto",
