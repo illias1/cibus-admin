@@ -25,6 +25,7 @@ export const ordeMenuItemsByCategories = (initial: GetPropertyQuery["getProperty
     });
     return itemsByCategory;
   }
+  return [];
 };
 
 export type TcategorizedMenuItems = ReturnType<typeof ordeMenuItemsByCategories>;

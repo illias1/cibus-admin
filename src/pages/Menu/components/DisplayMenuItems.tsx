@@ -112,14 +112,11 @@ const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
                       onClick={() => handleToggle(item.id, !state[item.id].favorite, "favorite")}
                       color="inherit"
                     >
-                      {
-                        // @ts-ignore
-                        state[item.id].favorite ? (
-                          <FavoriteIcon color="primary" />
-                        ) : (
-                          <FavoriteBorderIcon />
-                        )
-                      }
+                      {state[item.id].favorite ? (
+                        <FavoriteIcon color="primary" />
+                      ) : (
+                        <FavoriteBorderIcon />
+                      )}
                     </IconButton>
                     <FormControlLabel
                       className={shakeItemOption.status === item.id ? "shake-horizontal" : ""}

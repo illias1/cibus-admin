@@ -33,5 +33,6 @@
   "navigation_to_pay": "To Pay",
   "navigation_tables": "Tables",
   "navigation_menu": "Menu",
-  "navigation_stats": "Stats"
+  "navigation_stats": "Stats",
+  "menu_feedback_need_select_at_least_one_language": "You need to select at least one language"
 }

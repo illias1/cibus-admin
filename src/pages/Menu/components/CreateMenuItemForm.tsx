@@ -41,6 +41,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
   const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
     const inputsMadeReadyForSubmission: Inputs = {
       ...inputs,
+      price: Number(inputs.price),
       i18n: inputs.i18n.map((langObj) =>
         langObj.category
           ? langObj
@@ -64,7 +65,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
     );
     setcreating(false);
     if (error) {
-      alert(JSON.stringify(error));
+      console.log(JSON.stringify(error));
     }
     if (data?.createMenuItem) {
       onCreate(data);
@@ -138,12 +139,16 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
             </Box>
           ))}
         </Box>
-        {creating ? (
-          <CircularProgress color="secondary" />
+        {languages.length > 0 ? (
+          creating ? (
+            <CircularProgress color="secondary" />
+          ) : (
+            <Button color="primary" variant="contained" type="submit">
+              {t("save")}
+            </Button>
+          )
         ) : (
-          <Button color="primary" variant="contained" type="submit">
-            {t("save")}
-          </Button>
+          <Typography>{t("menu_feedback_need_select_at_least_one_language")}</Typography>
         )}
       </form>
     </FormControl>

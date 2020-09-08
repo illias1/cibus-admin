@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { Language } from "../../../API";
+import { Language, MenuItemStatus } from "../../../API";
 import AddMenuItemForm from "./CreateMenuItemForm";
 import { useTranslation } from "react-i18next";
 import Box from "@material-ui/core/Box";
@@ -15,12 +15,14 @@ import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { TcategorizedMenuItems } from "./utils";
+import { TMenuState } from "../Menu";
 
 type ICreateMenuItemFormWithLanguagesProps = {
   languages: Language[];
   setlanguages: React.Dispatch<React.SetStateAction<Language[]>>;
   categorizedMenuItems: TcategorizedMenuItems;
   setcategorizedMenuItems: React.Dispatch<React.SetStateAction<TcategorizedMenuItems>>;
+  setState: React.Dispatch<React.SetStateAction<Record<string, TMenuState[string]>>>;
 };
 
 const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguagesProps> = ({
@@ -28,6 +30,7 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
   setlanguages,
   categorizedMenuItems,
   setcategorizedMenuItems,
+  setState,
 }) => {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -36,12 +39,16 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
 
   return (
     <>
-      <Typography>{t("menu_page_translated_languages")}</Typography>
-      <Box className={classes.item}>
-        {languages.map((item, index) => (
-          <Chip key={index} label={item} />
-        ))}
-      </Box>
+      {languages.length > 0 && (
+        <>
+          <Typography>{t("menu_page_translated_languages")}</Typography>
+          <Box className={classes.item}>
+            {languages.map((item, index) => (
+              <Chip key={index} label={item} />
+            ))}
+          </Box>
+        </>
+      )}
       <Box className={classes.item}>
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel id="demo-simple-select-filled-label">
@@ -85,18 +92,30 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
         <AddMenuItemForm
           onCreate={(data) => {
             //   an item always has a category, if it hasn't been provided at creation => it's "Uncategorized"
-            const updatedCategorizedMenuItems = categorizedMenuItems
-              ? categorizedMenuItems.map((item) =>
-                  item.category === data.createMenuItem!.i18n[0]!.category
-                    ? { ...item, items: [...item.items, data.createMenuItem] }
-                    : item
-                )
-              : [
-                  {
-                    category: data.createMenuItem?.i18n[0].category,
-                    items: [data.createMenuItem],
-                  },
-                ];
+            const index = categorizedMenuItems?.findIndex(
+              (item) => item.category === data.createMenuItem?.i18n[0].category
+            );
+            const updatedCategorizedMenuItems =
+              index > -1
+                ? categorizedMenuItems.map((item) =>
+                    item.category === data.createMenuItem!.i18n[0]!.category
+                      ? { ...item, items: [...item.items, data.createMenuItem] }
+                      : item
+                  )
+                : [
+                    ...categorizedMenuItems,
+                    {
+                      category: data.createMenuItem?.i18n[0].category,
+                      items: [data.createMenuItem],
+                    },
+                  ];
+            setState((prev) => ({
+              ...prev,
+              [data.createMenuItem!.id]: {
+                favorite: data.createMenuItem?.favorite ? true : false,
+                status: data.createMenuItem?.status === MenuItemStatus["AVAILABLE"],
+              },
+            }));
             // @ts-ignore
             setcategorizedMenuItems(updatedCategorizedMenuItems);
           }}

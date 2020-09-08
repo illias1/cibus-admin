@@ -41,7 +41,6 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
               ? {
                   ...prev,
                   [curr.id]: {
-                    // @ts-ignore
                     favorite: curr?.favorite ? true : false,
                     status: curr?.status === MenuItemStatus.AVAILABLE,
                   },
@@ -51,7 +50,9 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
         )
       );
       setcategorizedMenuItems(ordeMenuItemsByCategories(data.getProperty));
-      setlanguages(data.getProperty.menu.items[0]!.i18n.map((item) => item.language));
+      if (data.getProperty.menu.items.length > 0) {
+        setlanguages(data.getProperty.menu.items[0]!.i18n.map((item) => item.language));
+      }
     }
   }, [data]);
   const [categorizedMenuItems, setcategorizedMenuItems] = React.useState<TcategorizedMenuItems>([]);
@@ -61,6 +62,7 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
   return (
     <Box className={classes.page}>
       <CreateMenuItemFormWithLanguages
+        setState={setState}
         languages={languages}
         setlanguages={setlanguages}
         categorizedMenuItems={categorizedMenuItems}

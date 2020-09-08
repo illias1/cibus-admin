@@ -33,5 +33,6 @@
   "navigation_new_order": "Nueva Orden",
   "navigation_tables": "Mesas",
   "navigation_menu": "Menú",
-  "navigation_stats": "Estadísticas"
+  "navigation_stats": "Estadísticas",
+  "menu_feedback_need_select_at_least_one_language": "Tiene que seleccionar al menos una lengua"
 }
