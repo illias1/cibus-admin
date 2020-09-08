@@ -17,6 +17,13 @@ import CreateMenuItemFormWithLanguages from "./components/CreateMenuItemFormWith
 import DisplayMenuItems from "./components/DisplayMenuItems";
 
 type IMenuProps = {};
+export type TMenuState = Record<
+  string,
+  {
+    favorite: boolean;
+    status: boolean;
+  }
+>;
 
 const Menu: React.FC<IMenuProps> = ({ ...props }) => {
   const classes = useStyles();
@@ -31,9 +38,16 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
         data.getProperty.menu.items.reduce(
           (prev, curr) =>
             curr && curr.id
-              ? { ...prev, [curr.id]: curr?.status === MenuItemStatus.AVAILABLE }
+              ? {
+                  ...prev,
+                  [curr.id]: {
+                    // @ts-ignore
+                    favorite: curr?.favorite ? true : false,
+                    status: curr?.status === MenuItemStatus.AVAILABLE,
+                  },
+                }
               : prev,
-          {} as Record<string, boolean>
+          {} as TMenuState
         )
       );
       setcategorizedMenuItems(ordeMenuItemsByCategories(data.getProperty));
@@ -41,7 +55,7 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
     }
   }, [data]);
   const [categorizedMenuItems, setcategorizedMenuItems] = React.useState<TcategorizedMenuItems>([]);
-  const [state, setState] = React.useState<Record<string, boolean>>({});
+  const [state, setState] = React.useState<TMenuState>({});
   const [languages, setlanguages] = React.useState<Language[]>([]);
 
   return (

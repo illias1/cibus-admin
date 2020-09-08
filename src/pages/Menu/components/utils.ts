@@ -50,6 +50,7 @@ export type GetPropertyQuery = {
         id: string;
         propertyName: string;
         price: number;
+        favorite: boolean;
         status: MenuItemStatus;
         allergyInfo: string | null;
         callories: string | null;
@@ -87,6 +88,7 @@ export const getProperty = /* GraphQL */ `
           }
           status
           allergyInfo
+          favorite
           callories
           image
           notes

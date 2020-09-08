@@ -58,6 +58,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
           ...inputsMadeReadyForSubmission,
           propertyName: name,
           status: MenuItemStatus["AVAILABLE"],
+          favorite: false,
         },
       }
     );

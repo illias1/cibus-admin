@@ -4,8 +4,10 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import MenuItemCard from "./MenuItem";
+// icons
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 // utils
 import { updateMenuItem } from "../../../graphql/mutations";
 import {
@@ -15,11 +17,18 @@ import {
 } from "../../../API";
 import { mutation } from "../../../utils/mutation";
 import { TcategorizedMenuItems } from "./utils";
-
+import { Button, IconButton } from "@material-ui/core";
+import { TMenuState } from "../Menu";
+import "./styles.css";
 type IDisplayMenuItemsProps = {
-  state: Record<string, boolean>;
-  setState: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  state: TMenuState;
+  setState: React.Dispatch<React.SetStateAction<TMenuState>>;
   categorizedMenuItems: TcategorizedMenuItems;
+};
+type TShakeItemOption = Record<"favorite" | "status", string>;
+const initialShakeItemOption: TShakeItemOption = {
+  favorite: "",
+  status: "",
 };
 
 const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
@@ -28,31 +37,55 @@ const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
   categorizedMenuItems,
 }) => {
   const classes = useStyles();
-  const [isUpdating, setisUpdating] = React.useState<string>("");
+  const [shakeItemOption, setshakeItemOption] = React.useState<TShakeItemOption>(
+    initialShakeItemOption
+  );
 
-  const handleSwitchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setisUpdating(event.target.name);
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleToggle = async (
+    id: string,
+    updatedState: boolean,
+    property: keyof TMenuState[string]
+  ) => {
+    console.log("id", id);
+    setState({
+      ...state,
+      [id]: {
+        ...state[id],
+        [property]: updatedState,
+      },
+    });
     const { data, error } = await mutation<UpdateMenuItemMutation, UpdateMenuItemMutationVariables>(
       updateMenuItem,
       {
         input: {
-          id: event.target.name,
-          status: event.target.checked
-            ? MenuItemStatus["AVAILABLE"]
-            : MenuItemStatus["OUT_OF_STOCK"],
+          id,
+          [property]:
+            property === "status"
+              ? updatedState
+                ? MenuItemStatus["AVAILABLE"]
+                : MenuItemStatus["OUT_OF_STOCK"]
+              : updatedState,
         },
       }
     );
-    if (data?.updateMenuItem?.status && data.updateMenuItem.id) {
+    if (error) {
+      setshakeItemOption({
+        ...initialShakeItemOption,
+        [property]: id,
+      });
       setState({
         ...state,
-        [data.updateMenuItem.id]: data.updateMenuItem.status === MenuItemStatus.AVAILABLE,
+        [id]: {
+          ...state[id],
+          [property]: !updatedState,
+        },
       });
-    } else {
+      setTimeout(() => {
+        setshakeItemOption(initialShakeItemOption);
+      }, 1000);
     }
-    setisUpdating("");
   };
+
   return (
     <Box className={classes.root}>
       {categorizedMenuItems?.map(({ items, category }, i) => (
@@ -73,23 +106,40 @@ const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
                       img={item.image || ""}
                     />
                   </Box>
-                  {isUpdating === item.id ? (
-                    <Box width={100}>
-                      <LinearProgress />
-                    </Box>
-                  ) : (
+                  <Box className={classes.options}>
+                    <IconButton
+                      className={shakeItemOption.favorite === item.id ? "shake-horizontal" : ""}
+                      onClick={() => handleToggle(item.id, !state[item.id].favorite, "favorite")}
+                      color="inherit"
+                    >
+                      {
+                        // @ts-ignore
+                        state[item.id].favorite ? (
+                          <FavoriteIcon color="primary" />
+                        ) : (
+                          <FavoriteBorderIcon />
+                        )
+                      }
+                    </IconButton>
                     <FormControlLabel
+                      className={shakeItemOption.status === item.id ? "shake-horizontal" : ""}
                       control={
                         <Switch
-                          checked={state[item.id]}
-                          onChange={handleSwitchChange}
+                          checked={state[item.id].status}
+                          onChange={(event) =>
+                            handleToggle(item.id, event.target.checked, "status")
+                          }
                           name={item.id}
                           color="primary"
                         />
                       }
                       label="Available"
                     />
-                  )}
+
+                    <Button variant="outlined" color="secondary">
+                      Edit
+                    </Button>
+                  </Box>
                 </>
               ) : null}
             </Box>
@@ -123,6 +173,11 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(3),
       },
+    },
+    options: {
+      display: "flex",
+      justifyContent: "space-evenly",
+      width: "100%",
     },
   })
 );
