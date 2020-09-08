@@ -21,6 +21,12 @@ export const getUser = /* GraphQL */ `
           currency
           createdAt
           updatedAt
+          menu {
+            nextToken
+          }
+          orders {
+            nextToken
+          }
         }
         nextToken
       }
@@ -42,6 +48,16 @@ export const listUsers = /* GraphQL */ `
         updatedAt
         owner
         properties {
+          items {
+            name
+            NonUniqueName
+            open
+            ownerId
+            tables
+            currency
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -64,8 +80,15 @@ export const getProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          i18n {
+            language
+            name
+            category
+            description
+          }
           price
           status
+          favorite
           allergyInfo
           callories
           image
@@ -80,6 +103,13 @@ export const getProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          orderItem {
+            name
+            price
+            quantity
+            allergyInfo
+            customerComment
+          }
           createdAt
           status
           tableName
@@ -116,9 +146,32 @@ export const listPropertys = /* GraphQL */ `
         createdAt
         updatedAt
         menu {
+          items {
+            id
+            propertyName
+            price
+            status
+            favorite
+            allergyInfo
+            callories
+            image
+            notes
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         orders {
+          items {
+            id
+            propertyName
+            createdAt
+            status
+            tableName
+            priceTotal
+            updatedAt
+          }
           nextToken
         }
       }
@@ -139,6 +192,7 @@ export const getMenuItem = /* GraphQL */ `
       }
       price
       status
+      favorite
       allergyInfo
       callories
       image
@@ -167,6 +221,7 @@ export const listMenuItems = /* GraphQL */ `
         }
         price
         status
+        favorite
         allergyInfo
         callories
         image
@@ -205,6 +260,7 @@ export const menuItemsByProperty = /* GraphQL */ `
         }
         price
         status
+        favorite
         allergyInfo
         callories
         image

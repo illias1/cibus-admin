@@ -41,6 +41,7 @@ type MenuItem
   i18n: [I18nMenuItem!]!
   price: Float!
   status: MenuItemStatus!
+  favorite: Boolean
   allergyInfo: String
   callories: String
   image: String

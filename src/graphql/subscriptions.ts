@@ -61,6 +61,12 @@ export const onCreateUser = /* GraphQL */ `
           currency
           createdAt
           updatedAt
+          menu {
+            nextToken
+          }
+          orders {
+            nextToken
+          }
         }
         nextToken
       }
@@ -86,6 +92,12 @@ export const onUpdateUser = /* GraphQL */ `
           currency
           createdAt
           updatedAt
+          menu {
+            nextToken
+          }
+          orders {
+            nextToken
+          }
         }
         nextToken
       }
@@ -111,6 +123,12 @@ export const onDeleteUser = /* GraphQL */ `
           currency
           createdAt
           updatedAt
+          menu {
+            nextToken
+          }
+          orders {
+            nextToken
+          }
         }
         nextToken
       }
@@ -132,8 +150,15 @@ export const onCreateProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          i18n {
+            language
+            name
+            category
+            description
+          }
           price
           status
+          favorite
           allergyInfo
           callories
           image
@@ -148,6 +173,13 @@ export const onCreateProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          orderItem {
+            name
+            price
+            quantity
+            allergyInfo
+            customerComment
+          }
           createdAt
           status
           tableName
@@ -174,8 +206,15 @@ export const onUpdateProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          i18n {
+            language
+            name
+            category
+            description
+          }
           price
           status
+          favorite
           allergyInfo
           callories
           image
@@ -190,6 +229,13 @@ export const onUpdateProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          orderItem {
+            name
+            price
+            quantity
+            allergyInfo
+            customerComment
+          }
           createdAt
           status
           tableName
@@ -216,8 +262,15 @@ export const onDeleteProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          i18n {
+            language
+            name
+            category
+            description
+          }
           price
           status
+          favorite
           allergyInfo
           callories
           image
@@ -232,6 +285,13 @@ export const onDeleteProperty = /* GraphQL */ `
         items {
           id
           propertyName
+          orderItem {
+            name
+            price
+            quantity
+            allergyInfo
+            customerComment
+          }
           createdAt
           status
           tableName
@@ -256,6 +316,7 @@ export const onCreateMenuItem = /* GraphQL */ `
       }
       price
       status
+      favorite
       allergyInfo
       callories
       image
@@ -279,6 +340,7 @@ export const onUpdateMenuItem = /* GraphQL */ `
       }
       price
       status
+      favorite
       allergyInfo
       callories
       image
@@ -302,6 +364,7 @@ export const onDeleteMenuItem = /* GraphQL */ `
       }
       price
       status
+      favorite
       allergyInfo
       callories
       image
