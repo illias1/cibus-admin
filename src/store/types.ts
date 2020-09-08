@@ -10,12 +10,17 @@ export type TStore = {
   };
 };
 
-export type OrderStatus = "READY" | "DENIED" | "REQUESTED" | "RECEIVED" | "PAYED";
+export type OrderStatus =
+  | "RECEIVED_BY_RESTAURANT"
+  | "DENIED"
+  | "REQUESTED_BY_CUSTOMER"
+  | "READY"
+  | "PAYED";
 export const OrderStatusEnum = {
-  READY: "READY",
+  RECEIVED_BY_RESTAURANT: "RECEIVED_BY_RESTAURANT",
   DENIED: "DENIED",
-  REQUESTED: "REQUESTED",
-  RECEIVED: "RECEIVED",
+  REQUESTED_BY_CUSTOMER: "REQUESTED_BY_CUSTOMER",
+  READY: "READY",
   PAYED: "PAYED",
 };
 

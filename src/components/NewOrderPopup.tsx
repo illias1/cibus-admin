@@ -15,7 +15,9 @@ type INewOrderPopupProps = {
 const NewOrderPopup: React.FC<INewOrderPopupProps> = ({ handlePopupClose, open }) => {
   const classes = useStyles();
   const REQUESTEDOrdersNumber = useTypedSelector(
-    (state) => state.orders.filter((order) => (order?.status as OrderStatus) === "REQUESTED").length
+    (state) =>
+      state.orders.filter((order) => (order?.status as OrderStatus) === "REQUESTED_BY_CUSTOMER")
+        .length
   );
   const { t } = useTranslation();
   const body = (

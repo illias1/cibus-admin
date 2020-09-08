@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 type INewOrderProps = {};
 
 const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
-  const RECEIVEDOrders = useTypedSelector(filterOrderByStatus("RECEIVED"));
+  const RECEIVEDOrders = useTypedSelector(filterOrderByStatus("READY"));
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();

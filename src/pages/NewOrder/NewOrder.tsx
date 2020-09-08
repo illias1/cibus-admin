@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 type INewOrderProps = {};
 
 const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
-  const REQUESTEDOrders = useTypedSelector(filterOrderByStatus("REQUESTED"));
+  const REQUESTEDOrders = useTypedSelector(filterOrderByStatus("REQUESTED_BY_CUSTOMER"));
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
     <Box className={classes.root}>
       {REQUESTEDOrders.length > 0
         ? REQUESTEDOrders.map((item, index) => (
-            <OrderCard status="READY" key={index} order={item} />
+            <OrderCard status="RECEIVED_BY_RESTAURANT" key={index} order={item} />
           ))
         : t("no_new_orders_today")}
     </Box>

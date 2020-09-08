@@ -23,9 +23,9 @@ type IOrderCardProps = {
 
 const statusToButtonLabel = (status: OrderStatus, t: TFunction): string => {
   switch (status) {
-    case "READY":
+    case "RECEIVED_BY_RESTAURANT":
       return t("confirm_order");
-    case "RECEIVED":
+    case "READY":
       return t("order_ready");
     case "PAYED":
       return t("order_payed");

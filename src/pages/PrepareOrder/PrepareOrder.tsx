@@ -9,14 +9,18 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core";
 type INewOrderProps = {};
 
 const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
-  const READYOrders = useTypedSelector(filterOrderByStatus("READY"));
+  const RECEIVED_BY_RESTAURANTOrders = useTypedSelector(
+    filterOrderByStatus("RECEIVED_BY_RESTAURANT")
+  );
   const { t } = useTranslation();
   const classes = useStyles();
 
   return (
     <Box className={classes.root}>
-      {READYOrders.length > 0
-        ? READYOrders.map((item, index) => <OrderCard status="RECEIVED" key={index} order={item} />)
+      {RECEIVED_BY_RESTAURANTOrders.length > 0
+        ? RECEIVED_BY_RESTAURANTOrders.map((item, index) => (
+            <OrderCard status="READY" key={index} order={item} />
+          ))
         : t("no_orders_being_prepared_today")}
     </Box>
   );

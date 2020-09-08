@@ -89,7 +89,10 @@ type Order
 
 type Subscription {
   onCreateOrder(propertyName: String): Order @aws_subscribe(mutations: ["createOrder"])
-  onUpdateOrder(id: ID, propertyName: String): Order @aws_subscribe(mutations: ["updateOrder"])
+  onUpdateOrder(id: ID, propertyName: String): Order
+  @aws_subscribe(mutations: ["updateOrder"])
+  @aws_iam
+  @aws_cognito_user_pools
 }
 # cannot be enum in order to sort
 # REQUESTED and READY need to start with same letter to fetch these to categories at admin init

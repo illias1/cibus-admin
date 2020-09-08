@@ -10,6 +10,7 @@ export const getUser = /* GraphQL */ `
       name
       createdAt
       updatedAt
+      owner
       properties {
         items {
           name
@@ -27,7 +28,11 @@ export const getUser = /* GraphQL */ `
   }
 `;
 export const listUsers = /* GraphQL */ `
-  query ListUsers($filter: ModelUserFilterInput, $limit: Int, $nextToken: String) {
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -145,7 +150,11 @@ export const getMenuItem = /* GraphQL */ `
   }
 `;
 export const listMenuItems = /* GraphQL */ `
-  query ListMenuItems($filter: ModelMenuItemFilterInput, $limit: Int, $nextToken: String) {
+  query ListMenuItems(
+    $filter: ModelMenuItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listMenuItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -229,7 +238,11 @@ export const getOrder = /* GraphQL */ `
   }
 `;
 export const listOrders = /* GraphQL */ `
-  query ListOrders($filter: ModelOrderFilterInput, $limit: Int, $nextToken: String) {
+  query ListOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
