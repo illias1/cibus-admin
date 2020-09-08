@@ -242,9 +242,15 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "flex-start",
       alignItems: "center",
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: "column",
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(3),
+      },
     },
     itemContainer: {
-      width: 375,
+      width: "100%",
+      maxWidth: 400,
       marginRight: theme.spacing(3),
     },
     formControl: {

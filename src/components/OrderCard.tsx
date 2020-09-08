@@ -87,7 +87,8 @@ const OrderCard: React.FC<IOrderCardProps> = ({ order, status }) => {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: 400,
+      width: "90%",
+      maxWidth: 500,
       height: "fit-content",
       minHeight: 300,
       borderRadius: 5,
