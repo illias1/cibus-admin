@@ -6,8 +6,15 @@ import {
   updateOrderStatus,
   addRequestedOrder,
   setupMenu,
+  setDeleteMenuItem,
+  setAddNewMenuItem,
+  setUpdateMenuItem,
 } from "./actions";
-import { LOCAL_STORAGE_PROPERTY } from "../utils/_constants";
+import { LOCAL_STORAGE_PROPERTY, UNCATEGORIZED } from "../utils/_constants";
+
+import { TNonNullMenuItem } from "../types";
+import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
+import { Language } from "../API";
 
 export const reducer = reducerWithInitialState(initialState)
   .case(setSelectedProperty, (state, selectedProperty) => {
@@ -37,7 +44,100 @@ export const reducer = reducerWithInitialState(initialState)
       orders: ret,
     };
   })
-  .case(setupMenu, (state, menu) => ({
-    ...state,
-    menu,
-  }));
+  // .case(setupMenu, (state, menu) => ({
+  //   ...state,
+  //   menu,
+  // }));
+  .case(setupMenu, (state, payload) => {
+    if (payload && payload.items) {
+      const itemsByCategory: TcategorizedMenuItems = {};
+      const languages: Language[] = [];
+      const categories = [
+        // we always have a category, probaby UNCATEGORID
+        ...((payload.items.filter((item) => item !== null) as TNonNullMenuItem[]).map((item) =>
+          item.i18n[0].category ? item.i18n[0].category : UNCATEGORIZED
+        ) as string[]),
+        "",
+      ];
+      categories.forEach((cat) => {
+        itemsByCategory[cat] = {};
+      });
+      payload.items.forEach((curr) => {
+        if (curr) {
+          if (curr.i18n.length > 0) {
+            curr.i18n.forEach((translation) => {
+              if (!languages.includes(translation.language)) {
+                languages.push(translation.language);
+              }
+            });
+          }
+          itemsByCategory[curr?.i18n[0].category ? curr.i18n[0].category : UNCATEGORIZED][
+            curr.id
+          ] = curr;
+        }
+      });
+      return {
+        ...state,
+        menu: {
+          categoriesNumber: Object.keys(itemsByCategory).length,
+          categorizedItems: itemsByCategory,
+          languages,
+        },
+      };
+    }
+    return state;
+  })
+  .case(setDeleteMenuItem, (state, { category, id }) => {
+    delete state.menu.categorizedItems[category][id];
+    return {
+      ...state,
+      menu: {
+        ...state.menu,
+      },
+    };
+  })
+  .case(setAddNewMenuItem, (state, payload) => {
+    const category = payload.i18n[0].category as string;
+    if (!state.menu.categorizedItems[category]) {
+      state.menu.categoriesNumber = state.menu.categoriesNumber + 1;
+    }
+    // if (!payload.i18n.every((transl) => state.menu.languages.includes(transl.language))) {
+    //   state.menu.languages = [
+    //     ...state.menu.languages,
+    //     ...payload.i18n.map((transl) => transl.language),
+    //   ].reduce((prev, curr) => {
+    //     return prev.includes(curr) ? prev : [...prev, curr];
+    //   }, [] as Language[]);
+    // }
+    return {
+      ...state,
+      menu: {
+        ...state.menu,
+        categorizedItems: {
+          ...state.menu.categorizedItems,
+          [category]: {
+            ...state.menu.categorizedItems[category],
+            [payload.id]: payload,
+          },
+        },
+      },
+    };
+  })
+  .case(setUpdateMenuItem, (state, { data, previousItemData }) => {
+    if (previousItemData.category !== data.i18n[0].category) {
+      delete state.menu.categorizedItems[previousItemData.category][previousItemData.id];
+    }
+    return {
+      ...state,
+      menu: {
+        ...state.menu,
+        categorizedItems: {
+          ...state.menu.categorizedItems,
+          [data.i18n[0].category || UNCATEGORIZED]: {
+            ...state.menu.categorizedItems[data.i18n[0].category || UNCATEGORIZED],
+            [data.id]: data,
+          },
+        },
+      },
+    };
+  });

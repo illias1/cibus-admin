@@ -8,5 +8,9 @@ export const initialState: TStore = {
     open: false,
     currency: "",
   },
-  menu: {},
+  menu: {
+    categorizedItems: {},
+    categoriesNumber: 0,
+    languages: [],
+  },
 };

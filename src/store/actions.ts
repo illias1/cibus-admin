@@ -1,6 +1,8 @@
 import actionCreatorFactory from "typescript-fsa";
 import { TStore } from "./types";
 import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
+import { TNonNullPropertyQuery } from "../types";
+import { Language, UpdateMenuItemMutation, CreateMenuItemMutation } from "../API";
 
 const actionCreator = actionCreatorFactory();
 
@@ -8,4 +10,16 @@ export const setSelectedProperty = actionCreator<TStore["selectedProperty"]>("se
 export const setOrders = actionCreator<TStore["orders"]>("setOrders");
 export const addRequestedOrder = actionCreator<TStore["orders"][0]>("addRequestedOrder");
 export const updateOrderStatus = actionCreator<TStore["orders"][0]>("updateOrder");
-export const setupMenu = actionCreator<TcategorizedMenuItems>("setupMenu");
+export const setupMenu = actionCreator<TNonNullPropertyQuery["menu"]>("setupMenu");
+export const setUpdateMenuItem = actionCreator<{
+  data: NonNullable<UpdateMenuItemMutation["updateMenuItem"]>;
+  // needed in case of update of category since otherwise duplication of item (previous version statys in the old category)
+  previousItemData: {
+    category: string;
+    id: string;
+  };
+}>("setUpdateMenuItem");
+export const setDeleteMenuItem = actionCreator<Record<"id" | "category", string>>("deleteMenuItem");
+export const setAddNewMenuItem = actionCreator<
+  NonNullable<CreateMenuItemMutation["createMenuItem"]>
+>("setAddNewMenuItem");

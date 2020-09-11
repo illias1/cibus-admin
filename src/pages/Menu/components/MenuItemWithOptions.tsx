@@ -20,111 +20,72 @@ import "./styles.css";
 import { UNCATEGORIZED } from "../../../utils/_constants";
 import { useTranslation } from "react-i18next";
 import { FixedSizeList as List } from "react-window";
-import { TShakeItemOption } from "./DisplayMenuItems";
-import { Language } from "../../../API";
+import { Language, MenuItemStatus } from "../../../API";
+import { useTypedSelector, TStore } from "../../../store/types";
 
 type IDisplayMenuItemsProps = {
-  seteditId: React.Dispatch<React.SetStateAction<string>>;
-  setdeleteId: React.Dispatch<React.SetStateAction<string>>;
-  setcategorizedMenuItems: React.Dispatch<React.SetStateAction<TcategorizedMenuItems>>;
-  setState: React.Dispatch<React.SetStateAction<TMenuState>>;
-  shakeItemOption: TShakeItemOption;
-  style: any;
+  // style: any;
   //   item: TcategorizedMenuItems[number]["items"][number];
-  data: TcategorizedMenuItems[number]["items"];
-  categorizedMenuItems: TcategorizedMenuItems;
-  handleToggle: (
-    id: string,
-    updatedState: boolean,
-    property: keyof TMenuState[string]
-  ) => Promise<void>;
-  handleDelete: (id: string, category: string) => Promise<void>;
-  category: string;
-  deleteId: string;
-  editId: string;
-  state: TMenuState;
+  // data: TcategorizedMenuItems[number]["items"];
   languages: Language[];
-  itemIndex: number;
+  item: TStore["menu"]["categorizedItems"][string][string];
+  // itemIndex: number;
 };
 
 // <MenuItemWithOptions
-//   seteditId={seteditId}
-//   setdeleteId={setdeleteId}
-//   setcategorizedMenuItems={setcategorizedMenuItems}
-//   setState={setState}
-//   shakeItemOption={shakeItemOption}
 //   // item={items[index as number]}
 //   // @ts-ignore
 //   data={data}
 //   itemIndex={index}
-//   handleDelete={handleDelete}
-//   handleToggle={handleToggle}
-//   category={category}
-//   deleteId={deleteId}
-//   editId={editId}
-//   state={state}
 //   style={style}
 //   languages={languages}
-//   categorizedMenuItems={categorizedMenuItems}
 // />
 
 // COMPONENT
 const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
-  seteditId,
-  setdeleteId,
-  setcategorizedMenuItems,
-  setState,
-  shakeItemOption,
-  style,
-  handleDelete,
-  handleToggle,
-  category,
-  deleteId,
-  editId,
-  state,
+  // style,
   languages,
-  categorizedMenuItems,
-  data,
-  itemIndex,
+  item,
+  // data,
+  // itemIndex,
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
+  const [edit, setedit] = React.useState<boolean>(false);
   // @ts-ignore
-  const item = data[itemIndex];
-  console.log("data", data);
+  // const item = data[itemIndex];
   return (
     <React.Fragment>
       {item ? (
-        <Box style={style} className={shakeItemOption.whole === item.id ? "shake-horizontal" : ""}>
+        <Box>
           <Box className={classes.item}>
             <>
               <Box className={classes.itemContainer}>
                 {/* <MenuItemCard
                   id={item.id}
-                  title={item!.i18n[0].name}
-                  ingredients={item!.i18n[0].description || ""}
+                  title={item.i18n[0].name}
+                  ingredients={item.i18n[0].description || ""}
                   price={item!.price}
                   img={item.image || ""}
                 /> */}
+                <Button onClick={() => setedit(!edit)}>edit</Button>
               </Box>
+            </>
+          </Box>
+          {edit && (
+            <Collapse style={{ textAlign: "center" }} in={edit}>
               <Box className={classes.options}>
                 <IconButton
-                  className={shakeItemOption.favorite === item.id ? "shake-horizontal" : ""}
-                  onClick={() => handleToggle(item.id, !state[item.id].favorite, "favorite")}
+                  // onClick={() => handleToggle(item.id, !state[item.id].favorite, "favorite")}
                   color="inherit"
                 >
-                  {state[item.id].favorite ? (
-                    <FavoriteIcon color="primary" />
-                  ) : (
-                    <FavoriteBorderIcon />
-                  )}
+                  {item.favorite ? <FavoriteIcon color="primary" /> : <FavoriteBorderIcon />}
                 </IconButton>
                 <FormControlLabel
-                  className={shakeItemOption.status === item.id ? "shake-horizontal" : ""}
                   control={
                     <Switch
-                      checked={state[item.id].status}
-                      onChange={(event) => handleToggle(item.id, event.target.checked, "status")}
+                      checked={item.status === MenuItemStatus["AVAILABLE"]}
+                      // onChange={(event) => handleToggle(item.id, event.target.checked, "status")}
                       name={item.id}
                       color="primary"
                     />
@@ -132,49 +93,47 @@ const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
                   label="Available"
                 />
 
-                <Button onClick={() => seteditId(item.id)} color="inherit">
+                <Button
+                  // onClick={() => seteditId(item.id)}
+                  color="inherit"
+                >
                   {t("edit")}
                 </Button>
 
-                {deleteId === item.id ? (
-                  <ClickAwayListener onClickAway={() => setdeleteId("")}>
-                    <Button
-                      onClick={() => handleDelete(item.id, category)}
-                      variant="outlined"
-                      className={classes.delete}
-                    >
-                      {t("delete")}
-                    </Button>
-                  </ClickAwayListener>
-                ) : (
-                  <IconButton onClick={() => setdeleteId(item.id)} color="inherit">
-                    <DeleteIcon />
-                  </IconButton>
-                )}
+                <ClickAwayListener onClickAway={() => {}}>
+                  <Button
+                    // onClick={() => handleDelete(item.id, category)}
+                    variant="outlined"
+                    className={classes.delete}
+                  >
+                    {t("delete")}
+                  </Button>
+                </ClickAwayListener>
+                <IconButton
+                  // onClick={() => setdeleteId(item.id)}
+                  color="inherit"
+                >
+                  <DeleteIcon />
+                </IconButton>
               </Box>
-            </>
-          </Box>
-
-          <Collapse style={{ textAlign: "center" }} in={item.id === editId}>
-            <EditMenuItemForm
-              menuItem={item}
-              languages={languages}
-              onEdit={(data) => {
-                // updateCategorizedMenuItems(
-                //   data,
-                //   categorizedMenuItems,
-                //   setcategorizedMenuItems,
-                //   setState,
-                //   {
-                //     category: item.i18n[0].category ? item.i18n[0].category : UNCATEGORIZED,
-                //     id: item.id,
-                //   }
-                // );
-                seteditId("");
-              }}
-              seteditId={seteditId}
-            />
-          </Collapse>
+              <EditMenuItemForm
+                menuItem={item}
+                languages={languages}
+                onEdit={(data) => {
+                  // updateCategorizedMenuItems(
+                  //   data,
+                  //   categorizedMenuItems,
+                  //   setcategorizedMenuItems,
+                  //   setState,
+                  //   {
+                  //     category: item.i18n[0].category ? item.i18n[0].category : UNCATEGORIZED,
+                  //     id: item.id,
+                  //   }
+                  // );
+                }}
+              />
+            </Collapse>
+          )}
         </Box>
       ) : null}
     </React.Fragment>

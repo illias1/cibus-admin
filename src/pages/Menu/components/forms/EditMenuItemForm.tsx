@@ -14,12 +14,12 @@ import { mutation } from "../../../../utils/mutation";
 import { updateMenuItem } from "../../../../graphql/mutations";
 import { UNCATEGORIZED } from "../../../../utils/_constants";
 import ISO6391 from "iso-639-1";
+import { TStore } from "../../../../store/types";
 
 type IEditMenuItemFormProps = {
   languages: Language[];
   onEdit: (data: UpdateMenuItemMutation) => void;
-  menuItem: GetMenuItemQuery["getMenuItem"];
-  seteditId: React.Dispatch<React.SetStateAction<string>>;
+  menuItem: TStore["menu"]["categorizedItems"][string][string];
 };
 
 type Inputs = {
@@ -34,12 +34,7 @@ type Inputs = {
   }[];
 };
 
-const AddMenuItemForm: React.FC<IEditMenuItemFormProps> = ({
-  languages,
-  onEdit,
-  menuItem,
-  seteditId,
-}) => {
+const AddMenuItemForm: React.FC<IEditMenuItemFormProps> = ({ languages, onEdit, menuItem }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { register, handleSubmit } = useForm<Inputs>();
@@ -126,9 +121,7 @@ const AddMenuItemForm: React.FC<IEditMenuItemFormProps> = ({
                 name={`i18n[${index}].name`}
                 inputRef={register({ required: true })}
                 required={true}
-                defaultValue={
-                  menuItem?.i18n.find((translation) => translation.language === language)?.name
-                }
+                defaultValue={menuItem?.i18n[0].name}
               />
               <TextField
                 className={classes.textField}
@@ -137,10 +130,7 @@ const AddMenuItemForm: React.FC<IEditMenuItemFormProps> = ({
                 name={`i18n[${index}].description`}
                 multiline={true}
                 inputRef={register}
-                defaultValue={
-                  menuItem?.i18n.find((translation) => translation.language === language)
-                    ?.description
-                }
+                defaultValue={menuItem?.i18n[0].description}
               />
               <TextField
                 className={classes.textField}
@@ -148,9 +138,7 @@ const AddMenuItemForm: React.FC<IEditMenuItemFormProps> = ({
                 label={t("menu_form_category")}
                 name={`i18n[${index}].category`}
                 inputRef={register}
-                defaultValue={
-                  menuItem?.i18n.find((translation) => translation.language === language)?.category
-                }
+                defaultValue={menuItem?.i18n[0].category}
               />
             </Box>
           ))}
@@ -163,7 +151,7 @@ const AddMenuItemForm: React.FC<IEditMenuItemFormProps> = ({
               <Button color="primary" variant="contained" type="submit">
                 {t("save")}
               </Button>
-              <Button onClick={() => seteditId("")} color="inherit" variant="outlined">
+              <Button color="inherit" variant="outlined">
                 {t("cancel")}
               </Button>
             </Box>

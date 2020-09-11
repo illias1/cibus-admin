@@ -1,47 +1,146 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
-import { Box } from "@material-ui/core";
+import { Box, useMediaQuery, Button, IconButton, Switch } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
-import { Language, Currency } from "../../../API";
+import {
+  Language,
+  Currency,
+  UpdateMenuItemMutation,
+  UpdateMenuItemMutationVariables,
+  MenuItemStatus,
+} from "../../../API";
 import { useTypedSelector } from "../../../store/types";
 import { priceDisplay } from "./utils";
+// icons
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { TNonNullMenuItem } from "../../../types";
+import { useDispatch } from "react-redux";
+import { mutation } from "../../../utils/mutation";
+import { updateMenuItem } from "../../../graphql/mutations";
+import "./styles.css";
 
 type TItem = {
-  title: string;
-  price: number;
-  ingredients?: string;
-  id: string;
-  img: string;
-  onClick?: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
+  item: TNonNullMenuItem;
+  setopenDrawer: React.Dispatch<
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
+  >; // title: string;
+  // price: number;
+  // ingredients?: string;
+  // favorite: boolean;
+  // status: boolean;
+  // id: string;
+  // img: string;
+  // onClick?: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
 };
 
-const Item: React.FC<TItem> = ({ title, price, ingredients, onClick, img, id }) => {
+const Item: React.FC<TItem> = ({
+  // title,
+  // price,
+  // ingredients,
+  // // onClick,
+  // img,
+  // id,
+  // favorite,
+  // status,
+  item,
+  setopenDrawer,
+}) => {
+  const handleToggle = async (
+    id: string,
+    updatedState: boolean,
+    property: "status" | "favorite"
+  ) => {
+    setFavStatusState({
+      ...FavStatusState,
+      [property]: updatedState,
+    });
+    const { data, error } = await mutation<UpdateMenuItemMutation, UpdateMenuItemMutationVariables>(
+      updateMenuItem,
+      {
+        input: {
+          id,
+          [property]:
+            property === "status"
+              ? updatedState
+                ? MenuItemStatus["AVAILABLE"]
+                : MenuItemStatus["OUT_OF_STOCK"]
+              : updatedState,
+        },
+      }
+    );
+    if (error) {
+      setshakeOption(property);
+      setFavStatusState({
+        ...FavStatusState,
+        [property]: !updatedState,
+      });
+      setTimeout(() => {
+        setshakeOption(null);
+      }, 1000);
+    }
+  };
+  const { price, image, id, favorite, status } = item;
   const classes = useStyles();
   const { i18n } = useTranslation();
+  const [FavStatusState, setFavStatusState] = React.useState<
+    Record<"favorite" | "status", boolean>
+  >({ favorite: false, status: false });
+  React.useEffect(() => {
+    setFavStatusState({
+      favorite: favorite ? true : false,
+      status: status === MenuItemStatus["AVAILABLE"] ? true : false,
+    });
+  }, []);
+  const [shakeOption, setshakeOption] = React.useState<"favorite" | "status" | null>(null);
+  const phoneTrue = useMediaQuery("(max-width: 960px)");
   const { currency } = useTypedSelector((state) => state.selectedProperty);
+  const options = (
+    <Box className={classes.options}>
+      <IconButton
+        className={shakeOption === "favorite" ? "shake-horizontal" : ""}
+        color="primary"
+        onClick={() => handleToggle(id, !FavStatusState.favorite, "favorite")}
+      >
+        {FavStatusState.favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+      </IconButton>
+      <Switch
+        className={shakeOption === "status" ? "shake-horizontal" : ""}
+        color="primary"
+        checked={FavStatusState.status ? true : false}
+        onChange={(event) => handleToggle(id, event.target.checked, "status")}
+      />
+      <Button onClick={() => setopenDrawer({ open: true, item })}>edit</Button>
+    </Box>
+  );
   return (
-    <Card className={classes.root} onClick={onClick}>
+    <Card className={classes.root}>
       <Box className={classes.content}>
         <Box className={classes.tileAndPrice}>
           <Typography className={classes.title} variant="h6">
-            {title}
+            {item.i18n[0].name}
           </Typography>
           <Typography className={classes.price} variant="body1">
             {priceDisplay(currency as Currency, price, i18n.language as Language)}
           </Typography>
         </Box>
-        <Typography className={classes.ingredients} variant="body1" color="textSecondary">
-          {ingredients}
-        </Typography>
+        {phoneTrue ? (
+          options
+        ) : (
+          <Typography className={classes.ingredients} variant="body1" color="textSecondary">
+            {item.i18n[0].description}
+          </Typography>
+        )}
       </Box>
 
+      {phoneTrue ? <> </> : options}
       <img
         id={id}
         className={classes.cover}
-        src={img}
-        alt={title}
+        src={image || ""}
+        alt={item.i18n[0].name}
         onError={() => {
           document.getElementById(id)!.style.display = "none";
         }}
@@ -95,6 +194,10 @@ const useStyles = makeStyles((theme) =>
     },
     price: {
       minWidth: "fit-content",
+    },
+    options: {
+      display: "inline-flex",
+      alignItems: "center",
     },
   })
 );

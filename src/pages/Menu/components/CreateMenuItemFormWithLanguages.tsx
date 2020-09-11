@@ -19,32 +19,35 @@ import ISO6391 from "iso-639-1";
 
 import { TMenuState } from "../Menu";
 import { useTypedSelector } from "../../../store/types";
+import { TNonNullMenuItem } from "../../../types";
 
-type ICreateMenuItemFormWithLanguagesProps = {
-  languages: Language[];
-  setlanguages: React.Dispatch<React.SetStateAction<Language[]>>;
-  setState: React.Dispatch<React.SetStateAction<Record<string, TMenuState[string]>>>;
+type ICreateMenuItemFormWithlangsProps = {
+  setopenDrawer: React.Dispatch<
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
+  >;
+  openDrawer: { open: boolean; item: TNonNullMenuItem | null };
 };
 
-const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguagesProps> = ({
-  languages,
-  setlanguages,
-  setState,
+const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> = ({
+  setopenDrawer,
+  openDrawer,
 }) => {
   const { t, i18n } = useTranslation();
   const classes = useStyles();
-  const { menu } = useTypedSelector((state) => state);
-  const [showCreateForm, setshowCreateForm] = React.useState<boolean>(false);
+  const { languages } = useTypedSelector((state) => state.menu);
   const [newLanguage, setnewLanguage] = React.useState<Language>(i18n.language as Language);
-
+  const [langs, setlangs] = React.useState<Language[]>([]);
+  React.useEffect(() => {
+    setlangs(languages);
+  }, []);
   return (
-    <>
-      {languages.length > 0 && (
+    <Box className={classes.root}>
+      {langs.length > 0 && (
         <>
           <Typography>{t("menu_page_translated_languages")}</Typography>
           <Box className={classes.item}>
-            {languages.map((item) => (
-              <Chip key={item} label={ISO6391.getName(item)} />
+            {langs.map((item) => (
+              <Chip style={{ marginRight: 5 }} key={item} label={ISO6391.getName(item)} />
             ))}
           </Box>
         </>
@@ -58,7 +61,7 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
             labelId="demo-simple-select-filled-label"
             value={newLanguage}
             onChange={(e) => {
-              if (!languages.includes(e.target.value as Language)) {
+              if (!langs.includes(e.target.value as Language)) {
                 setnewLanguage(e.target.value as Language);
               }
             }}
@@ -73,40 +76,38 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
         <IconButton
           color="primary"
           onClick={() => {
-            if (!languages.includes(newLanguage)) {
-              setlanguages([...languages, newLanguage]);
+            if (!langs.includes(newLanguage)) {
+              setlangs([...langs, newLanguage]);
             }
           }}
         >
           <AddCircleOutlineIcon />
         </IconButton>
       </Box>
-      <Button
-        variant="outlined"
-        color={showCreateForm ? "secondary" : "primary"}
-        onClick={() => setshowCreateForm(!showCreateForm)}
-      >
-        {showCreateForm ? t("menu_hide_the_form") : t("menu_create_new_item")}
-      </Button>
-      <Collapse in={showCreateForm}>
-        <AddMenuItemForm
-          onCreate={(data) => {
-            // updateCategorizedMenuItems(
-            //   data,
-            //   categorizedMenuItems,
-            //   setcategorizedMenuItems,
-            //   setState
-            // )
-          }}
-          languages={languages}
-        />
-      </Collapse>
-    </>
+      <AddMenuItemForm
+        openDrawer={openDrawer}
+        setopenDrawer={setopenDrawer}
+        onCreate={(data) => {
+          // updateCategorizedMenuItems(
+          //   data,
+          //   categorizedMenuItems,
+          //   setcategorizedMenuItems,
+          //   setState
+          // )
+        }}
+        languages={langs}
+      />
+    </Box>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
     formControl: {
       margin: theme.spacing(1),
       minWidth: 200,
@@ -120,4 +121,4 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default CreateMenuItemFormWithLanguages;
+export default React.memo(CreateMenuItemFormWithlangs);

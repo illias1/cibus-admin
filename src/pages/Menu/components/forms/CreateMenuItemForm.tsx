@@ -7,20 +7,48 @@ import {
   CreateMenuItemMutation,
   CreateMenuItemMutationVariables,
   MenuItemStatus,
+  GetMenuItemQuery,
+  DeleteMenuItemMutation,
+  DeleteMenuItemMutationVariables,
+  UpdateMenuItemInput,
+  UpdateMenuItemMutationVariables,
+  UpdateMenuItemMutation,
 } from "../../../../API";
 import { useTranslation } from "react-i18next";
-import { Button, FormControl, Box, CircularProgress, Typography } from "@material-ui/core";
+import {
+  Button,
+  FormControl,
+  Box,
+  CircularProgress,
+  Typography,
+  ClickAwayListener,
+  IconButton,
+  Collapse,
+  InputAdornment,
+} from "@material-ui/core";
 import { mutation } from "../../../../utils/mutation";
-import { createMenuItem } from "../../../../graphql/mutations";
+import { createMenuItem, deleteMenuItem, updateMenuItem } from "../../../../graphql/mutations";
 import { useTypedSelector } from "../../../../store/types";
 import { UNCATEGORIZED } from "../../../../utils/_constants";
 import ISO6391 from "iso-639-1";
+// icons
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useDispatch } from "react-redux";
+import { TNonNullMenuItem } from "../../../../types";
+import { setDeleteMenuItem, setAddNewMenuItem, setUpdateMenuItem } from "../../../../store/actions";
+import { CreateMenuItemInput } from "../../con";
+import { prepareInputsForUpdateMutation, prepareInputsForCreateMutation } from "../utils";
+
 type IaddMenuItemFormProps = {
   languages: Language[];
   onCreate: (data: CreateMenuItemMutation) => void;
+  setopenDrawer: React.Dispatch<
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
+  >;
+  openDrawer: { open: boolean; item: TNonNullMenuItem | null };
 };
 
-type Inputs = {
+export type Inputs = {
   callories: string;
   notes: string;
   price: number;
@@ -32,65 +60,120 @@ type Inputs = {
   }[];
 };
 
-const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate }) => {
+const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
+  languages,
+  onCreate,
+  setopenDrawer,
+  openDrawer,
+}) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { name } = useTypedSelector((state) => state.selectedProperty);
-  const { register, handleSubmit, reset } = useForm<Inputs>();
+  const { name, currency } = useTypedSelector((state) => state.selectedProperty);
+  const dispatch = useDispatch();
+  const { item } = openDrawer;
+  // const { item } = useTypedSelector((state) => state.menu.edit);
+  const { register, handleSubmit, reset, control } = useForm<Inputs>();
   const [creating, setcreating] = React.useState<boolean>(false);
+  const [deleteOn, setdeleteOn] = React.useState<boolean>(false);
+  const handleDelete = async (id: string, category: string) => {
+    if (deleteOn) {
+      const { error, data } = await mutation<
+        DeleteMenuItemMutation,
+        DeleteMenuItemMutationVariables
+      >(deleteMenuItem, {
+        input: {
+          id,
+        },
+      });
+      if (error) {
+        console.log("dlete unsuccessful");
+      }
+      if (data) {
+        dispatch(
+          setDeleteMenuItem({
+            category: item!.i18n[0].category || UNCATEGORIZED,
+            id: item!.id,
+          })
+        );
+        setopenDrawer({
+          open: false,
+          item: null,
+        });
+      }
+    } else {
+      setdeleteOn(true);
+    }
+  };
   const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
-    const inputsMadeReadyForSubmission: Inputs = {
-      ...inputs,
-      price: Number(inputs.price),
-      i18n: inputs.i18n.map((langObj) =>
-        langObj.category
-          ? langObj
-          : {
-              ...langObj,
-              category: UNCATEGORIZED,
-            }
-      ),
-    };
+    const inputsMadeReadyForSubmission = item
+      ? prepareInputsForUpdateMutation(inputs, item.id)
+      : prepareInputsForCreateMutation(inputs, name);
     setcreating(true);
     const { data, error } = await mutation<CreateMenuItemMutation, CreateMenuItemMutationVariables>(
-      createMenuItem,
+      item ? updateMenuItem : createMenuItem,
       {
-        input: {
-          ...inputsMadeReadyForSubmission,
-          propertyName: name,
-          status: MenuItemStatus["AVAILABLE"],
-          favorite: false,
-        },
+        input: inputsMadeReadyForSubmission as CreateMenuItemMutationVariables["input"],
       }
     );
     setcreating(false);
     if (error) {
       console.log(JSON.stringify(error));
     }
-    if (data?.createMenuItem) {
-      onCreate(data);
+    const result = item
+      ? ((data as unknown) as UpdateMenuItemMutation).updateMenuItem
+      : data?.createMenuItem;
+    if (item === null && result) {
+      dispatch(setAddNewMenuItem(result));
     }
+    if (item !== null && result) {
+      dispatch(
+        setUpdateMenuItem({
+          data: result,
+          previousItemData: {
+            category: item.i18n[0].category || UNCATEGORIZED,
+            id: item.id,
+          },
+        })
+      );
+    }
+    setopenDrawer({ open: false, item: null });
     reset();
   };
 
   return (
     <FormControl>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
+        <Box>
+          <ClickAwayListener onClickAway={() => setdeleteOn(false)}>
+            <Button
+              onClick={() => handleDelete(item!.id, item!.i18n[0].category || UNCATEGORIZED)}
+              variant={deleteOn ? "contained" : "outlined"}
+              className={classes.delete}
+            >
+              {deleteOn ? t("confirm") : t("delete")}
+            </Button>
+          </ClickAwayListener>
+        </Box>
+
         <TextField
           className={classes.textField}
           variant="outlined"
           label={t("menu_form_notes")}
           name="notes"
           inputRef={register}
+          defaultValue={item && item.notes ? item.notes : ""}
         />
         <TextField
           className={classes.textField}
           variant="outlined"
           label={t("menu_form_price")}
-          type="number"
           name="price"
           inputRef={register({ required: true })}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">{currency}</InputAdornment>,
+          }}
           required={true}
+          defaultValue={item ? item.price : ""}
         />
         <TextField
           className={classes.textField}
@@ -98,6 +181,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
           label={t("menu_form_callories")}
           name="callories"
           inputRef={register}
+          defaultValue={item && item.callories ? item.callories : ""}
         />
         <Typography>{t("menu_page_your_translation_in")}</Typography>
         <Box className={classes.languagesBox}>
@@ -120,6 +204,9 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
                 name={`i18n[${index}].name`}
                 inputRef={register({ required: true })}
                 required={true}
+                defaultValue={
+                  item ? item.i18n.find((transl) => transl.language === language)?.name : ""
+                }
               />
               <TextField
                 className={classes.textField}
@@ -128,6 +215,9 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
                 name={`i18n[${index}].description`}
                 multiline={true}
                 inputRef={register}
+                defaultValue={
+                  item ? item.i18n.find((transl) => transl.language === language)?.description : ""
+                }
               />
               <TextField
                 className={classes.textField}
@@ -135,6 +225,9 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
                 label={t("menu_form_category")}
                 name={`i18n[${index}].category`}
                 inputRef={register}
+                defaultValue={
+                  item ? item.i18n.find((transl) => transl.language === language)?.category : ""
+                }
               />
             </Box>
           ))}
@@ -151,6 +244,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
           <Typography>{t("menu_feedback_need_select_at_least_one_language")}</Typography>
         )}
       </form>
+      <Button onClick={() => setopenDrawer({ open: false, item: null })}>Cancel</Button>
     </FormControl>
   );
 };
@@ -170,6 +264,9 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       margin: theme.spacing(1),
       minWidth: 200,
+    },
+    delete: {
+      color: theme.palette.error.main,
     },
   })
 );
