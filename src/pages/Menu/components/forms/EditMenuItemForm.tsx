@@ -4,20 +4,22 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
 import {
   Language,
-  CreateMenuItemMutation,
-  CreateMenuItemMutationVariables,
-  MenuItemStatus,
-} from "../../../API";
+  GetMenuItemQuery,
+  UpdateMenuItemMutation,
+  UpdateMenuItemMutationVariables,
+} from "../../../../API";
 import { useTranslation } from "react-i18next";
 import { Button, FormControl, Box, CircularProgress, Typography } from "@material-ui/core";
-import { mutation } from "../../../utils/mutation";
-import { createMenuItem } from "../../../graphql/mutations";
-import { useTypedSelector } from "../../../store/types";
-import { UNCATEGORIZED } from "../../../utils/_constants";
+import { mutation } from "../../../../utils/mutation";
+import { updateMenuItem } from "../../../../graphql/mutations";
+import { UNCATEGORIZED } from "../../../../utils/_constants";
+import ISO6391 from "iso-639-1";
 
-type IaddMenuItemFormProps = {
+type IEditMenuItemFormProps = {
   languages: Language[];
-  onCreate: (data: CreateMenuItemMutation) => void;
+  onEdit: (data: UpdateMenuItemMutation) => void;
+  menuItem: GetMenuItemQuery["getMenuItem"];
+  seteditId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type Inputs = {
@@ -32,11 +34,15 @@ type Inputs = {
   }[];
 };
 
-const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate }) => {
+const AddMenuItemForm: React.FC<IEditMenuItemFormProps> = ({
+  languages,
+  onEdit,
+  menuItem,
+  seteditId,
+}) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { name } = useTypedSelector((state) => state.selectedProperty);
-  const { register, handleSubmit, reset } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const [creating, setcreating] = React.useState<boolean>(false);
   const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
     const inputsMadeReadyForSubmission: Inputs = {
@@ -52,25 +58,22 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
       ),
     };
     setcreating(true);
-    const { data, error } = await mutation<CreateMenuItemMutation, CreateMenuItemMutationVariables>(
-      createMenuItem,
+    const { data, error } = await mutation<UpdateMenuItemMutation, UpdateMenuItemMutationVariables>(
+      updateMenuItem,
       {
         input: {
           ...inputsMadeReadyForSubmission,
-          propertyName: name,
-          status: MenuItemStatus["AVAILABLE"],
-          favorite: false,
+          id: menuItem!.id,
         },
       }
     );
     setcreating(false);
     if (error) {
-      console.log(JSON.stringify(error));
+      console.log(error);
     }
-    if (data?.createMenuItem) {
-      onCreate(data);
+    if (data?.updateMenuItem) {
+      onEdit(data);
     }
-    reset();
   };
 
   return (
@@ -82,6 +85,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
           label={t("menu_form_notes")}
           name="notes"
           inputRef={register}
+          defaultValue={menuItem?.notes}
         />
         <TextField
           className={classes.textField}
@@ -91,6 +95,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
           name="price"
           inputRef={register({ required: true })}
           required={true}
+          defaultValue={menuItem?.price}
         />
         <TextField
           className={classes.textField}
@@ -98,12 +103,13 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
           label={t("menu_form_callories")}
           name="callories"
           inputRef={register}
+          defaultValue={menuItem?.callories}
         />
         <Typography>{t("menu_page_your_translation_in")}</Typography>
         <Box className={classes.languagesBox}>
           {languages.map((language, index) => (
-            <Box key={index} className={classes.root} style={{ paddingTop: 30 }}>
-              <Typography>{language}</Typography>
+            <Box key={language} className={classes.root} style={{ paddingTop: 30 }}>
+              <Typography>{ISO6391.getName(language)}</Typography>
               <TextField
                 className={classes.textField}
                 variant="outlined"
@@ -120,6 +126,9 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
                 name={`i18n[${index}].name`}
                 inputRef={register({ required: true })}
                 required={true}
+                defaultValue={
+                  menuItem?.i18n.find((translation) => translation.language === language)?.name
+                }
               />
               <TextField
                 className={classes.textField}
@@ -128,6 +137,10 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
                 name={`i18n[${index}].description`}
                 multiline={true}
                 inputRef={register}
+                defaultValue={
+                  menuItem?.i18n.find((translation) => translation.language === language)
+                    ?.description
+                }
               />
               <TextField
                 className={classes.textField}
@@ -135,6 +148,9 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
                 label={t("menu_form_category")}
                 name={`i18n[${index}].category`}
                 inputRef={register}
+                defaultValue={
+                  menuItem?.i18n.find((translation) => translation.language === language)?.category
+                }
               />
             </Box>
           ))}
@@ -143,9 +159,14 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({ languages, onCreate 
           creating ? (
             <CircularProgress color="secondary" />
           ) : (
-            <Button color="primary" variant="contained" type="submit">
-              {t("save")}
-            </Button>
+            <Box>
+              <Button color="primary" variant="contained" type="submit">
+                {t("save")}
+              </Button>
+              <Button onClick={() => seteditId("")} color="inherit" variant="outlined">
+                {t("cancel")}
+              </Button>
+            </Box>
           )
         ) : (
           <Typography>{t("menu_feedback_need_select_at_least_one_language")}</Typography>

@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { Language, MenuItemStatus } from "../../../API";
-import AddMenuItemForm from "./CreateMenuItemForm";
+import AddMenuItemForm from "./forms/CreateMenuItemForm";
 import { useTranslation } from "react-i18next";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
@@ -15,27 +15,27 @@ import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { TcategorizedMenuItems } from "./utils";
+import ISO6391 from "iso-639-1";
+
 import { TMenuState } from "../Menu";
+import { useTypedSelector } from "../../../store/types";
 
 type ICreateMenuItemFormWithLanguagesProps = {
   languages: Language[];
   setlanguages: React.Dispatch<React.SetStateAction<Language[]>>;
-  categorizedMenuItems: TcategorizedMenuItems;
-  setcategorizedMenuItems: React.Dispatch<React.SetStateAction<TcategorizedMenuItems>>;
   setState: React.Dispatch<React.SetStateAction<Record<string, TMenuState[string]>>>;
 };
 
 const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguagesProps> = ({
   languages,
   setlanguages,
-  categorizedMenuItems,
-  setcategorizedMenuItems,
   setState,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const classes = useStyles();
+  const { menu } = useTypedSelector((state) => state);
   const [showCreateForm, setshowCreateForm] = React.useState<boolean>(false);
-  const [newLanguage, setnewLanguage] = React.useState<Language>(Language["en"]);
+  const [newLanguage, setnewLanguage] = React.useState<Language>(i18n.language as Language);
 
   return (
     <>
@@ -43,8 +43,8 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
         <>
           <Typography>{t("menu_page_translated_languages")}</Typography>
           <Box className={classes.item}>
-            {languages.map((item, index) => (
-              <Chip key={index} label={item} />
+            {languages.map((item) => (
+              <Chip key={item} label={ISO6391.getName(item)} />
             ))}
           </Box>
         </>
@@ -65,7 +65,7 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
           >
             {Object.keys(Language).map((item) => (
               <MenuItem key={item} value={item}>
-                {item}
+                {ISO6391.getName(item)}
               </MenuItem>
             ))}
           </Select>
@@ -91,33 +91,12 @@ const CreateMenuItemFormWithLanguages: React.FC<ICreateMenuItemFormWithLanguages
       <Collapse in={showCreateForm}>
         <AddMenuItemForm
           onCreate={(data) => {
-            //   an item always has a category, if it hasn't been provided at creation => it's "Uncategorized"
-            const index = categorizedMenuItems?.findIndex(
-              (item) => item.category === data.createMenuItem?.i18n[0].category
-            );
-            const updatedCategorizedMenuItems =
-              index > -1
-                ? categorizedMenuItems.map((item) =>
-                    item.category === data.createMenuItem!.i18n[0]!.category
-                      ? { ...item, items: [...item.items, data.createMenuItem] }
-                      : item
-                  )
-                : [
-                    ...categorizedMenuItems,
-                    {
-                      category: data.createMenuItem?.i18n[0].category,
-                      items: [data.createMenuItem],
-                    },
-                  ];
-            setState((prev) => ({
-              ...prev,
-              [data.createMenuItem!.id]: {
-                favorite: data.createMenuItem?.favorite ? true : false,
-                status: data.createMenuItem?.status === MenuItemStatus["AVAILABLE"],
-              },
-            }));
-            // @ts-ignore
-            setcategorizedMenuItems(updatedCategorizedMenuItems);
+            // updateCategorizedMenuItems(
+            //   data,
+            //   categorizedMenuItems,
+            //   setcategorizedMenuItems,
+            //   setState
+            // )
           }}
           languages={languages}
         />

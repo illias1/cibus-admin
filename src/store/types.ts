@@ -1,5 +1,6 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { GetOrderQuery } from "../API";
+import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
 
 export type TStore = {
   orders: GetOrderQuery["getOrder"][];
@@ -8,6 +9,7 @@ export type TStore = {
     open: boolean;
     currency: string;
   };
+  menu: TcategorizedMenuItems;
 };
 
 export type OrderStatus =

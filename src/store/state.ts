@@ -8,4 +8,5 @@ export const initialState: TStore = {
     open: false,
     currency: "",
   },
+  menu: {},
 };

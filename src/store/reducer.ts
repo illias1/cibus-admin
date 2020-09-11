@@ -1,6 +1,12 @@
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { initialState } from "./state";
-import { setOrders, setSelectedProperty, updateOrderStatus, addRequestedOrder } from "./actions";
+import {
+  setOrders,
+  setSelectedProperty,
+  updateOrderStatus,
+  addRequestedOrder,
+  setupMenu,
+} from "./actions";
 import { LOCAL_STORAGE_PROPERTY } from "../utils/_constants";
 
 export const reducer = reducerWithInitialState(initialState)
@@ -30,4 +36,8 @@ export const reducer = reducerWithInitialState(initialState)
       ...state,
       orders: ret,
     };
-  });
+  })
+  .case(setupMenu, (state, menu) => ({
+    ...state,
+    menu,
+  }));

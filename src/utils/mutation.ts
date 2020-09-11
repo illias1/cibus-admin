@@ -22,3 +22,5 @@ export const mutation = async <ResultType extends {}, VariablesType extends {} =
     return { data: null, error };
   }
 };
+
+export type Tmutation = typeof mutation;

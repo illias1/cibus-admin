@@ -15,6 +15,8 @@ import {
 import Loader from "../../components/Loader";
 import CreateMenuItemFormWithLanguages from "./components/CreateMenuItemFormWithLanguages";
 import DisplayMenuItems from "./components/DisplayMenuItems";
+import { useDispatch } from "react-redux";
+import { setupMenu } from "../../store/actions";
 
 type IMenuProps = {};
 export type TMenuState = Record<
@@ -27,6 +29,7 @@ export type TMenuState = Record<
 
 const Menu: React.FC<IMenuProps> = ({ ...props }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { name } = useTypedSelector((state) => state.selectedProperty);
   const { loading, data } = useQuery<GetPropertyQuery, GetPropertyQueryVariables>(getProperty, {
     name,
@@ -49,15 +52,19 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
           {} as TMenuState
         )
       );
-      setcategorizedMenuItems(ordeMenuItemsByCategories(data.getProperty));
+      console.log("setState after receive data launched", state);
+      dispatch(setupMenu(ordeMenuItemsByCategories(data.getProperty)));
       if (data.getProperty.menu.items.length > 0) {
         setlanguages(data.getProperty.menu.items[0]!.i18n.map((item) => item.language));
       }
     }
   }, [data]);
-  const [categorizedMenuItems, setcategorizedMenuItems] = React.useState<TcategorizedMenuItems>([]);
+
   const [state, setState] = React.useState<TMenuState>({});
   const [languages, setlanguages] = React.useState<Language[]>([]);
+  React.useEffect(() => {
+    console.log("state", state);
+  }, [state]);
 
   return (
     <Box className={classes.page}>
@@ -65,18 +72,12 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
         setState={setState}
         languages={languages}
         setlanguages={setlanguages}
-        categorizedMenuItems={categorizedMenuItems}
-        setcategorizedMenuItems={setcategorizedMenuItems}
       />
 
       {loading ? (
         <Loader />
       ) : data && data.getProperty && ordeMenuItemsByCategories(data.getProperty) ? (
-        <DisplayMenuItems
-          categorizedMenuItems={categorizedMenuItems}
-          state={state}
-          setState={setState}
-        />
+        <DisplayMenuItems state={state} setState={setState} languages={languages} />
       ) : (
         "no menu items"
       )}

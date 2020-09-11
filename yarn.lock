@@ -3030,6 +3030,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-window@^1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@types/react-window/-/react-window-1.8.2.tgz#a5a6b2762ce73ffaab7911ee1397cf645f2459fe"
+  integrity sha512-gP1xam68Wc4ZTAee++zx6pTdDAH08rAkQrWm4B4F/y6hhmlT9Mgx2q8lTCXnrPHXsr15XjRN9+K2DLKcz44qEQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.9.0":
   version "16.9.44"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.44.tgz#da84b179c031aef67dc92c33bd3401f1da2fa3bc"
@@ -7443,6 +7450,11 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
+iso-639-1@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/iso-639-1/-/iso-639-1-2.1.4.tgz#c08b3d43a1c18945b05e26a257991ae6e36693ee"
+  integrity sha512-pwJRHnpz1sCR5saQ+Hm1E2YESw2eLGKP5TzsYKXuQ7SIfvKWMRb9CHhptqunYpCIcRCpq3LgLuhYG5hiLPRbFQ==
+
 isobject@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-2.1.0.tgz#f065561096a3f1da2ef46272f815c840d87e0c89"
@@ -8486,6 +8498,11 @@ mem@^4.0.0:
     map-age-cleaner "^0.1.1"
     mimic-fn "^2.0.0"
     p-is-promise "^2.0.0"
+
+"memoize-one@>=3.1.1 <6":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
+  integrity sha512-HKeeBpWvqiVJD57ZUAsJNm71eHTykffzcLZVYWiVfQeI1rJtuEaS7hQiEpWfVVk18donPwJEcFKIkCmPJNOhHA==
 
 memory-fs@^0.4.1:
   version "0.4.1"
@@ -10702,6 +10719,14 @@ react-use@^15.3.3:
     throttle-debounce "^2.1.0"
     ts-easing "^0.2.0"
     tslib "^2.0.0"
+
+react-window@^1.8.5:
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.8.5.tgz#a56b39307e79979721021f5d06a67742ecca52d1"
+  integrity sha512-HeTwlNa37AFa8MDZFZOKcNEkuF2YflA0hpGPiTT9vR7OawEt+GZbfM6wqkBahD3D3pUjIabQYzsnY/BSJbgq6Q==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    memoize-one ">=3.1.1 <6"
 
 react@^16.13.1:
   version "16.13.1"

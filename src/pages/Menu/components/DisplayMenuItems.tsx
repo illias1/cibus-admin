@@ -4,43 +4,61 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import MenuItemCard from "./MenuItem";
+import EditMenuItemForm from "./forms/EditMenuItemForm";
+import MenuItemWithOptions from "./MenuItemWithOptions";
 // icons
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import DeleteIcon from "@material-ui/icons/Delete";
 // utils
-import { updateMenuItem } from "../../../graphql/mutations";
+import { updateMenuItem, deleteMenuItem } from "../../../graphql/mutations";
 import {
   UpdateMenuItemMutation,
   UpdateMenuItemMutationVariables,
   MenuItemStatus,
+  Language,
+  DeleteMenuItemMutation,
+  DeleteMenuItemMutationVariables,
 } from "../../../API";
 import { mutation } from "../../../utils/mutation";
-import { TcategorizedMenuItems } from "./utils";
-import { Button, IconButton } from "@material-ui/core";
+import { TcategorizedMenuItems, updateCategorizedMenuItems } from "./utils";
 import { TMenuState } from "../Menu";
 import "./styles.css";
+import { UNCATEGORIZED } from "../../../utils/_constants";
+import { useTranslation } from "react-i18next";
+import { FixedSizeList as List } from "react-window";
+import { useTypedSelector } from "../../../store/types";
+
 type IDisplayMenuItemsProps = {
   state: TMenuState;
   setState: React.Dispatch<React.SetStateAction<TMenuState>>;
-  categorizedMenuItems: TcategorizedMenuItems;
+
+  languages: Language[];
 };
-type TShakeItemOption = Record<"favorite" | "status", string>;
+export type TShakeItemOption = Record<"favorite" | "status" | "whole", string>;
 const initialShakeItemOption: TShakeItemOption = {
   favorite: "",
   status: "",
+  whole: "",
 };
 
-const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
-  state,
-  setState,
-  categorizedMenuItems,
-}) => {
+// COMPONENT
+const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({ state, setState, languages }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
+  const { menu } = useTypedSelector((state) => state);
   const [shakeItemOption, setshakeItemOption] = React.useState<TShakeItemOption>(
     initialShakeItemOption
   );
-
+  const [editId, seteditId] = React.useState<string>("");
+  const [deleteId, setdeleteId] = React.useState<string>("");
+  // ============================================================================================================================================
+  // HADNLE TOGGLE
   const handleToggle = async (
     id: string,
     updatedState: boolean,
@@ -85,61 +103,133 @@ const DisplayMenuItems: React.FC<IDisplayMenuItemsProps> = ({
       }, 1000);
     }
   };
+  // ============================================================================================================================================
 
+  const handleDelete = async (id: string, category: string) => {
+    const { error, data } = await mutation<DeleteMenuItemMutation, DeleteMenuItemMutationVariables>(
+      deleteMenuItem,
+      {
+        input: {
+          id,
+        },
+      }
+    );
+    if (error) {
+      setshakeItemOption({
+        ...initialShakeItemOption,
+        whole: id,
+      });
+      setTimeout(() => {
+        setshakeItemOption(initialShakeItemOption);
+      }, 1000);
+    }
+    // if (data) {
+    //   setcategorizedMenuItems(
+    //     categorizedMenuItems.map((cat) =>
+    //       cat.category === category
+    //         ? { ...cat, items: cat.items.filter((menuItem) => menuItem!.id !== id) }
+    //         : cat
+    //     )
+    //   );
+    // }
+  };
   return (
     <Box className={classes.root}>
-      {categorizedMenuItems?.map(({ items, category }, i) => (
+      {Object.entries(menu)?.map(([category, items]) => (
         <React.Fragment key={category}>
-          <Typography id={`category-${category}`} className={classes.title} variant="h4">
+          <Typography id={`category-${category}`} className={classes.title} variant="h3">
             {category}
           </Typography>
-          {items.map((item, index) => (
-            <Box className={classes.item} key={index}>
+          {Object.entries(items).map(([id, item]) => (
+            <React.Fragment key={id}>
               {item ? (
-                <>
-                  <Box className={classes.itemContainer}>
-                    <MenuItemCard
-                      id={item.id}
-                      title={item!.i18n[0].name}
-                      ingredients={item!.i18n[0].description || ""}
-                      price={item!.price}
-                      img={item.image || ""}
-                    />
-                  </Box>
-                  <Box className={classes.options}>
-                    <IconButton
-                      className={shakeItemOption.favorite === item.id ? "shake-horizontal" : ""}
-                      onClick={() => handleToggle(item.id, !state[item.id].favorite, "favorite")}
-                      color="inherit"
-                    >
-                      {state[item.id].favorite ? (
-                        <FavoriteIcon color="primary" />
-                      ) : (
-                        <FavoriteBorderIcon />
-                      )}
-                    </IconButton>
-                    <FormControlLabel
-                      className={shakeItemOption.status === item.id ? "shake-horizontal" : ""}
-                      control={
-                        <Switch
-                          checked={state[item.id].status}
-                          onChange={(event) =>
-                            handleToggle(item.id, event.target.checked, "status")
-                          }
-                          name={item.id}
-                          color="primary"
+                <Box className={shakeItemOption.whole === item.id ? "shake-horizontal" : ""}>
+                  <Box className={classes.item}>
+                    <>
+                      <Box className={classes.itemContainer}>
+                        <MenuItemCard
+                          id={item.id}
+                          title={item!.i18n[0].name}
+                          ingredients={item!.i18n[0].description || ""}
+                          price={item!.price}
+                          img={item.image || ""}
                         />
-                      }
-                      label="Available"
-                    />
+                      </Box>
+                      <Box className={classes.options}>
+                        <IconButton
+                          className={shakeItemOption.favorite === item.id ? "shake-horizontal" : ""}
+                          onClick={() =>
+                            handleToggle(item.id, !state[item.id].favorite, "favorite")
+                          }
+                          color="inherit"
+                        >
+                          {state[item.id].favorite ? (
+                            <FavoriteIcon color="primary" />
+                          ) : (
+                            <FavoriteBorderIcon />
+                          )}
+                        </IconButton>
+                        <FormControlLabel
+                          className={shakeItemOption.status === item.id ? "shake-horizontal" : ""}
+                          control={
+                            <Switch
+                              checked={state[item.id].status}
+                              onChange={(event) =>
+                                handleToggle(item.id, event.target.checked, "status")
+                              }
+                              name={item.id}
+                              color="primary"
+                            />
+                          }
+                          label="Available"
+                        />
 
-                    <Button variant="outlined" color="secondary">
-                      Edit
-                    </Button>
+                        <Button onClick={() => seteditId(item.id)} color="inherit">
+                          {t("edit")}
+                        </Button>
+
+                        {deleteId === item.id ? (
+                          <ClickAwayListener onClickAway={() => setdeleteId("")}>
+                            <Button
+                              onClick={() => handleDelete(item.id, category)}
+                              variant="outlined"
+                              className={classes.delete}
+                            >
+                              {t("delete")}
+                            </Button>
+                          </ClickAwayListener>
+                        ) : (
+                          <IconButton onClick={() => setdeleteId(item.id)} color="inherit">
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
+                      </Box>
+                    </>
                   </Box>
-                </>
+
+                  <Collapse style={{ textAlign: "center" }} in={item.id === editId}>
+                    <EditMenuItemForm
+                      menuItem={item}
+                      languages={languages}
+                      onEdit={(data) => {
+                        // updateCategorizedMenuItems(
+                        //   data,
+                        //   categorizedMenuItems,
+                        //   setcategorizedMenuItems,
+                        //   setState,
+                        //   {
+                        //     category: item.i18n[0].category ? item.i18n[0].category : UNCATEGORIZED,
+                        //     id: item.id,
+                        //   }
+                        // );
+                        seteditId("");
+                      }}
+                      seteditId={seteditId}
+                    />
+                  </Collapse>
+                </Box>
               ) : null}
-            </Box>
+            </React.Fragment>
           ))}
         </React.Fragment>
       ))}
@@ -175,6 +265,9 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "space-evenly",
       width: "100%",
+    },
+    delete: {
+      color: theme.palette.error.main,
     },
   })
 );
