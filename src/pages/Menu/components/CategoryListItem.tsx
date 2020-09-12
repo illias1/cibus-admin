@@ -10,24 +10,38 @@ import { TNonNullMenuItem } from "../../../types";
 
 type ICategoryListItemProps = {
   setopenDrawer: React.Dispatch<
-    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null; resetListIndex: number }>
   >;
+  resetListIndex: number;
 };
+const listRef = React.createRef<VariableSizeList>();
 
-const CategoryListItem: React.FC<ICategoryListItemProps> = ({ setopenDrawer }) => {
+const CategoryListItem: React.FC<ICategoryListItemProps> = ({ setopenDrawer, resetListIndex }) => {
   const theme = useTheme();
   const desktopTrue = useMediaQuery(theme.breakpoints.up("md"));
   const tabletTrue = useMediaQuery(theme.breakpoints.up("sm"));
   const { categorizedItems, categoriesNumber } = useTypedSelector((state) => state.menu);
 
-  const getItemSize = (index: number) =>
-    Object.keys(Object.entries(categorizedItems)[index][1]).length * 110 + 90;
+  React.useEffect(() => {
+    listRef.current?.resetAfterIndex(resetListIndex);
+  }, [resetListIndex]);
+  const getItemSize = (index: number) => {
+    console.log(
+      "Object.keys(Object.entries(categorizedItems)[index][1]).length * 110 + 90",
+      "index",
+      index,
+      "values",
+      Object.keys(Object.entries(categorizedItems)[index][1]).length * 110 + 90
+    );
+    return Object.keys(Object.entries(categorizedItems)[index][1]).length * 110 + 90;
+  };
 
   return (
     <VariableSizeList
       itemData={Object.entries(categorizedItems)}
       height={1000}
       itemCount={categoriesNumber}
+      ref={listRef}
       itemSize={getItemSize}
       width={400}
       style={{ width: desktopTrue ? 700 : tabletTrue ? 400 : "90%" }}

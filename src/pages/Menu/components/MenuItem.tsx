@@ -1,4 +1,4 @@
-import React, { Dispatch } from "react";
+import React from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
@@ -17,7 +17,6 @@ import { priceDisplay } from "./utils";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { TNonNullMenuItem } from "../../../types";
-import { useDispatch } from "react-redux";
 import { mutation } from "../../../utils/mutation";
 import { updateMenuItem } from "../../../graphql/mutations";
 import "./styles.css";
@@ -25,7 +24,7 @@ import "./styles.css";
 type TItem = {
   item: TNonNullMenuItem;
   setopenDrawer: React.Dispatch<
-    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null; resetListIndex: number }>
   >; // title: string;
   // price: number;
   // ingredients?: string;
@@ -112,7 +111,7 @@ const Item: React.FC<TItem> = ({
         checked={FavStatusState.status ? true : false}
         onChange={(event) => handleToggle(id, event.target.checked, "status")}
       />
-      <Button onClick={() => setopenDrawer({ open: true, item })}>edit</Button>
+      <Button onClick={() => setopenDrawer((prev) => ({ ...prev, open: true, item }))}>edit</Button>
     </Box>
   );
   return (
@@ -202,4 +201,4 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default Item;
+export default React.memo(Item);

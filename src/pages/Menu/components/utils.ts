@@ -9,7 +9,7 @@ import {
   GetMenuItemQuery,
 } from "../../../API";
 import { TNonNullMenuItem } from "../../../types";
-import { Inputs } from "./forms/CreateMenuItemForm";
+import { Inputs } from "./CreateMenuItemForm";
 import { UNCATEGORIZED } from "../../../utils/_constants";
 
 export type TcategorizedMenuItems = Record<string, Record<string, TNonNullMenuItem>>;

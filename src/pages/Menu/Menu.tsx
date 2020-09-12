@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setupMenu } from "../../store/actions";
 import CategoryListItem from "./components/CategoryListItem";
 import { TNonNullMenuItem } from "../../types";
+import { VariableSizeList } from "react-window";
 type IMenuProps = {};
 export type TMenuState = Record<
   string,
@@ -40,6 +41,7 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
       return;
     }
     setopenDrawer({
+      ...openDrawer,
       open: false,
       item: null,
     });
@@ -48,15 +50,18 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
   const [openDrawer, setopenDrawer] = React.useState<{
     open: boolean;
     item: TNonNullMenuItem | null;
+    resetListIndex: number;
   }>({
     open: false,
     item: null,
+    resetListIndex: 200,
   });
   return (
     <Box id="menuContainer" className={classes.page}>
       <Fab
         onClick={() =>
           setopenDrawer({
+            ...openDrawer,
             open: true,
             item: null,
           })
@@ -76,7 +81,14 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
       >
         <CreateMenuItemFormWithLanguages openDrawer={openDrawer} setopenDrawer={setopenDrawer} />
       </Drawer>
-      {loading ? <Loader /> : <CategoryListItem setopenDrawer={setopenDrawer} />}
+      {loading ? (
+        <Loader />
+      ) : (
+        <CategoryListItem
+          resetListIndex={openDrawer.resetListIndex}
+          setopenDrawer={setopenDrawer}
+        />
+      )}
     </Box>
   );
 };

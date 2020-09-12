@@ -1,10 +1,9 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { Language, MenuItemStatus } from "../../../API";
-import AddMenuItemForm from "./forms/CreateMenuItemForm";
+import { Language } from "../../../API";
+import AddMenuItemForm from "./CreateMenuItemForm";
 import { useTranslation } from "react-i18next";
 import Box from "@material-ui/core/Box";
-import Collapse from "@material-ui/core/Collapse";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import FormControl from "@material-ui/core/FormControl";
@@ -12,20 +11,17 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import { TcategorizedMenuItems } from "./utils";
 import ISO6391 from "iso-639-1";
 
-import { TMenuState } from "../Menu";
 import { useTypedSelector } from "../../../store/types";
 import { TNonNullMenuItem } from "../../../types";
 
 type ICreateMenuItemFormWithlangsProps = {
   setopenDrawer: React.Dispatch<
-    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null; resetListIndex: number }>
   >;
-  openDrawer: { open: boolean; item: TNonNullMenuItem | null };
+  openDrawer: { open: boolean; item: TNonNullMenuItem | null; resetListIndex: number };
 };
 
 const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> = ({

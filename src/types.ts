@@ -14,3 +14,5 @@ export type TNonNullMenuItem = NonNullable<GetMenuItemQuery["getMenuItem"]>;
 // };
 
 export type TNonNullPropertyQuery = NonNullable<GetPropertyQuery["getProperty"]>;
+
+export type TAppSyncError = { data: any; errors: [{ message: string }] };
