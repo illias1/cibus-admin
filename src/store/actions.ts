@@ -1,8 +1,7 @@
 import actionCreatorFactory from "typescript-fsa";
 import { TStore } from "./types";
-import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
 import { TNonNullPropertyQuery } from "../types";
-import { Language, UpdateMenuItemMutation, CreateMenuItemMutation } from "../API";
+import { UpdateMenuItemMutation, CreateMenuItemMutation } from "../API";
 
 const actionCreator = actionCreatorFactory();
 

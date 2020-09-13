@@ -19,9 +19,9 @@ import { TNonNullMenuItem } from "../../../types";
 
 type ICreateMenuItemFormWithlangsProps = {
   setopenDrawer: React.Dispatch<
-    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null; resetListIndex: number }>
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
   >;
-  openDrawer: { open: boolean; item: TNonNullMenuItem | null; resetListIndex: number };
+  openDrawer: { open: boolean; item: TNonNullMenuItem | null };
 };
 
 const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> = ({
@@ -54,6 +54,7 @@ const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> =
             {t("menu_page_new_translation")}
           </InputLabel>
           <Select
+            label={t("menu_page_new_translation")}
             labelId="demo-simple-select-filled-label"
             value={newLanguage}
             onChange={(e) => {

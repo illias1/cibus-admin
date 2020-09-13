@@ -13,7 +13,6 @@ import { useDispatch } from "react-redux";
 import { setupMenu } from "../../store/actions";
 import CategoryListItem from "./components/CategoryListItem";
 import { TNonNullMenuItem } from "../../types";
-import { VariableSizeList } from "react-window";
 type IMenuProps = {};
 export type TMenuState = Record<
   string,
@@ -50,11 +49,9 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
   const [openDrawer, setopenDrawer] = React.useState<{
     open: boolean;
     item: TNonNullMenuItem | null;
-    resetListIndex: number;
   }>({
     open: false,
     item: null,
-    resetListIndex: 200,
   });
   return (
     <Box id="menuContainer" className={classes.page}>
@@ -81,14 +78,7 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
       >
         <CreateMenuItemFormWithLanguages openDrawer={openDrawer} setopenDrawer={setopenDrawer} />
       </Drawer>
-      {loading ? (
-        <Loader />
-      ) : (
-        <CategoryListItem
-          resetListIndex={openDrawer.resetListIndex}
-          setopenDrawer={setopenDrawer}
-        />
-      )}
+      {loading ? <Loader /> : <CategoryListItem setopenDrawer={setopenDrawer} />}
     </Box>
   );
 };
@@ -104,10 +94,19 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: 30,
     },
     fab: {
-      position: "absolute",
+      position: "fixed",
       bottom: "75px",
-      right: "15%",
+      right: 20,
       zIndex: 1,
+      [theme.breakpoints.up("sm")]: {
+        right: 100,
+      },
+      [theme.breakpoints.up("md")]: {
+        right: 150,
+      },
+      [theme.breakpoints.up("lg")]: {
+        right: "15%",
+      },
     },
     drawer: {
       width: "50%",

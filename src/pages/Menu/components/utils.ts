@@ -93,11 +93,13 @@ export const isUpdateMenuItemMutation = (
 
 export const prepareInputsForCreateMutation = (
   inputs: Inputs,
-  propertyName: string
+  propertyName: string,
+  image?: string
 ): CreateMenuItemInput => {
   return {
     ...inputs,
     propertyName,
+    image,
     status: MenuItemStatus["AVAILABLE"],
     favorite: false,
     price: Number(inputs.price),
@@ -112,10 +114,15 @@ export const prepareInputsForCreateMutation = (
   };
 };
 
-export const prepareInputsForUpdateMutation = (inputs: Inputs, id: string): UpdateMenuItemInput => {
+export const prepareInputsForUpdateMutation = (
+  inputs: Inputs,
+  id: string,
+  image?: string
+): UpdateMenuItemInput => {
   return {
     ...inputs,
     price: Number(inputs.price),
+    image,
     id,
     i18n: inputs.i18n.map((langObj) =>
       langObj.category

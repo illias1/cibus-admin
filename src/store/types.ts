@@ -1,7 +1,6 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { GetOrderQuery, Language } from "../API";
 import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
-import { TNonNullMenuItem } from "../types";
 
 export type TStore = {
   orders: GetOrderQuery["getOrder"][];

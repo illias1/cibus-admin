@@ -20,11 +20,12 @@ import { TNonNullMenuItem } from "../../../types";
 import { mutation } from "../../../utils/mutation";
 import { updateMenuItem } from "../../../graphql/mutations";
 import "./styles.css";
+import { AmplifyS3Image } from "@aws-amplify/ui-react";
 
 type TItem = {
   item: TNonNullMenuItem;
   setopenDrawer: React.Dispatch<
-    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null; resetListIndex: number }>
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
   >; // title: string;
   // price: number;
   // ingredients?: string;
@@ -135,15 +136,21 @@ const Item: React.FC<TItem> = ({
       </Box>
 
       {phoneTrue ? <> </> : options}
-      <img
-        id={id}
-        className={classes.cover}
-        src={image || ""}
-        alt={item.i18n[0].name}
-        onError={() => {
-          document.getElementById(id)!.style.display = "none";
-        }}
-      />
+      {image ? (
+        image.includes("http") ? (
+          <img
+            id={id}
+            className={classes.cover}
+            src={image || ""}
+            alt={item.i18n[0].name}
+            onError={() => {
+              document.getElementById(id)!.style.display = "none";
+            }}
+          />
+        ) : (
+          <AmplifyS3Image className={classes.cover} imgKey={image} />
+        )
+      ) : null}
     </Card>
   );
 };
@@ -167,6 +174,10 @@ const useStyles = makeStyles((theme) =>
       minWidth: 107,
       maxWidth: 107,
       height: 100,
+      "&$ img": {
+        width: "100%",
+        height: "100%",
+      },
     },
 
     tileAndPrice: {

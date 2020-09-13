@@ -30,15 +30,16 @@ import { useDispatch } from "react-redux";
 import { TAppSyncError, TNonNullMenuItem } from "../../../types";
 import { setDeleteMenuItem, setAddNewMenuItem, setUpdateMenuItem } from "../../../store/actions";
 import { prepareInputsForUpdateMutation, prepareInputsForCreateMutation } from "./utils";
-import { VariableSizeList } from "react-window";
+import { v4 as uuid } from "uuid";
+import { Storage } from "aws-amplify";
 
 type IaddMenuItemFormProps = {
   languages: Language[];
   onCreate: (data: CreateMenuItemMutation) => void;
   setopenDrawer: React.Dispatch<
-    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null; resetListIndex: number }>
+    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
   >;
-  openDrawer: { open: boolean; item: TNonNullMenuItem | null; resetListIndex: number };
+  openDrawer: { open: boolean; item: TNonNullMenuItem | null };
 };
 
 export type Inputs = {
@@ -62,7 +63,6 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
   const classes = useStyles();
   const { t } = useTranslation();
   const { name, currency } = useTypedSelector((state) => state.selectedProperty);
-  const { categorizedItems } = useTypedSelector((state) => state.menu);
   const dispatch = useDispatch();
   const { item } = openDrawer;
   // const { item } = useTypedSelector((state) => state.menu.edit);
@@ -93,9 +93,6 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
         setopenDrawer({
           open: false,
           item: null,
-          resetListIndex: Object.keys(categorizedItems).findIndex(
-            (cat) => cat === data.deleteMenuItem?.i18n[0].category
-          ),
         });
       }
     } else {
@@ -103,9 +100,26 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
     }
   };
   const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
+    let imageKey;
+    if (photo.selected) {
+      try {
+        imageKey = await Storage.put(`${name}/${uuid()}`, photo.image);
+      } catch (error) {
+        seterrorMessage("error uploading image");
+        return;
+      }
+    }
     const inputsMadeReadyForSubmission = item
-      ? prepareInputsForUpdateMutation(inputs, item.id)
-      : prepareInputsForCreateMutation(inputs, name);
+      ? prepareInputsForUpdateMutation(
+          inputs,
+          item.id,
+          imageKey ? (imageKey as { key: string }).key : ""
+        )
+      : prepareInputsForCreateMutation(
+          inputs,
+          name,
+          imageKey ? (imageKey as { key: string }).key : ""
+        );
     setcreating(true);
     const { data, error } = await mutation<CreateMenuItemMutation, CreateMenuItemMutationVariables>(
       item ? updateMenuItem : createMenuItem,
@@ -129,9 +143,6 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
         setopenDrawer({
           open: false,
           item: null,
-          resetListIndex: Object.keys(categorizedItems).findIndex(
-            (cat) => cat === result.i18n[0].category
-          ),
         });
       }
       if (item !== null && result) {
@@ -147,14 +158,17 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
         setopenDrawer({
           open: false,
           item: null,
-          resetListIndex: Object.keys(categorizedItems).findIndex(
-            (cat) => cat === result.i18n[0].category || cat === item.i18n[0].category
-          ),
         });
       }
     }
   };
-
+  const [photo, setphoto] = React.useState<{
+    selected: boolean;
+    image: File | null | undefined;
+  }>({
+    selected: false,
+    image: null,
+  });
   return (
     <FormControl>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
@@ -198,6 +212,20 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
           name="callories"
           inputRef={register}
           defaultValue={item && item.callories ? item.callories : ""}
+        />
+        <input
+          onChange={async (e) => {
+            // if (e.target.files && e.target.files.item(0)) {
+            setphoto({
+              selected: true,
+              image: e.target.files?.item(0),
+            });
+            // }
+          }}
+          accept="image/*"
+          id="uploadPhotoMenuItem"
+          style={{ display: "none" }}
+          type="file"
         />
         <Typography>{t("menu_page_your_translation_in")}</Typography>
         <Box className={classes.languagesBox}>
@@ -249,12 +277,18 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
             </Box>
           ))}
         </Box>
+        <Button
+          variant="outlined"
+          onClick={() => document.getElementById("uploadPhotoMenuItem")?.click()}
+        >
+          {t("menu_upload_photo")}
+        </Button>
         {errorMessage.length > 0 && <Typography color="error">{errorMessage}</Typography>}
         {languages.length > 0 ? (
           creating ? (
             <CircularProgress color="secondary" />
           ) : (
-            <Button color="primary" variant="contained" type="submit">
+            <Button className={classes.save} color="primary" variant="contained" type="submit">
               {t("save")}
             </Button>
           )
@@ -287,6 +321,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     delete: {
       color: theme.palette.error.main,
+    },
+    save: {
+      marginTop: 20,
+      marginBottom: 10,
     },
   })
 );
