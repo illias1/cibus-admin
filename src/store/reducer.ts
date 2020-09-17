@@ -9,6 +9,7 @@ import {
   setDeleteMenuItem,
   setAddNewMenuItem,
   setUpdateMenuItem,
+  setupMenuComponents,
 } from "./actions";
 import { LOCAL_STORAGE_PROPERTY, UNCATEGORIZED } from "../utils/_constants";
 
@@ -48,7 +49,8 @@ export const reducer = reducerWithInitialState(initialState)
   //   ...state,
   //   menu,
   // }));
-  .case(setupMenu, (state, payload) => {
+  .case(setupMenu, (state, { menuComponents, menu }) => {
+    const payload = menu;
     if (payload && payload.items) {
       const itemsByCategory: TcategorizedMenuItems = {};
       const languages: Language[] = [];
@@ -82,6 +84,7 @@ export const reducer = reducerWithInitialState(initialState)
           categoriesNumber: Object.keys(itemsByCategory).length,
           categorizedItems: itemsByCategory,
           languages,
+          menuComponents: menuComponents ? menuComponents : [],
         },
       };
     }
@@ -140,4 +143,11 @@ export const reducer = reducerWithInitialState(initialState)
         },
       },
     };
-  });
+  })
+  .case(setupMenuComponents, (state, menuComponents) => ({
+    ...state,
+    menu: {
+      ...state.menu,
+      menuComponents: menuComponents || [],
+    },
+  }));

@@ -15,9 +15,6 @@
       "auth": {
         "cibusadmin15af6c37": {},
         "userPoolGroups": {}
-      },
-      "function": {
-        "S3Trigger650276a9": {}
       }
     }
   },
@@ -59,9 +56,6 @@
       "auth": {
         "cibusadmin15af6c37": {},
         "userPoolGroups": {}
-      },
-      "function": {
-        "S3Trigger650276a9": {}
       }
     }
   }

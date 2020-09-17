@@ -1,70 +1,54 @@
 {
-    "auth": {
-        "cibusadmin15af6c37": {
-            "service": "Cognito",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": []
-        },
-        "userPoolGroups": {
-            "service": "Cognito-UserPool-Groups",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "auth",
-                    "resourceName": "cibusadmin15af6c37",
-                    "attributes": [
-                        "UserPoolId",
-                        "AppClientIDWeb",
-                        "AppClientID",
-                        "IdentityPoolId"
-                    ]
-                }
-            ]
-        }
+  "auth": {
+    "cibusadmin15af6c37": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     },
-    "api": {
-        "cibusDev": {
-            "service": "AppSync",
-            "providerPlugin": "awscloudformation",
-            "output": {
-                "authConfig": {
-                    "defaultAuthentication": {
-                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-                        "userPoolConfig": {
-                            "userPoolId": "authcibusadmin15af6c37"
-                        }
-                    },
-                    "additionalAuthenticationProviders": [
-                        {
-                            "authenticationType": "AWS_IAM"
-                        }
-                    ]
-                }
-            }
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "cibusadmin15af6c37",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
         }
-    },
-    "function": {
-        "S3Trigger650276a9": {
-            "service": "Lambda",
-            "providerPlugin": "awscloudformation",
-            "build": true
-        }
-    },
-    "storage": {
-        "menuItemImages": {
-            "service": "S3",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "S3Trigger650276a9",
-                    "attributes": [
-                        "Name",
-                        "Arn",
-                        "LambdaExecutionRole"
-                    ]
-                }
-            ]
-        }
+      ]
     }
+  },
+  "api": {
+    "cibusDev": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authcibusadmin15af6c37"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "function": {},
+  "storage": {
+    "menuItemImages": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
+  }
 }

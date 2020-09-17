@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setupMenu } from "../../store/actions";
 import CategoryListItem from "./components/CategoryListItem";
 import { TNonNullMenuItem } from "../../types";
+import ComponentCreateFormWithLanguages from "./components/ComponentCreateFormWithLanguages";
 type IMenuProps = {};
 export type TMenuState = Record<
   string,
@@ -22,6 +23,12 @@ export type TMenuState = Record<
   }
 >;
 
+export type TDrawerState = {
+  open: boolean;
+  item: TNonNullMenuItem | null;
+  manageComponents?: boolean;
+};
+
 const Menu: React.FC<IMenuProps> = ({ ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -30,8 +37,8 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
     name,
   });
   React.useEffect(() => {
-    if (data && data.getProperty && data.getProperty.menu) {
-      dispatch(setupMenu(data.getProperty.menu));
+    if (data && data.getProperty) {
+      dispatch(setupMenu(data.getProperty));
     }
   }, [data]);
 
@@ -46,12 +53,10 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
     });
   };
 
-  const [openDrawer, setopenDrawer] = React.useState<{
-    open: boolean;
-    item: TNonNullMenuItem | null;
-  }>({
+  const [openDrawer, setopenDrawer] = React.useState<TDrawerState>({
     open: false,
     item: null,
+    manageComponents: false,
   });
   return (
     <Box id="menuContainer" className={classes.page}>
@@ -76,7 +81,11 @@ const Menu: React.FC<IMenuProps> = ({ ...props }) => {
         open={openDrawer.open}
         onClose={toggleDrawer}
       >
-        <CreateMenuItemFormWithLanguages openDrawer={openDrawer} setopenDrawer={setopenDrawer} />
+        {openDrawer.manageComponents ? (
+          <ComponentCreateFormWithLanguages setopenDrawer={setopenDrawer} />
+        ) : (
+          <CreateMenuItemFormWithLanguages openDrawer={openDrawer} setopenDrawer={setopenDrawer} />
+        )}
       </Drawer>
       {loading ? <Loader /> : <CategoryListItem setopenDrawer={setopenDrawer} />}
     </Box>

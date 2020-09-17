@@ -6,11 +6,14 @@ import {
   CreateMenuItemMutation,
   CreateMenuItemInput,
   UpdateMenuItemInput,
-  GetMenuItemQuery,
+  MenuCompType,
+  MenuComponentInput,
 } from "../../../API";
 import { TNonNullMenuItem } from "../../../types";
 import { Inputs } from "./CreateMenuItemForm";
 import { UNCATEGORIZED } from "../../../utils/_constants";
+import { TStore } from "../../../store/types";
+import { TFormInputs } from "./ComponentCreateForm";
 
 export type TcategorizedMenuItems = Record<string, Record<string, TNonNullMenuItem>>;
 
@@ -28,6 +31,26 @@ export const priceDisplay = (currency: Currency, price: number, language: Langua
 export type GetPropertyQuery = {
   getProperty: {
     __typename: "Property";
+    menuComponents: Array<{
+      __typename: "MenuComponent";
+      id: string;
+      type: MenuCompType;
+      translations: Array<{
+        __typename: "MenuCompTransl";
+        language: Language;
+        label: string;
+        optionChoice: Array<{
+          __typename: "ItemOptionChoice";
+          name: string;
+          addPrice: number | null;
+        }>;
+      }>;
+      restrictions: {
+        __typename: "MenuCompRestr";
+        max: number | null;
+        exact: number | null;
+      } | null;
+    }> | null;
     menu: {
       __typename: "ModelMenuItemConnection";
       items: Array<{
@@ -35,6 +58,7 @@ export type GetPropertyQuery = {
         id: string;
         propertyName: string;
         price: number;
+        addComponents: Array<string | null> | null;
         favorite: boolean;
         status: MenuItemStatus;
         allergyInfo: string | null;
@@ -74,6 +98,7 @@ export const getProperty = /* GraphQL */ `
           status
           allergyInfo
           favorite
+          addComponents
           callories
           image
           notes
@@ -82,6 +107,22 @@ export const getProperty = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      menuComponents {
+        id
+        type
+        translations {
+          language
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        restrictions {
+          max
+          exact
+        }
       }
     }
   }
@@ -92,16 +133,25 @@ export const isUpdateMenuItemMutation = (
 ): data is UpdateMenuItemMutation => (data as UpdateMenuItemMutation).updateMenuItem !== undefined;
 
 export const prepareInputsForCreateMutation = (
-  inputs: Inputs,
+  originalInputs: Inputs,
   propertyName: string,
+  menuComponents: TStore["menu"]["menuComponents"],
   image?: string
 ): CreateMenuItemInput => {
+  const { addComponents, ...inputs } = originalInputs;
+  const preparedAddComp = addComponents
+    ? (addComponents
+        .map((compBool, index) => (compBool ? menuComponents[index].id : false))
+        .filter((item) => item) as string[])
+    : undefined;
+
   return {
     ...inputs,
     propertyName,
     image,
     status: MenuItemStatus["AVAILABLE"],
     favorite: false,
+    addComponents: preparedAddComp,
     price: Number(inputs.price),
     i18n: inputs.i18n.map((langObj) =>
       langObj.category
@@ -115,14 +165,22 @@ export const prepareInputsForCreateMutation = (
 };
 
 export const prepareInputsForUpdateMutation = (
-  inputs: Inputs,
+  originalInputs: Inputs,
   id: string,
+  menuComponents: TStore["menu"]["menuComponents"],
   image?: string
 ): UpdateMenuItemInput => {
+  const { addComponents, ...inputs } = originalInputs;
+  const preparedAddComp = addComponents
+    ? (addComponents
+        .map((compBool, index) => (compBool ? menuComponents[index].id : false))
+        .filter((item) => item) as string[])
+    : undefined;
   return {
     ...inputs,
     price: Number(inputs.price),
     image,
+    addComponents: preparedAddComp,
     id,
     i18n: inputs.i18n.map((langObj) =>
       langObj.category
@@ -134,3 +192,77 @@ export const prepareInputsForUpdateMutation = (
     ),
   };
 };
+
+export const setupExistingFields = (
+  setValue: any,
+  item: MenuComponentInput,
+  langs: Language[],
+  append: (
+    value: Partial<Record<string, any>> | Partial<Record<string, any>>[],
+    shouldFocus?: boolean | undefined
+  ) => void
+) => {
+  if (item && item.translations.every((transl) => langs.includes(transl.language))) {
+    setValue("max", item.restrictions?.max || undefined);
+    setValue("exact", item.restrictions?.exact || undefined);
+    setValue("type", item.type || "CHECKBOX");
+    langs.forEach((lang, langIndex) => {
+      setValue(
+        `labels[${langIndex}]`,
+        item.translations.find((transl) => transl.language === lang)?.label
+      );
+      console.log(item.translations.find((transl) => transl.language === lang)?.label);
+    });
+    append(
+      item.translations[0].optionChoice.map((option, optionIndex) => ({
+        addPrice: option.addPrice,
+        name: item.translations.map((trans) => trans.optionChoice[optionIndex].name),
+      }))
+    );
+  }
+};
+
+export const prepareFormFieldsToSubmission = (
+  data: TFormInputs,
+  langs: Language[]
+): MenuComponentInput => {
+  return {
+    restrictions: {
+      max: Number(data.max),
+      exact: Number(data.exact),
+    },
+    type: data.type,
+    id: Math.random().toString(36),
+    translations: data.labels.map((labelInLang, langIndex) => ({
+      label: labelInLang,
+      language: langs[langIndex],
+      optionChoice: data.options.map((optionWithMultipleTranslationsInNameObject) => ({
+        name: optionWithMultipleTranslationsInNameObject.name[langIndex],
+        addPrice: Number(optionWithMultipleTranslationsInNameObject.addPrice),
+      })),
+    })),
+  };
+};
+
+export const updatePropertyForMenuComponents = /* GraphQL */ `
+  mutation UpdateProperty($input: UpdatePropertyInput!, $condition: ModelPropertyConditionInput) {
+    updateProperty(input: $input, condition: $condition) {
+      menuComponents {
+        id
+        type
+        translations {
+          language
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        restrictions {
+          max
+          exact
+        }
+      }
+    }
+  }
+`;
