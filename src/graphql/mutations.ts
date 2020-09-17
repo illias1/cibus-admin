@@ -20,14 +20,58 @@ export const createUser = /* GraphQL */ `
           NonUniqueName
           open
           ownerId
+          menuComponents {
+            id
+            type
+            translations {
+              language
+              label
+            }
+            restrictions {
+              max
+              exact
+            }
+          }
           tables
           currency
+          address {
+            country
+            city
+            exact
+          }
+          image {
+            main
+          }
           createdAt
           updatedAt
           menu {
+            items {
+              id
+              propertyName
+              price
+              addComponents
+              status
+              favorite
+              allergyInfo
+              callories
+              image
+              notes
+              createdAt
+              updatedAt
+              owner
+            }
             nextToken
           }
           orders {
+            items {
+              id
+              propertyName
+              createdAt
+              status
+              tableName
+              priceTotal
+              updatedAt
+            }
             nextToken
           }
         }
@@ -54,14 +98,58 @@ export const updateUser = /* GraphQL */ `
           NonUniqueName
           open
           ownerId
+          menuComponents {
+            id
+            type
+            translations {
+              language
+              label
+            }
+            restrictions {
+              max
+              exact
+            }
+          }
           tables
           currency
+          address {
+            country
+            city
+            exact
+          }
+          image {
+            main
+          }
           createdAt
           updatedAt
           menu {
+            items {
+              id
+              propertyName
+              price
+              addComponents
+              status
+              favorite
+              allergyInfo
+              callories
+              image
+              notes
+              createdAt
+              updatedAt
+              owner
+            }
             nextToken
           }
           orders {
+            items {
+              id
+              propertyName
+              createdAt
+              status
+              tableName
+              priceTotal
+              updatedAt
+            }
             nextToken
           }
         }
@@ -88,14 +176,58 @@ export const deleteUser = /* GraphQL */ `
           NonUniqueName
           open
           ownerId
+          menuComponents {
+            id
+            type
+            translations {
+              language
+              label
+            }
+            restrictions {
+              max
+              exact
+            }
+          }
           tables
           currency
+          address {
+            country
+            city
+            exact
+          }
+          image {
+            main
+          }
           createdAt
           updatedAt
           menu {
+            items {
+              id
+              propertyName
+              price
+              addComponents
+              status
+              favorite
+              allergyInfo
+              callories
+              image
+              notes
+              createdAt
+              updatedAt
+              owner
+            }
             nextToken
           }
           orders {
+            items {
+              id
+              propertyName
+              createdAt
+              status
+              tableName
+              priceTotal
+              updatedAt
+            }
             nextToken
           }
         }
@@ -114,8 +246,32 @@ export const createProperty = /* GraphQL */ `
       NonUniqueName
       open
       ownerId
+      menuComponents {
+        id
+        type
+        translations {
+          language
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        restrictions {
+          max
+          exact
+        }
+      }
       tables
       currency
+      address {
+        country
+        city
+        exact
+      }
+      image {
+        main
+      }
       createdAt
       updatedAt
       menu {
@@ -129,6 +285,7 @@ export const createProperty = /* GraphQL */ `
             description
           }
           price
+          addComponents
           status
           favorite
           allergyInfo
@@ -146,6 +303,7 @@ export const createProperty = /* GraphQL */ `
           id
           propertyName
           orderItem {
+            id
             name
             price
             quantity
@@ -173,8 +331,32 @@ export const updateProperty = /* GraphQL */ `
       NonUniqueName
       open
       ownerId
+      menuComponents {
+        id
+        type
+        translations {
+          language
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        restrictions {
+          max
+          exact
+        }
+      }
       tables
       currency
+      address {
+        country
+        city
+        exact
+      }
+      image {
+        main
+      }
       createdAt
       updatedAt
       menu {
@@ -188,6 +370,7 @@ export const updateProperty = /* GraphQL */ `
             description
           }
           price
+          addComponents
           status
           favorite
           allergyInfo
@@ -205,6 +388,7 @@ export const updateProperty = /* GraphQL */ `
           id
           propertyName
           orderItem {
+            id
             name
             price
             quantity
@@ -232,8 +416,32 @@ export const deleteProperty = /* GraphQL */ `
       NonUniqueName
       open
       ownerId
+      menuComponents {
+        id
+        type
+        translations {
+          language
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        restrictions {
+          max
+          exact
+        }
+      }
       tables
       currency
+      address {
+        country
+        city
+        exact
+      }
+      image {
+        main
+      }
       createdAt
       updatedAt
       menu {
@@ -247,6 +455,7 @@ export const deleteProperty = /* GraphQL */ `
             description
           }
           price
+          addComponents
           status
           favorite
           allergyInfo
@@ -264,6 +473,7 @@ export const deleteProperty = /* GraphQL */ `
           id
           propertyName
           orderItem {
+            id
             name
             price
             quantity
@@ -296,6 +506,7 @@ export const createMenuItem = /* GraphQL */ `
         description
       }
       price
+      addComponents
       status
       favorite
       allergyInfo
@@ -323,6 +534,7 @@ export const updateMenuItem = /* GraphQL */ `
         description
       }
       price
+      addComponents
       status
       favorite
       allergyInfo
@@ -350,6 +562,7 @@ export const deleteMenuItem = /* GraphQL */ `
         description
       }
       price
+      addComponents
       status
       favorite
       allergyInfo
@@ -371,6 +584,7 @@ export const updateOrder = /* GraphQL */ `
       id
       propertyName
       orderItem {
+        id
         name
         price
         quantity
@@ -394,6 +608,7 @@ export const deleteOrder = /* GraphQL */ `
       id
       propertyName
       orderItem {
+        id
         name
         price
         quantity
@@ -417,6 +632,7 @@ export const createOrder = /* GraphQL */ `
       id
       propertyName
       orderItem {
+        id
         name
         price
         quantity

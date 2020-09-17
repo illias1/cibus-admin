@@ -21,9 +21,43 @@ type Property
   open: Boolean!
   ownerId: ID!
   menu: [MenuItem!]! @connection(keyName: "menuItemsByProperty", fields: ["name"])
+  menuComponents: [MenuComponent!]
   orders: [Order!]! @connection(keyName: "orderByPropertyByCreatedAtByStatus", fields: ["name"])
   tables: [String]!
   currency: Currency!
+  address: Address
+  image: PropertyImage
+}
+type MenuComponent {
+  id: ID!
+  type: MenuCompType!
+  translations: [MenuCompTransl!]!
+  restrictions: MenuCompRestr
+}
+type MenuCompTransl {
+  language: Language!
+  label: String!
+  optionChoice: [ItemOptionChoice!]!
+}
+enum MenuCompType {
+  RADIO
+  CHECKBOX
+}
+type ItemOptionChoice {
+  name: String!
+  addPrice: Float
+}
+type MenuCompRestr {
+  max: Int
+  exact: Int
+}
+type PropertyImage {
+  main: String
+}
+type Address {
+  country: String
+  city: String
+  exact: String
 }
 
 type MenuItem
@@ -40,6 +74,7 @@ type MenuItem
   propertyName: String!
   i18n: [I18nMenuItem!]!
   price: Float!
+  addComponents: [ID]
   status: MenuItemStatus!
   favorite: Boolean
   allergyInfo: String
@@ -105,6 +140,7 @@ type Subscription {
 # }
 
 type OrderItem {
+  id: ID!
   name: String!
   price: Float!
   quantity: Int!
