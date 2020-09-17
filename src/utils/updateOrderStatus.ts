@@ -23,11 +23,10 @@ export const updateOrderUtil = async (
       },
     }
   );
-  if (data) {
-    dispatch(updateOrderStatus(data["updateOrder"]));
+  if (data && data.updateOrder) {
     setLoading(false);
-  }
-  if (error) {
+    dispatch(updateOrderStatus(data["updateOrder"]));
+  } else {
     alert(JSON.stringify(error));
     setLoading(false);
   }

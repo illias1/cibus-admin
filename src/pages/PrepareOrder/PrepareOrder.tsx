@@ -5,6 +5,7 @@ import { filterOrderByStatus } from "../../store/selectors";
 import { useTranslation } from "react-i18next";
 import Box from "@material-ui/core/Box";
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
+import OrderBy, { sortByTableOrTime } from "../../components/OrderBy";
 
 type INewOrderProps = {};
 
@@ -14,13 +15,18 @@ const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
   );
   const { t } = useTranslation();
   const classes = useStyles();
-
+  const [orderBy, setorderBy] = React.useState<"table" | "time">("time");
+  const handleOrderByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setorderBy((event.target as HTMLInputElement).value as "time" | "table");
+  };
   return (
     <Box className={classes.root}>
+      <OrderBy orderBy={orderBy} handleOrderByChange={handleOrderByChange} />
+
       {RECEIVED_BY_RESTAURANTOrders.length > 0
-        ? RECEIVED_BY_RESTAURANTOrders.map((item, index) => (
-            <OrderCard status="READY" key={index} order={item} />
-          ))
+        ? RECEIVED_BY_RESTAURANTOrders.sort((a, b) =>
+            sortByTableOrTime(a, b, orderBy)
+          ).map((item, index) => <OrderCard status="READY" key={index} order={item} />)
         : t("no_orders_being_prepared_today")}
     </Box>
   );

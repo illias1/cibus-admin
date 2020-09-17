@@ -7,7 +7,8 @@ export type IuseTypedHistoryProps =
   | "/tables"
   | "/menu"
   | "/stats"
-  | "settings";
+  | "/settings"
+  | "/";
 
 const useTypedHistory = () => {
   const history = useHistory();
