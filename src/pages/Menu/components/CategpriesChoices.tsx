@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: "pointer",
     },
     root: {
-      marginBottom: 40,
+      marginBottom: 20,
       [theme.breakpoints.down("xs")]: {
         paddingRight: 30,
       },

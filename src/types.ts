@@ -1,4 +1,5 @@
-import { GetMenuItemQuery, GetPropertyQuery } from "./API";
+import { GetMenuItemQuery } from "./API";
+import { GetPropertyQuery } from "./pages/Menu/components/utils";
 
 export type TParams = {
   restaurantId: string;
@@ -16,3 +17,8 @@ export type TNonNullMenuItem = NonNullable<GetMenuItemQuery["getMenuItem"]>;
 export type TNonNullPropertyQuery = NonNullable<GetPropertyQuery["getProperty"]>;
 
 export type TAppSyncError = { data: any; errors: [{ message: string }] };
+
+export type TMutationError = {
+  data: any;
+  errors: any[];
+};

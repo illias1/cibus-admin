@@ -12,5 +12,6 @@ export const initialState: TStore = {
     categorizedItems: {},
     categoriesNumber: 0,
     languages: [],
+    menuComponents: [],
   },
 };

@@ -19,7 +19,7 @@ export const mutation = async <ResultType extends {}, VariablesType extends {} =
     return { data, error: null };
   } catch (error) {
     console.log(error);
-    return { data: null, error };
+    return { data: error.data as ResultType, error };
   }
 };
 

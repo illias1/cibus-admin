@@ -19,6 +19,10 @@ import {
   Typography,
   ClickAwayListener,
   InputAdornment,
+  Collapse,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
 import { mutation } from "../../../utils/mutation";
 import { createMenuItem, deleteMenuItem, updateMenuItem } from "../../../graphql/mutations";
@@ -35,7 +39,6 @@ import { Storage } from "aws-amplify";
 
 type IaddMenuItemFormProps = {
   languages: Language[];
-  onCreate: (data: CreateMenuItemMutation) => void;
   setopenDrawer: React.Dispatch<
     React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
   >;
@@ -52,23 +55,25 @@ export type Inputs = {
     language: Language;
     name: string;
   }[];
+  addComponents: boolean[] | undefined;
 };
 
 const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
   languages,
-  onCreate,
   setopenDrawer,
   openDrawer,
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { name, currency } = useTypedSelector((state) => state.selectedProperty);
+  const { menuComponents } = useTypedSelector((state) => state.menu);
   const dispatch = useDispatch();
   const { item } = openDrawer;
   // const { item } = useTypedSelector((state) => state.menu.edit);
   const { register, handleSubmit, reset } = useForm<Inputs>();
   const [creating, setcreating] = React.useState<boolean>(false);
   const [deleteOn, setdeleteOn] = React.useState<boolean>(false);
+  const [showComponents, setshowComponents] = React.useState<boolean>(false);
   const [errorMessage, seterrorMessage] = React.useState<string>("");
   const handleDelete = async (id: string, category: string) => {
     if (deleteOn) {
@@ -113,11 +118,13 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
       ? prepareInputsForUpdateMutation(
           inputs,
           item.id,
+          menuComponents,
           imageKey ? (imageKey as { key: string }).key : ""
         )
       : prepareInputsForCreateMutation(
           inputs,
           name,
+          menuComponents,
           imageKey ? (imageKey as { key: string }).key : ""
         );
     setcreating(true);
@@ -283,6 +290,33 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
         >
           {t("menu_upload_photo")}
         </Button>
+        <Button onClick={() => setshowComponents(!showComponents)}>
+          {showComponents ? t("menu_form_hide_components") : t("menu_form_show_components")}
+        </Button>
+        <Collapse in={showComponents}>
+          <FormGroup>
+            {menuComponents
+              ? menuComponents.map((component, index) => (
+                  <FormControlLabel
+                    key={component.id}
+                    control={
+                      <Checkbox
+                        color="primary"
+                        inputRef={register}
+                        name={`addComponents[${index}]`}
+                        defaultChecked={
+                          item && item.addComponents && item.addComponents.includes(component.id)
+                            ? true
+                            : false
+                        }
+                      />
+                    }
+                    label={component.translations[0].label}
+                  />
+                ))
+              : t("menu_form_no_components_yet")}
+          </FormGroup>
+        </Collapse>
         {errorMessage.length > 0 && <Typography color="error">{errorMessage}</Typography>}
         {languages.length > 0 ? (
           creating ? (
