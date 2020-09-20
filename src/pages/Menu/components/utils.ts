@@ -232,7 +232,7 @@ export const prepareFormFieldsToSubmission = (
       exact: Number(data.exact),
     },
     type: data.type,
-    id: Math.random().toString(36),
+    id: Math.random().toString(20).substr(2, 7),
     translations: data.labels.map((labelInLang, langIndex) => ({
       label: labelInLang,
       language: langs[langIndex],
