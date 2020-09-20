@@ -183,7 +183,6 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
 
   return (
     <Box className={classes.layout}>
-      <button onClick={() => console.log(getValues())}>get values</button>
       <MenuLanguagesManage langs={mappedLangs} setlangs={setmappedLangs} />
 
       {item && <DeleteButton onClick={handleDelete} />}
