@@ -151,7 +151,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     }
   };
   const onSubmit: SubmitHandler<TFormInputs> = async (formResult) => {
-    const inputReady = prepareFormFieldsToSubmission(formResult, mappedLangs);
+    const inputReady = prepareFormFieldsToSubmission(formResult, mappedLangs, item);
     const newMenuComponents = [...menuComponents];
     if (item) {
       const itemIndexInMenuComp = menuComponents.findIndex((comp) => comp.id === item?.id);
@@ -173,6 +173,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     }
     if (data && data.updateProperty) {
       dispatch(setupMenuComponents(data.updateProperty.menuComponents));
+      reset();
       setaddEditState({
         open: false,
         item: undefined,
@@ -183,7 +184,6 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
 
   return (
     <Box className={classes.layout}>
-      <button onClick={() => console.log(getValues())}>get values</button>
       <MenuLanguagesManage langs={mappedLangs} setlangs={setmappedLangs} />
 
       {item && <DeleteButton onClick={handleDelete} />}

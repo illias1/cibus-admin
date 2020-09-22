@@ -61,10 +61,12 @@ const App: React.FC<{}> = ({ children }) => {
       .subscribe({
         next: (data: TResponseOnCreateOrder) => {
           console.log("data", data);
-          dispatch(addRequestedOrder(data.value.data.onCreateOrder));
-          controls.play();
-          setorderPopupOpen(true);
-          push("/new-order");
+          if (data.value.data.onCreateOrder) {
+            dispatch(addRequestedOrder(data.value.data.onCreateOrder));
+            controls.play();
+            setorderPopupOpen(true);
+            push("/new-order");
+          }
         },
       });
     return () => subscription.unsubscribe();

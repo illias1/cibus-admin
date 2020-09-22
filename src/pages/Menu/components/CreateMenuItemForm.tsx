@@ -290,6 +290,7 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
         >
           {t("menu_upload_photo")}
         </Button>
+        <Typography>{t("explication_components_in_create_menu_item")}</Typography>
         <Button onClick={() => setshowComponents(!showComponents)}>
           {showComponents ? t("menu_form_hide_components") : t("menu_form_show_components")}
         </Button>
