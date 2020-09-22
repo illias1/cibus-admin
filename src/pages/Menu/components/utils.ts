@@ -96,7 +96,6 @@ export const getProperty = /* GraphQL */ `
             name
           }
           status
-          allergyInfo
           favorite
           addComponents
           callories
@@ -224,7 +223,8 @@ export const setupExistingFields = (
 
 export const prepareFormFieldsToSubmission = (
   data: TFormInputs,
-  langs: Language[]
+  langs: Language[],
+  item: MenuComponentInput | undefined
 ): MenuComponentInput => {
   return {
     restrictions: {
@@ -232,7 +232,7 @@ export const prepareFormFieldsToSubmission = (
       exact: Number(data.exact),
     },
     type: data.type,
-    id: Math.random().toString(20).substr(2, 7),
+    id: item ? item.id : Math.random().toString(20).substr(2, 7),
     translations: data.labels.map((labelInLang, langIndex) => ({
       label: labelInLang,
       language: langs[langIndex],

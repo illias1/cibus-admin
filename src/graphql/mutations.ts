@@ -52,7 +52,6 @@ export const createUser = /* GraphQL */ `
               addComponents
               status
               favorite
-              allergyInfo
               callories
               image
               notes
@@ -70,6 +69,7 @@ export const createUser = /* GraphQL */ `
               status
               tableName
               priceTotal
+              customerName
               updatedAt
             }
             nextToken
@@ -130,7 +130,6 @@ export const updateUser = /* GraphQL */ `
               addComponents
               status
               favorite
-              allergyInfo
               callories
               image
               notes
@@ -148,6 +147,7 @@ export const updateUser = /* GraphQL */ `
               status
               tableName
               priceTotal
+              customerName
               updatedAt
             }
             nextToken
@@ -208,7 +208,6 @@ export const deleteUser = /* GraphQL */ `
               addComponents
               status
               favorite
-              allergyInfo
               callories
               image
               notes
@@ -226,6 +225,7 @@ export const deleteUser = /* GraphQL */ `
               status
               tableName
               priceTotal
+              customerName
               updatedAt
             }
             nextToken
@@ -288,7 +288,6 @@ export const createProperty = /* GraphQL */ `
           addComponents
           status
           favorite
-          allergyInfo
           callories
           image
           notes
@@ -307,13 +306,18 @@ export const createProperty = /* GraphQL */ `
             name
             price
             quantity
-            allergyInfo
             customerComment
+            options {
+              id
+              label
+            }
+            optionsTotalPrice
           }
           createdAt
           status
           tableName
           priceTotal
+          customerName
           updatedAt
         }
         nextToken
@@ -373,7 +377,6 @@ export const updateProperty = /* GraphQL */ `
           addComponents
           status
           favorite
-          allergyInfo
           callories
           image
           notes
@@ -392,13 +395,18 @@ export const updateProperty = /* GraphQL */ `
             name
             price
             quantity
-            allergyInfo
             customerComment
+            options {
+              id
+              label
+            }
+            optionsTotalPrice
           }
           createdAt
           status
           tableName
           priceTotal
+          customerName
           updatedAt
         }
         nextToken
@@ -458,7 +466,6 @@ export const deleteProperty = /* GraphQL */ `
           addComponents
           status
           favorite
-          allergyInfo
           callories
           image
           notes
@@ -477,13 +484,18 @@ export const deleteProperty = /* GraphQL */ `
             name
             price
             quantity
-            allergyInfo
             customerComment
+            options {
+              id
+              label
+            }
+            optionsTotalPrice
           }
           createdAt
           status
           tableName
           priceTotal
+          customerName
           updatedAt
         }
         nextToken
@@ -509,7 +521,6 @@ export const createMenuItem = /* GraphQL */ `
       addComponents
       status
       favorite
-      allergyInfo
       callories
       image
       notes
@@ -537,7 +548,6 @@ export const updateMenuItem = /* GraphQL */ `
       addComponents
       status
       favorite
-      allergyInfo
       callories
       image
       notes
@@ -565,7 +575,6 @@ export const deleteMenuItem = /* GraphQL */ `
       addComponents
       status
       favorite
-      allergyInfo
       callories
       image
       notes
@@ -588,13 +597,22 @@ export const updateOrder = /* GraphQL */ `
         name
         price
         quantity
-        allergyInfo
         customerComment
+        options {
+          id
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        optionsTotalPrice
       }
       createdAt
       status
       tableName
       priceTotal
+      customerName
       updatedAt
     }
   }
@@ -612,13 +630,22 @@ export const deleteOrder = /* GraphQL */ `
         name
         price
         quantity
-        allergyInfo
         customerComment
+        options {
+          id
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        optionsTotalPrice
       }
       createdAt
       status
       tableName
       priceTotal
+      customerName
       updatedAt
     }
   }
@@ -636,13 +663,22 @@ export const createOrder = /* GraphQL */ `
         name
         price
         quantity
-        allergyInfo
         customerComment
+        options {
+          id
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        optionsTotalPrice
       }
       createdAt
       status
       tableName
       priceTotal
+      customerName
       updatedAt
     }
   }

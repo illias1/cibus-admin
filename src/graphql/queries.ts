@@ -49,7 +49,6 @@ export const getUser = /* GraphQL */ `
               addComponents
               status
               favorite
-              allergyInfo
               callories
               image
               notes
@@ -67,6 +66,7 @@ export const getUser = /* GraphQL */ `
               status
               tableName
               priceTotal
+              customerName
               updatedAt
             }
             nextToken
@@ -176,7 +176,6 @@ export const getProperty = /* GraphQL */ `
           addComponents
           status
           favorite
-          allergyInfo
           callories
           image
           notes
@@ -195,13 +194,18 @@ export const getProperty = /* GraphQL */ `
             name
             price
             quantity
-            allergyInfo
             customerComment
+            options {
+              id
+              label
+            }
+            optionsTotalPrice
           }
           createdAt
           status
           tableName
           priceTotal
+          customerName
           updatedAt
         }
         nextToken
@@ -271,7 +275,6 @@ export const listPropertys = /* GraphQL */ `
             addComponents
             status
             favorite
-            allergyInfo
             callories
             image
             notes
@@ -290,13 +293,14 @@ export const listPropertys = /* GraphQL */ `
               name
               price
               quantity
-              allergyInfo
               customerComment
+              optionsTotalPrice
             }
             createdAt
             status
             tableName
             priceTotal
+            customerName
             updatedAt
           }
           nextToken
@@ -321,7 +325,6 @@ export const getMenuItem = /* GraphQL */ `
       addComponents
       status
       favorite
-      allergyInfo
       callories
       image
       notes
@@ -351,7 +354,6 @@ export const listMenuItems = /* GraphQL */ `
         addComponents
         status
         favorite
-        allergyInfo
         callories
         image
         notes
@@ -391,7 +393,6 @@ export const menuItemsByProperty = /* GraphQL */ `
         addComponents
         status
         favorite
-        allergyInfo
         callories
         image
         notes
@@ -413,13 +414,22 @@ export const getOrder = /* GraphQL */ `
         name
         price
         quantity
-        allergyInfo
         customerComment
+        options {
+          id
+          label
+          optionChoice {
+            name
+            addPrice
+          }
+        }
+        optionsTotalPrice
       }
       createdAt
       status
       tableName
       priceTotal
+      customerName
       updatedAt
     }
   }
@@ -439,13 +449,22 @@ export const listOrders = /* GraphQL */ `
           name
           price
           quantity
-          allergyInfo
           customerComment
+          options {
+            id
+            label
+            optionChoice {
+              name
+              addPrice
+            }
+          }
+          optionsTotalPrice
         }
         createdAt
         status
         tableName
         priceTotal
+        customerName
         updatedAt
       }
       nextToken
@@ -477,13 +496,22 @@ export const orderByPropertyByCreatedAt = /* GraphQL */ `
           name
           price
           quantity
-          allergyInfo
           customerComment
+          options {
+            id
+            label
+            optionChoice {
+              name
+              addPrice
+            }
+          }
+          optionsTotalPrice
         }
         createdAt
         status
         tableName
         priceTotal
+        customerName
         updatedAt
       }
       nextToken
@@ -515,13 +543,22 @@ export const orderByPropertyByCreatedAtByStatus = /* GraphQL */ `
           name
           price
           quantity
-          allergyInfo
           customerComment
+          options {
+            id
+            label
+            optionChoice {
+              name
+              addPrice
+            }
+          }
+          optionsTotalPrice
         }
         createdAt
         status
         tableName
         priceTotal
+        customerName
         updatedAt
       }
       nextToken
@@ -553,13 +590,22 @@ export const orderByPropertyByStatus = /* GraphQL */ `
           name
           price
           quantity
-          allergyInfo
           customerComment
+          options {
+            id
+            label
+            optionChoice {
+              name
+              addPrice
+            }
+          }
+          optionsTotalPrice
         }
         createdAt
         status
         tableName
         priceTotal
+        customerName
         updatedAt
       }
       nextToken
