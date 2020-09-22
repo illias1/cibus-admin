@@ -19,7 +19,7 @@ const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
     <Box className={classes.root}>
       {RECEIVEDOrders.sort((a, b) => sortByTableOrTime(a, b, "table")).length > 0
         ? Object.entries(groupBy(RECEIVEDOrders, "tableName")).map(([tableName, orderArray]) => (
-            <Box className={classes.tableBox}>
+            <Box key={tableName} className={classes.tableBox}>
               <Typography>
                 Total table #{tableName} -{" "}
                 {(orderArray as TStore["orders"])
@@ -28,9 +28,8 @@ const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
                 {currency}
               </Typography>
               {(orderArray as TStore["orders"]).map((item, index) => (
-                <OrderCard status="PAYED" key={index} order={item} />
+                <OrderCard status="PAYED" key={item.id} order={item} />
               ))}
-              <Divider />
             </Box>
           ))
         : t("no_orders_being_deliverd_today")}
@@ -55,9 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      borderStyle: "dotted",
-      borderWidth: 1,
-      borderColor: "white",
+      paddingBottom: theme.spacing(5),
     },
   })
 );

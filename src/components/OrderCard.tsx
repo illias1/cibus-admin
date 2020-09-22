@@ -61,6 +61,7 @@ const OrderCard: React.FC<IOrderCardProps> = ({ order, status }) => {
       <Box>
         <Box className={classes.top}>
           <Typography>{t("table_#", { number: order?.tableName })}</Typography>
+          <Typography>{order.customerName}</Typography>
           <Typography>{new Date(order.createdAt).toLocaleTimeString()}</Typography>
         </Box>
         {loading && <CircularProgress style={{ alignSelf: "center" }} />}
@@ -72,10 +73,25 @@ const OrderCard: React.FC<IOrderCardProps> = ({ order, status }) => {
                   {item.quantity} x
                 </TableCell>
                 <TableCell className={classes.cell}>
-                  <Typography style={{ lineHeight: 1 }} variant="h6">
+                  <Typography gutterBottom style={{ lineHeight: 1 }} variant="h6">
                     {item.name}
                   </Typography>
                   <Typography variant="caption">{item.customerComment}</Typography>
+                  {item.options?.map((option) => {
+                    return (
+                      <React.Fragment key={option.id}>
+                        {option.optionChoice.length > 0 && (
+                          <Typography>
+                            {option.label} :{" "}
+                            {option.optionChoice.reduce(
+                              (prev, curr) => prev + curr.name + ", ",
+                              ""
+                            )}
+                          </Typography>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </TableCell>
                 <TableCell align="right" className={classes.cell}>
                   {item.price} {currency}

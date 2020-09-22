@@ -32,11 +32,22 @@ export const getPropertyAtInit = /* GraphQL */ `
           status
           tableName
           priceTotal
+          customerName
           orderItem {
+            id
             price
             name
             quantity
             customerComment
+            options {
+              id
+              label
+              optionChoice {
+                addPrice
+                name
+              }
+            }
+            optionsTotalPrice
           }
           updatedAt
         }

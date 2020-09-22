@@ -29,7 +29,7 @@ const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
       <OrderBy orderBy={orderBy} handleOrderByChange={handleOrderByChange} />
       {REQUESTEDOrders.length > 0
         ? REQUESTEDOrders.sort((a, b) => sortByTableOrTime(a, b, orderBy)).map((item, index) => (
-            <OrderCard status="RECEIVED_BY_RESTAURANT" key={index} order={item} />
+            <OrderCard status="RECEIVED_BY_RESTAURANT" key={item.id} order={item} />
           ))
         : t("no_new_orders_today")}
     </Box>
