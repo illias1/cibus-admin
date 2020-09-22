@@ -12,10 +12,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Divider,
 } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import { navigationTabs } from "./NavigationLayout";
+import LangaugeSwitch from "./LanguageSwitch";
+
 type IMobileNavigationProps = {};
 
 const MobileNavigation: React.FC<IMobileNavigationProps> = ({ ...props }) => {
@@ -36,12 +39,13 @@ const MobileNavigation: React.FC<IMobileNavigationProps> = ({ ...props }) => {
 
       <SwipeableDrawer
         anchor="right"
+        style={{ minWidth: "50%" }}
         open={drawerOpen}
         onClose={() => setdrawerOpen(false)}
         onOpen={() => setdrawerOpen(true)}
       >
         <List>
-          {navigationTabs.right.map(({ to, Icon, label }) => (
+          {[...navigationTabs.right, ...navigationTabs.other].map(({ to, Icon, label }) => (
             <Link onClick={() => setdrawerOpen(false)} key={label} className={classes.link} to={to}>
               <ListItem button>
                 <ListItemIcon>
@@ -51,6 +55,8 @@ const MobileNavigation: React.FC<IMobileNavigationProps> = ({ ...props }) => {
               </ListItem>
             </Link>
           ))}
+          <Divider />
+          <LangaugeSwitch />
         </List>
       </SwipeableDrawer>
 

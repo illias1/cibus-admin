@@ -46,7 +46,6 @@ const App: React.FC<{}> = ({ children }) => {
     }
   );
   React.useEffect(() => {
-    console.log("state", state);
     if (state.time === state.duration && orderPopupOpen) {
       controls.play();
     }

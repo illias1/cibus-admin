@@ -24,7 +24,7 @@ type TNavTabs = {
   Icon: React.FC;
   label: string;
 }[];
-export const navigationTabs: Record<"left" | "right", TNavTabs> = {
+export const navigationTabs: Record<"left" | "right" | "other", TNavTabs> = {
   left: [
     {
       to: "/new-order",
@@ -57,6 +57,18 @@ export const navigationTabs: Record<"left" | "right", TNavTabs> = {
       to: "/stats",
       Icon: () => <EqualizerIcon className={useStyles().icon} />,
       label: "navigation_stats",
+    },
+  ],
+  other: [
+    {
+      to: "/settings",
+      Icon: () => <SettingsIcon className={useStyles().icon} />,
+      label: "navigation_settings",
+    },
+    {
+      to: "/",
+      Icon: () => <HomeIcon className={useStyles().icon} />,
+      label: "navigation_home",
     },
   ],
 };

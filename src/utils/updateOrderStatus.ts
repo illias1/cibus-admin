@@ -24,10 +24,9 @@ export const updateOrderUtil = async (
     }
   );
   if (data && data.updateOrder) {
-    dispatch(updateOrderStatus(data["updateOrder"]));
     setLoading(false);
-  }
-  if (error) {
+    dispatch(updateOrderStatus(data["updateOrder"]));
+  } else {
     alert(JSON.stringify(error));
     setLoading(false);
   }

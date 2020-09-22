@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       height: "100%",
       background: "black",
+      cursor: "pointer",
     },
     counter: {
       backgroundColor: theme.palette.secondary.main,
