@@ -14,7 +14,6 @@ export const getPropertyAtInit = /* GraphQL */ `
           propertyName
           price
           status
-          allergyInfo
           callories
           image
           createdAt
@@ -37,7 +36,6 @@ export const getPropertyAtInit = /* GraphQL */ `
             price
             name
             quantity
-            allergyInfo
             customerComment
           }
           updatedAt

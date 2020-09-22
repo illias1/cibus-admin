@@ -21,33 +21,14 @@ import { mutation } from "../../../utils/mutation";
 import { updateMenuItem } from "../../../graphql/mutations";
 import "./styles.css";
 import { AmplifyS3Image } from "@aws-amplify/ui-react";
+import { TDrawerState } from "../Menu";
 
 type TItem = {
   item: TNonNullMenuItem;
-  setopenDrawer: React.Dispatch<
-    React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
-  >; // title: string;
-  // price: number;
-  // ingredients?: string;
-  // favorite: boolean;
-  // status: boolean;
-  // id: string;
-  // img: string;
-  // onClick?: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
+  setopenDrawer: React.Dispatch<React.SetStateAction<TDrawerState>>; // title: string;
 };
 
-const Item: React.FC<TItem> = ({
-  // title,
-  // price,
-  // ingredients,
-  // // onClick,
-  // img,
-  // id,
-  // favorite,
-  // status,
-  item,
-  setopenDrawer,
-}) => {
+const Item: React.FC<TItem> = ({ item, setopenDrawer }) => {
   const handleToggle = async (
     id: string,
     updatedState: boolean,
@@ -112,7 +93,13 @@ const Item: React.FC<TItem> = ({
         checked={FavStatusState.status ? true : false}
         onChange={(event) => handleToggle(id, event.target.checked, "status")}
       />
-      <Button onClick={() => setopenDrawer((prev) => ({ ...prev, open: true, item }))}>edit</Button>
+      <Button
+        onClick={() =>
+          setopenDrawer((prev) => ({ ...prev, open: true, item, manageComponents: false }))
+        }
+      >
+        edit
+      </Button>
     </Box>
   );
   return (

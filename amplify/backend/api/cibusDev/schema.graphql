@@ -77,7 +77,6 @@ type MenuItem
   addComponents: [ID]
   status: MenuItemStatus!
   favorite: Boolean
-  allergyInfo: String
   callories: String
   image: String
   notes: String
@@ -121,6 +120,7 @@ type Order
   status: String!
   tableName: String!
   priceTotal: Float!
+  customerName: String
 }
 
 type Subscription {
@@ -144,8 +144,14 @@ type OrderItem {
   name: String!
   price: Float!
   quantity: Int!
-  allergyInfo: String
   customerComment: String
+  options: [TComponentChosenOptions!]
+  optionsTotalPrice: Float
+}
+type TComponentChosenOptions {
+  id: String!
+  label: String
+  optionChoice: [ItemOptionChoice!]!
 }
 
 enum Currency {
