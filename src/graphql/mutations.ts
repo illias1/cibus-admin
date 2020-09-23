@@ -650,6 +650,34 @@ export const deleteOrder = /* GraphQL */ `
     }
   }
 `;
+export const updateStuffCall = /* GraphQL */ `
+  mutation UpdateStuffCall(
+    $input: UpdateStuffCallInput!
+    $condition: ModelStuffCallConditionInput
+  ) {
+    updateStuffCall(input: $input, condition: $condition) {
+      id
+      propertyName
+      tableName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteStuffCall = /* GraphQL */ `
+  mutation DeleteStuffCall(
+    $input: DeleteStuffCallInput!
+    $condition: ModelStuffCallConditionInput
+  ) {
+    deleteStuffCall(input: $input, condition: $condition) {
+      id
+      propertyName
+      tableName
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createOrder = /* GraphQL */ `
   mutation CreateOrder(
     $input: CreateOrderInput!
@@ -679,6 +707,20 @@ export const createOrder = /* GraphQL */ `
       tableName
       priceTotal
       customerName
+      updatedAt
+    }
+  }
+`;
+export const createStuffCall = /* GraphQL */ `
+  mutation CreateStuffCall(
+    $input: CreateStuffCallInput!
+    $condition: ModelStuffCallConditionInput
+  ) {
+    createStuffCall(input: $input, condition: $condition) {
+      id
+      propertyName
+      tableName
+      createdAt
       updatedAt
     }
   }

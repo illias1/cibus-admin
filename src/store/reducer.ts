@@ -10,8 +10,14 @@ import {
   setAddNewMenuItem,
   setUpdateMenuItem,
   setupMenuComponents,
+  setAddStuffCall,
+  setRemoveStuffCall,
 } from "./actions";
-import { LOCAL_STORAGE_PROPERTY, UNCATEGORIZED } from "../utils/_constants";
+import {
+  LOCAL_STORAGE_PROPERTY,
+  LOCAL_STORAGE_STUFF_CALLS,
+  UNCATEGORIZED,
+} from "../utils/_constants";
 
 import { TNonNullMenuItem } from "../types";
 import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
@@ -150,4 +156,21 @@ export const reducer = reducerWithInitialState(initialState)
       ...state.menu,
       menuComponents: menuComponents || [],
     },
-  }));
+  }))
+  .case(setAddStuffCall, (state, payload) => {
+    localStorage.setItem(LOCAL_STORAGE_STUFF_CALLS, JSON.stringify([...state.stuffCalls, payload]));
+    return {
+      ...state,
+      stuffCalls: [...state.stuffCalls, payload],
+    };
+  })
+  .case(setRemoveStuffCall, (state, index) => {
+    const newStuffCalls = state.stuffCalls
+      .slice(0, index)
+      .concat(state.stuffCalls.slice(index + 1));
+    localStorage.setItem(LOCAL_STORAGE_STUFF_CALLS, JSON.stringify(newStuffCalls));
+    return {
+      ...state,
+      stuffCalls: newStuffCalls,
+    };
+  });

@@ -16,6 +16,10 @@ export type TStore = {
     languages: Language[];
     menuComponents: MenuComponentInput[];
   };
+  stuffCalls: {
+    table: string;
+    createdAt: string;
+  }[];
 };
 
 export type OrderStatus =
