@@ -99,15 +99,15 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
   } = useTypedSelector((state) => state);
   const [langs, setlangs] = React.useState<Language[]>([]);
   const [mappedLangs, setmappedLangs] = React.useState<Language[]>([]);
-  const { control, handleSubmit, register, setValue, reset, errors, getValues } = useForm<
-    TFormInputs
-  >({
+  const { control, handleSubmit, register, setValue, reset, errors, watch } = useForm<TFormInputs>({
     defaultValues: {},
   });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "options",
   });
+  const typeSelected = watch("type");
+
   React.useEffect(() => {
     if (item) {
       const itemLangs = item.translations.map((trnasl) => trnasl.language);
@@ -151,6 +151,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     }
   };
   const onSubmit: SubmitHandler<TFormInputs> = async (formResult) => {
+    console.log("formResults", formResult);
     const inputReady = prepareFormFieldsToSubmission(formResult, mappedLangs, item);
     const newMenuComponents = [...menuComponents];
     if (item) {
@@ -180,14 +181,18 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
       });
     }
   };
-  console.log(errors);
+
+  // ============================================================================================================================================
+  // ============================================================================================================================================
+  // ============================================================================================================================================
+  // UI
 
   return (
     <Box className={classes.layout}>
       <MenuLanguagesManage langs={mappedLangs} setlangs={setmappedLangs} />
 
       {item && <DeleteButton onClick={handleDelete} />}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <Box className={classes.block}>
           <FormControl variant="outlined" required className={classes.firstRow}>
             <InputLabel id="demo-simple-select-label">type</InputLabel>
@@ -203,28 +208,32 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
               defaultValue="CHECKBOX"
             />
           </FormControl>
-          <TextField
-            className={classes.firstRow}
-            variant="outlined"
-            label={t("menu_form_max")}
-            type="number"
-            inputRef={register({ min: 0 })}
-            placeholder={t("menu_form_optional")}
-            name="max"
-            error={Boolean(errors.max)}
-            helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
-          />
-          <TextField
-            className={classes.firstRow}
-            variant="outlined"
-            label={t("menu_form_exact")}
-            type="number"
-            name="exact"
-            inputRef={register({ min: 0 })}
-            placeholder={t("menu_form_optional")}
-            error={Boolean(errors.exact)}
-            helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
-          />
+          {typeSelected === MenuCompType.CHECKBOX && (
+            <>
+              <TextField
+                className={classes.firstRow}
+                variant="outlined"
+                label={t("menu_form_max")}
+                type="number"
+                inputRef={register({ min: 0 })}
+                placeholder={t("menu_form_optional")}
+                name="max"
+                error={Boolean(errors.max)}
+                helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
+              />
+              <TextField
+                className={classes.firstRow}
+                variant="outlined"
+                label={t("menu_form_exact")}
+                type="number"
+                name="exact"
+                inputRef={register({ min: 0 })}
+                placeholder={t("menu_form_optional")}
+                error={Boolean(errors.exact)}
+                helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
+              />
+            </>
+          )}
           <Box className={classes.multilang}>
             <Box style={{ flex: "0 0 auto" }}>
               <Box>
