@@ -127,6 +127,17 @@ export const getProperty = /* GraphQL */ `
   }
 `;
 
+const getI18nInput = (inputsI18n: Inputs["i18n"]): CreateMenuItemInput["i18n"] =>
+  Object.entries(inputsI18n).map(([language, langObj]) =>
+    langObj.category
+      ? { ...langObj, language: language as Language }
+      : {
+          ...langObj,
+          category: UNCATEGORIZED,
+          language: language as Language,
+        }
+  );
+
 export const isUpdateMenuItemMutation = (
   data: UpdateMenuItemMutation | CreateMenuItemMutation
 ): data is UpdateMenuItemMutation => (data as UpdateMenuItemMutation).updateMenuItem !== undefined;
@@ -152,14 +163,7 @@ export const prepareInputsForCreateMutation = (
     favorite: false,
     addComponents: preparedAddComp,
     price: Number(inputs.price),
-    i18n: inputs.i18n.map((langObj) =>
-      langObj.category
-        ? langObj
-        : {
-            ...langObj,
-            category: UNCATEGORIZED,
-          }
-    ),
+    i18n: getI18nInput(inputs.i18n),
   };
 };
 
@@ -181,36 +185,22 @@ export const prepareInputsForUpdateMutation = (
     image,
     addComponents: preparedAddComp,
     id,
-    i18n: inputs.i18n.map((langObj) =>
-      langObj.category
-        ? langObj
-        : {
-            ...langObj,
-            category: UNCATEGORIZED,
-          }
-    ),
+    i18n: getI18nInput(inputs.i18n),
   };
 };
 
 export const setupExistingFields = (
   setValue: any,
   item: MenuComponentInput,
-  langs: Language[],
   append: (
     value: Partial<Record<string, any>> | Partial<Record<string, any>>[],
     shouldFocus?: boolean | undefined
   ) => void
 ) => {
-  if (item && item.translations.every((transl) => langs.includes(transl.language))) {
-    setValue("max", item.restrictions?.max || undefined);
-    setValue("exact", item.restrictions?.exact || undefined);
+  if (item) {
     setValue("type", item.type || "CHECKBOX");
-    langs.forEach((lang, langIndex) => {
-      setValue(
-        `labels[${langIndex}]`,
-        item.translations.find((transl) => transl.language === lang)?.label
-      );
-      console.log(item.translations.find((transl) => transl.language === lang)?.label);
+    item.translations.forEach((transl, langIndex) => {
+      setValue(`labels.${transl.language}`, transl.label);
     });
     append(
       item.translations[0].optionChoice.map((option, optionIndex) => ({
@@ -223,7 +213,6 @@ export const setupExistingFields = (
 
 export const prepareFormFieldsToSubmission = (
   data: TFormInputs,
-  langs: Language[],
   item: MenuComponentInput | undefined
 ): MenuComponentInput => {
   return {
@@ -233,13 +222,15 @@ export const prepareFormFieldsToSubmission = (
     },
     type: data.type,
     id: item ? item.id : Math.random().toString(20).substr(2, 7),
-    translations: data.labels.map((labelInLang, langIndex) => ({
+    translations: Object.entries(data.labels).map(([lang, labelInLang], langIndex) => ({
       label: labelInLang,
-      language: langs[langIndex],
-      optionChoice: data.options.map((optionWithMultipleTranslationsInNameObject) => ({
-        name: optionWithMultipleTranslationsInNameObject.name[langIndex],
-        addPrice: Number(optionWithMultipleTranslationsInNameObject.addPrice),
-      })),
+      language: lang as Language,
+      optionChoice: Object.entries(data.options).map(
+        ([_, optionWithMultipleTranslationsInNameObject]) => ({
+          name: optionWithMultipleTranslationsInNameObject.name[lang as Language],
+          addPrice: Number(optionWithMultipleTranslationsInNameObject.addPrice),
+        })
+      ),
     })),
   };
 };

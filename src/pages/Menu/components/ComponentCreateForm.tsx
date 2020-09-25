@@ -81,12 +81,12 @@ export type TFormInputs = {
   type: MenuCompType;
   max: number | undefined;
   exact: number | undefined;
-  labels: string[];
+  labels: Record<Language, string>;
   options: TFormOption[];
 };
 type TFormOption = {
   addPrice: string | undefined;
-  name: string[];
+  name: Record<Language, string>;
 };
 
 const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => {
@@ -97,7 +97,9 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     selectedProperty,
     menu: { menuComponents, languages },
   } = useTypedSelector((state) => state);
+  // needed to set up existing fields only once in the begnning
   const [langs, setlangs] = React.useState<Language[]>([]);
+  // needed to actually draw the fields and dynamically change langugegs
   const [mappedLangs, setmappedLangs] = React.useState<Language[]>([]);
   const { control, handleSubmit, register, setValue, reset, errors, watch } = useForm<TFormInputs>({
     defaultValues: {},
@@ -123,7 +125,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
   }, [item, languages]);
   React.useEffect(() => {
     if (item) {
-      setupExistingFields(setValue, item, langs, append);
+      setupExistingFields(setValue, item, append);
     }
   }, [langs]);
 
@@ -151,8 +153,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     }
   };
   const onSubmit: SubmitHandler<TFormInputs> = async (formResult) => {
-    console.log("formResults", formResult);
-    const inputReady = prepareFormFieldsToSubmission(formResult, mappedLangs, item);
+    const inputReady = prepareFormFieldsToSubmission(formResult, item);
     const newMenuComponents = [...menuComponents];
     if (item) {
       const itemIndexInMenuComp = menuComponents.findIndex((comp) => comp.id === item?.id);
@@ -170,7 +171,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
       }
     );
     if (error) {
-      console.warn("error", error);
+      alert(error);
     }
     if (data && data.updateProperty) {
       dispatch(setupMenuComponents(data.updateProperty.menuComponents));
@@ -217,6 +218,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 type="number"
                 inputRef={register({ min: 0 })}
                 placeholder={t("menu_form_optional")}
+                defaultValue={item?.restrictions?.max || undefined}
                 name="max"
                 error={Boolean(errors.max)}
                 helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
@@ -229,6 +231,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 name="exact"
                 inputRef={register({ min: 0 })}
                 placeholder={t("menu_form_optional")}
+                defaultValue={item?.restrictions?.exact || undefined}
                 error={Boolean(errors.exact)}
                 helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
               />
@@ -245,7 +248,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                       label={t("menu_form_explanation_in", { language: ISO6391.getName(lang) })}
                       placeholder={t("menu_form_component_label_placeholder")}
                       inputRef={register({ required: true })}
-                      name={`labels[${langIndex}]`}
+                      name={`labels.${lang}`}
                       required
                       focused={item ? true : false}
                     />
@@ -281,7 +284,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                       <TextField
                         className={classes.textField}
                         variant="outlined"
-                        name={`options[${optionIndex}].name[${langIndex}]`}
+                        name={`options[${optionIndex}].name.${lang}`}
                         inputRef={register({ required: true })}
                         label={`option in ${ISO6391.getName(lang)}`}
                         defaultValue={name[langIndex]}
