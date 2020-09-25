@@ -30,3 +30,5 @@ export const setAddNewMenuItem = actionCreator<
 export const setupMenuComponents = actionCreator<
   NonNullable<UpdatePropertyMutation["updateProperty"]>["menuComponents"]
 >("setupMenuComponents");
+export const setAddStuffCall = actionCreator<TStore["stuffCalls"][number]>("setAddStuffCall");
+export const setRemoveStuffCall = actionCreator<number>("setRemoveStuffCall");

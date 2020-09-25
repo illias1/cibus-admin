@@ -612,3 +612,32 @@ export const orderByPropertyByStatus = /* GraphQL */ `
     }
   }
 `;
+export const getStuffCall = /* GraphQL */ `
+  query GetStuffCall($id: ID!) {
+    getStuffCall(id: $id) {
+      id
+      propertyName
+      tableName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listStuffCalls = /* GraphQL */ `
+  query ListStuffCalls(
+    $filter: ModelStuffCallFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStuffCalls(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        propertyName
+        tableName
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

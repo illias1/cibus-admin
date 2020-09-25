@@ -38,6 +38,7 @@
   "menu_price_helper": "For decimals, use DOT like 12.99",
   "menu_category_helper": "Case sensitive",
   "menu_hide_the_form": "Hide the form",
+  "menu_upload_new_photo": "Upload new photo",
   "menu_upload_photo": "Upload photo",
   "navigation_new_order": "New Order",
   "navigation_cooking": "Cooking",
@@ -65,5 +66,8 @@
   "menu_form_no_components_yet": "You don't have components yet",
   "menu_form_back_to_components": "Back to components",
   "has_to_be_a_positive_integer_number": "Has to be a positive integer number",
-  "explication_components_in_create_menu_item": "If you want to give options or make the customer to make a choice (eg. choose a size or add an ingredient) - you can do this by adding a 'Component' which has all these options. After you created a component, you can 'attach' it to each existent or new menu item"
+  "explication_components_in_create_menu_item": "If you want to give options or make the customer to make a choice (eg. choose a size or add an ingredient) - you can do this by adding a 'Component' which has all these options. After you created a component, you can 'attach' it to each existent or new menu item",
+  "stuff_call": "Stuff call",
+  "call_stuff_table": "Table",
+  "call_stuff_time": "Time"
 }

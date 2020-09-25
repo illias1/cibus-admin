@@ -16,6 +16,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { IuseTypedHistoryProps } from "../utils/useTypedHistory";
 import { Hidden } from "@material-ui/core";
 import MobileNavigation from "./MobileNavigation";
+import StuffCallDesktop from "./StuffCallDesktop";
 
 const tabMapping = (tab: TNavTabs[0]) => <NavigationTab key={tab.to} to={tab.to} Icon={tab.Icon} />;
 
@@ -81,6 +82,7 @@ const NavigationLayout: React.FC<INavigationLayoutProps> = ({ children }) => {
   return (
     <Box className={classes.root}>
       <Hidden xsDown>
+        <StuffCallDesktop />
         <Box className={classes.sidebar}>{navigationTabs.left.map(tabMapping)}</Box>
         <Box style={{ right: 0 }} className={classes.sidebar}>
           <Link style={{ top: 10 }} className={classes.cornerIcon} to="/">

@@ -129,6 +129,7 @@ type Subscription {
   @aws_subscribe(mutations: ["updateOrder"])
   @aws_iam
   @aws_cognito_user_pools
+  onCreateStuffCall(propertyName: String): StuffCall @aws_subscribe(mutations: ["createStuffCall"])
 }
 # cannot be enum in order to sort
 # REQUESTED and READY need to start with same letter to fetch these to categories at admin init
@@ -152,6 +153,15 @@ type TComponentChosenOptions {
   id: String!
   label: String
   optionChoice: [ItemOptionChoice!]!
+}
+
+type StuffCall
+@model(subscriptions: null)
+@key(name: "orderStuffCallByProperty", fields: ["propertyName"])
+@auth(rules: [{ allow: public, provider: iam, operations: [read, create] }, { allow: private }]) {
+  id: ID!
+  propertyName: String!
+  tableName: String!
 }
 
 enum Currency {

@@ -6,10 +6,20 @@ import Loader from "../components/Loader";
 import { API, graphqlOperation } from "aws-amplify";
 import useTypedHistory from "../utils/useTypedHistory";
 import { useQuery } from "../utils/useQuery";
-import { GetPropertyQuery, GetPropertyQueryVariables, OnCreateOrderSubscription } from "../API";
+import {
+  GetPropertyQuery,
+  GetPropertyQueryVariables,
+  OnCreateOrderSubscription,
+  OnCreateStuffCallSubscription,
+} from "../API";
 import { getPropertyAtInit, GetPropertyAtInitVariables } from "../utils/graphql";
 import { useDispatch } from "react-redux";
-import { setOrders, addRequestedOrder, setSelectedProperty } from "../store/actions";
+import {
+  setOrders,
+  addRequestedOrder,
+  setSelectedProperty,
+  setAddStuffCall,
+} from "../store/actions";
 import { onCreateOrder } from "../graphql/subscriptions";
 import useAudio from "react-use/lib/useAudio";
 import { useTypedSelector } from "../store/types";
@@ -20,6 +30,22 @@ type TResponseOnCreateOrder = {
     data: OnCreateOrderSubscription;
   };
 };
+type TResponseOnCreatezstuffCall = {
+  provider: any;
+  value: {
+    data: OnCreateStuffCallSubscription;
+  };
+};
+
+export const onCreateStuffCall = /* GraphQL */ `
+  subscription OnCreateStuffCall($propertyName: String) {
+    onCreateStuffCall(propertyName: $propertyName) {
+      propertyName
+      tableName
+      createdAt
+    }
+  }
+`;
 
 const App: React.FC<{}> = ({ children }) => {
   const { push } = useTypedHistory();
@@ -68,8 +94,45 @@ const App: React.FC<{}> = ({ children }) => {
           }
         },
       });
-    return () => subscription.unsubscribe();
-  }, [push]);
+    const subscriptionStuffCall = API.graphql(
+      graphqlOperation(onCreateStuffCall, { propertyName: selectedProperty.name })
+    )
+      // @ts-ignore
+      .subscribe({
+        next: (data: TResponseOnCreatezstuffCall) => {
+          console.log("data", data);
+          if (data.value.data.onCreateStuffCall) {
+            dispatch(
+              setAddStuffCall({
+                table: data.value.data.onCreateStuffCall.tableName,
+                createdAt: data.value.data.onCreateStuffCall.createdAt,
+              })
+            );
+            if (window && window.navigator && "vibrate" in navigator) {
+              navigator.vibrate =
+                navigator.vibrate ||
+                // @ts-ignore
+                navigator.webkitVibrate ||
+                // @ts-ignore
+                navigator.mozVibrate ||
+                // @ts-ignore
+                navigator.msVibrate;
+
+              window.navigator.vibrate([300, 200, 300]);
+            } else {
+              controls.play();
+              setTimeout(() => {
+                controls.pause();
+              }, 1000);
+            }
+          }
+        },
+      });
+    return () => {
+      subscription.unsubscribe();
+      subscriptionStuffCall.unsubscribe();
+    };
+  }, []);
   // ============================================================================================================================================
   // orders loading
   const [openloadingBackdrop, setOpenloadingBackdrop] = React.useState<boolean>(true);

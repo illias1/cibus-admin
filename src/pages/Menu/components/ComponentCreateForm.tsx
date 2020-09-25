@@ -81,12 +81,12 @@ export type TFormInputs = {
   type: MenuCompType;
   max: number | undefined;
   exact: number | undefined;
-  labels: string[];
+  labels: Record<Language, string>;
   options: TFormOption[];
 };
 type TFormOption = {
   addPrice: string | undefined;
-  name: string[];
+  name: Record<Language, string>;
 };
 
 const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => {
@@ -97,17 +97,19 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     selectedProperty,
     menu: { menuComponents, languages },
   } = useTypedSelector((state) => state);
+  // needed to set up existing fields only once in the begnning
   const [langs, setlangs] = React.useState<Language[]>([]);
+  // needed to actually draw the fields and dynamically change langugegs
   const [mappedLangs, setmappedLangs] = React.useState<Language[]>([]);
-  const { control, handleSubmit, register, setValue, reset, errors, getValues } = useForm<
-    TFormInputs
-  >({
+  const { control, handleSubmit, register, setValue, reset, errors, watch } = useForm<TFormInputs>({
     defaultValues: {},
   });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "options",
   });
+  const typeSelected = watch("type");
+
   React.useEffect(() => {
     if (item) {
       const itemLangs = item.translations.map((trnasl) => trnasl.language);
@@ -123,7 +125,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
   }, [item, languages]);
   React.useEffect(() => {
     if (item) {
-      setupExistingFields(setValue, item, langs, append);
+      setupExistingFields(setValue, item, append);
     }
   }, [langs]);
 
@@ -151,7 +153,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     }
   };
   const onSubmit: SubmitHandler<TFormInputs> = async (formResult) => {
-    const inputReady = prepareFormFieldsToSubmission(formResult, mappedLangs, item);
+    const inputReady = prepareFormFieldsToSubmission(formResult, item);
     const newMenuComponents = [...menuComponents];
     if (item) {
       const itemIndexInMenuComp = menuComponents.findIndex((comp) => comp.id === item?.id);
@@ -169,7 +171,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
       }
     );
     if (error) {
-      console.warn("error", error);
+      alert(error);
     }
     if (data && data.updateProperty) {
       dispatch(setupMenuComponents(data.updateProperty.menuComponents));
@@ -180,14 +182,18 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
       });
     }
   };
-  console.log(errors);
+
+  // ============================================================================================================================================
+  // ============================================================================================================================================
+  // ============================================================================================================================================
+  // UI
 
   return (
     <Box className={classes.layout}>
       <MenuLanguagesManage langs={mappedLangs} setlangs={setmappedLangs} />
 
       {item && <DeleteButton onClick={handleDelete} />}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <Box className={classes.block}>
           <FormControl variant="outlined" required className={classes.firstRow}>
             <InputLabel id="demo-simple-select-label">type</InputLabel>
@@ -203,28 +209,34 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
               defaultValue="CHECKBOX"
             />
           </FormControl>
-          <TextField
-            className={classes.firstRow}
-            variant="outlined"
-            label={t("menu_form_max")}
-            type="number"
-            inputRef={register({ min: 0 })}
-            placeholder={t("menu_form_optional")}
-            name="max"
-            error={Boolean(errors.max)}
-            helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
-          />
-          <TextField
-            className={classes.firstRow}
-            variant="outlined"
-            label={t("menu_form_exact")}
-            type="number"
-            name="exact"
-            inputRef={register({ min: 0 })}
-            placeholder={t("menu_form_optional")}
-            error={Boolean(errors.exact)}
-            helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
-          />
+          {typeSelected === MenuCompType.CHECKBOX && (
+            <>
+              <TextField
+                className={classes.firstRow}
+                variant="outlined"
+                label={t("menu_form_max")}
+                type="number"
+                inputRef={register({ min: 0 })}
+                placeholder={t("menu_form_optional")}
+                defaultValue={item?.restrictions?.max || undefined}
+                name="max"
+                error={Boolean(errors.max)}
+                helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
+              />
+              <TextField
+                className={classes.firstRow}
+                variant="outlined"
+                label={t("menu_form_exact")}
+                type="number"
+                name="exact"
+                inputRef={register({ min: 0 })}
+                placeholder={t("menu_form_optional")}
+                defaultValue={item?.restrictions?.exact || undefined}
+                error={Boolean(errors.exact)}
+                helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
+              />
+            </>
+          )}
           <Box className={classes.multilang}>
             <Box style={{ flex: "0 0 auto" }}>
               <Box>
@@ -236,7 +248,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                       label={t("menu_form_explanation_in", { language: ISO6391.getName(lang) })}
                       placeholder={t("menu_form_component_label_placeholder")}
                       inputRef={register({ required: true })}
-                      name={`labels[${langIndex}]`}
+                      name={`labels.${lang}`}
                       required
                       focused={item ? true : false}
                     />
@@ -272,7 +284,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                       <TextField
                         className={classes.textField}
                         variant="outlined"
-                        name={`options[${optionIndex}].name[${langIndex}]`}
+                        name={`options[${optionIndex}].name.${lang}`}
                         inputRef={register({ required: true })}
                         label={`option in ${ISO6391.getName(lang)}`}
                         defaultValue={name[langIndex]}

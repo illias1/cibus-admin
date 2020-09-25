@@ -62,6 +62,17 @@ export const onUpdateOrder = /* GraphQL */ `
     }
   }
 `;
+export const onCreateStuffCall = /* GraphQL */ `
+  subscription OnCreateStuffCall($propertyName: String) {
+    onCreateStuffCall(propertyName: $propertyName) {
+      id
+      propertyName
+      tableName
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($owner: String) {
     onCreateUser(owner: $owner) {

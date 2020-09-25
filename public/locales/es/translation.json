@@ -37,6 +37,7 @@
   "menu_page_your_translation_in": "su traducción en:",
   "menu_create_new_item": "Agregar un nuevo item",
   "menu_upload_photo": "Subir una foto",
+  "menu_upload_new_photo": "Subir una nueva foto",
   "menu_hide_the_form": "Ocultar el formulario",
   "navigation_to_pay": "Pagar",
   "navigation_cooking": "Preparando",
@@ -61,5 +62,8 @@
   "menu_form_add_option": "Agregar Opción",
   "menu_form_show_components": "Mostrar Componentes",
   "menu_form_hide_components": "Esconder Componentes",
-  "menu_form_back_to_components": "Volver a los Componentes"
+  "menu_form_back_to_components": "Volver a los Componentes",
+  "stuff_call": "Camarero llamado",
+  "call_stuff_table": "Mesa",
+  "call_stuff_time": "Tiempo"
 }
