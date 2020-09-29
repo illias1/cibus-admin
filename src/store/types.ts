@@ -20,6 +20,9 @@ export type TStore = {
     table: string;
     createdAt: string;
   }[];
+  user: {
+    id: string;
+  };
 };
 
 export type OrderStatus =

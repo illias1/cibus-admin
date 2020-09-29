@@ -69,5 +69,16 @@
   "explication_components_in_create_menu_item": "If you want to give options or make the customer to make a choice (eg. choose a size or add an ingredient) - you can do this by adding a 'Component' which has all these options. After you created a component, you can 'attach' it to each existent or new menu item",
   "stuff_call": "Stuff call",
   "call_stuff_table": "Table",
-  "call_stuff_time": "Time"
+  "call_stuff_time": "Time",
+  "create_property_helper_unique_name_url": "https://menu.cibus.online/_____",
+  "create_property_helper_unique_name_url_error": "This url is already taken",
+  "create_property_label_unique_name_url": "Unique URL Name",
+  "create_property_button_check_name_url_availability": "Check availability",
+  "create_property_label_non_unique_name": "Property Name",
+  "create_property_helper_non_unique_name": "Name of your restaurant showed everywhere else",
+  "create_property_non_available_url_name_error": "This url is already used!",
+  "create_property_register_button": "Register Property",
+  "create_property_label_address_country": "Country",
+  "create_property_label_address_city": "City",
+  "create_property_label_address_exact": "Street number"
 }

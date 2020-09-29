@@ -15,4 +15,7 @@ export const initialState: TStore = {
     menuComponents: [],
   },
   stuffCalls: JSON.parse(localStorage.getItem(LOCAL_STORAGE_STUFF_CALLS) || "[]"),
+  user: {
+    id: "",
+  },
 };
