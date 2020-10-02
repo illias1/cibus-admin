@@ -278,7 +278,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                     style={langIndex === 0 ? { marginRight: 200 } : {}}
                     className={`${classes.customized} ${classes.textField}`}
                     variant="outlined"
-                    label={t("menu_form_explanation_in", { language: ISO6391.getName(lang) })}
+                    label={t("components.labels.name")}
                     placeholder={t("menu_form_component_label_placeholder")}
                     inputRef={register({ required: true })}
                     name={`labels.${lang}`}
@@ -295,7 +295,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                   variant="outlined"
                   name={`options[${optionIndex}].name.${mappedLangs[0]}`}
                   inputRef={register({ required: true })}
-                  label={`option in ${ISO6391.getName(mappedLangs[0])}`}
+                  label={t("components.labels.option")}
                   defaultValue={name[mappedLangs[0]]}
                   required
                 />
@@ -337,7 +337,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                       variant="outlined"
                       name={`options[${optionIndex}].name.${lang}`}
                       inputRef={register({ required: true })}
-                      label={`option in ${ISO6391.getName(lang)}`}
+                      label={t("components.labels.option")}
                       defaultValue={name[lang]}
                       required
                     />

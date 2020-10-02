@@ -71,7 +71,9 @@
   "components": {
     "labels": {
       "details_in_language": "Details in {{language}}",
-      "component_type": "Component Type"
+      "component_type": "Component Type",
+      "option": "Option (Small, Large,..)",
+      "name": "Name (Size, Topping,..)"
     }
   },
   "label_translation": "Translation"
