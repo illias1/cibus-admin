@@ -3,24 +3,8 @@ export const getPropertyAtInit = /* GraphQL */ `
     getProperty(name: $name) {
       name
       ownerId
-      tables
       currency
       open
-      createdAt
-      updatedAt
-      menu {
-        items {
-          id
-          propertyName
-          price
-          status
-          callories
-          image
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       orders(
         createdAtStatus: { beginsWith: { createdAt: $date } }
         filter: { status: { beginsWith: "R" } }

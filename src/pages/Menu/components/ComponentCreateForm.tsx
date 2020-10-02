@@ -103,10 +103,12 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     if (item) {
       setupExistingFields(setValue, item, append);
     } else {
-      append({
-        addPrice: 0,
-        name: [],
-      });
+      if (fields.length === 0) {
+        append({
+          addPrice: 0,
+          name: [],
+        });
+      }
     }
   }, [langs]);
 
@@ -320,7 +322,11 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 <IconButton
                   color="inherit"
                   style={{ marginTop: 12, paddingLeft: 5 }}
-                  onClick={() => remove(optionIndex)}
+                  onClick={() => {
+                    if (fields.length > 1) {
+                      remove(optionIndex);
+                    }
+                  }}
                 >
                   <DeleteOutlineIcon />
                 </IconButton>
