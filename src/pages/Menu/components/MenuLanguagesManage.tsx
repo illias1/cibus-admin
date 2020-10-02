@@ -16,44 +16,28 @@ import { useTranslation } from "react-i18next";
 type IMenuLanguagesManageProps = {
   langs: Language[];
   setlangs: React.Dispatch<React.SetStateAction<Language[]>>;
+  controlClassname?: string;
+  labelClassname?: string;
 };
 
-const MenuLanguagesManage: React.FC<IMenuLanguagesManageProps> = ({ langs, setlangs }) => {
+const MenuLanguagesManage: React.FC<IMenuLanguagesManageProps> = ({
+  langs,
+  setlangs,
+  controlClassname,
+  labelClassname,
+}) => {
   const classes = useStyles();
-  const { t, i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [newLanguage, setnewLanguage] = React.useState<Language>(i18n.language as Language);
 
   return (
-    <>
-      {langs.length > 0 && (
-        <>
-          <Typography align="center" style={{ width: "13em" }}>
-            {t("menu_page_translated_languages")}
-          </Typography>
-          <Box className={classes.item}>
-            {langs.map((item, index) => (
-              <Chip
-                onDelete={
-                  index === 0
-                    ? undefined
-                    : () => setlangs(langs.filter((language) => language !== item))
-                }
-                style={{ marginRight: 5 }}
-                key={item}
-                label={ISO6391.getName(item)}
-              />
-            ))}
-          </Box>
-        </>
-      )}
+    <Box className={classes.root}>
+      <Typography style={{ marginLeft: 8 }} className={labelClassname}>
+        {t("label_translation")}
+      </Typography>
       <Box className={classes.item}>
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel id="demo-simple-select-filled-label">
-            {t("menu_page_new_translation")}
-          </InputLabel>
+        <FormControl variant="outlined" className={`${controlClassname} ${classes.formControl}`}>
           <Select
-            label={t("menu_page_new_translation")}
-            labelId="demo-simple-select-filled-label"
             value={newLanguage}
             onChange={(e) => {
               if (!langs.includes(e.target.value as Language)) {
@@ -69,7 +53,7 @@ const MenuLanguagesManage: React.FC<IMenuLanguagesManageProps> = ({ langs, setla
           </Select>
         </FormControl>
         <IconButton
-          color="primary"
+          color="inherit"
           onClick={() => {
             if (!langs.includes(newLanguage)) {
               setlangs([...langs, newLanguage]);
@@ -79,18 +63,24 @@ const MenuLanguagesManage: React.FC<IMenuLanguagesManageProps> = ({ langs, setla
           <AddCircleOutlineIcon />
         </IconButton>
       </Box>
-    </>
+    </Box>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      position: "absolute",
+      right: 0,
+      bottom: 0,
+      [theme.breakpoints.down("xs")]: {
+        position: "relative",
+      },
+    },
     item: {
       display: "flex",
       justifyContent: "flex-start",
       alignItems: "center",
-      margin: theme.spacing(1),
     },
     formControl: {
       margin: theme.spacing(1),

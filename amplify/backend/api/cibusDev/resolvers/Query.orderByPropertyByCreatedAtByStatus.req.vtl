@@ -1,0 +1,120 @@
+## [Start] Set query expression for @key **
+#set( $modelQueryExpression = {} )
+## [Start] Validate key arguments. **
+#if( !$util.isNull($ctx.args.createdAtStatus) && $util.isNullOrBlank($ctx.args.propertyName) )
+  $util.error("When providing argument 'createdAtStatus' you must also provide 'propertyName'.", "InvalidArgumentsError")
+#end
+#if( !$util.isNull($ctx.args.createdAtStatus) )
+  #set( $sortKeyArgumentOperations = $ctx.args.createdAtStatus.keySet() )
+  #if( $sortKeyArgumentOperations.size() > 1 )
+    $util.error("Argument createdAtStatus must specify at most one key condition operation.", "InvalidArgumentsError")
+  #end
+  #foreach( $operation in $sortKeyArgumentOperations )
+    #if( $operation == "between" )
+      #if( $ctx.args.createdAtStatus.between.size() != 2 )
+        $util.error("Argument 'createdAtStatus.between' expects exactly two elements.", "InvalidArgumentsError")
+      #end
+      #if( !$util.isNullOrBlank($ctx.args.createdAtStatus.between[0].status) && $util.isNullOrBlank($ctx.args.createdAtStatus.between[0].createdAt) )
+        $util.error("When providing argument 'createdAtStatus.between[0].status' you must also provide 'createdAtStatus.between[0].createdAt'.", "InvalidArgumentsError")
+      #end
+      #if( !$util.isNullOrBlank($ctx.args.createdAtStatus.between[1].status) && $util.isNullOrBlank($ctx.args.createdAtStatus.between[1].createdAt) )
+        $util.error("When providing argument 'createdAtStatus.between[1].status' you must also provide 'createdAtStatus.between[1].createdAt'.", "InvalidArgumentsError")
+      #end
+    #else
+      #if( !$util.isNullOrBlank($ctx.args.createdAtStatus.get("$operation").status) && $util.isNullOrBlank($ctx.args.createdAtStatus.get("$operation").createdAt) )
+        $util.error("When providing argument 'createdAtStatus.$operation.status' you must also provide 'createdAtStatus.$operation.createdAt'.", "InvalidArgumentsError")
+      #end
+    #end
+  #end
+#end
+## [End] Validate key arguments. **
+#if( !$util.isNull($ctx.args.propertyName) )
+  #set( $modelQueryExpression.expression = "#propertyName = :propertyName" )
+  #set( $modelQueryExpression.expressionNames = {
+  "#propertyName": "propertyName"
+} )
+  #set( $modelQueryExpression.expressionValues = {
+  ":propertyName": {
+      "S": "$ctx.args.propertyName"
+  }
+} )
+#end
+## [Start] Applying Key Condition **
+#set( $sortKeyValue = "" )
+#set( $sortKeyValue2 = "" )
+#if( !$util.isNull($ctx.args.createdAtStatus) && !$util.isNull($ctx.args.createdAtStatus.beginsWith) )
+#if( !$util.isNull($ctx.args.createdAtStatus.beginsWith.createdAt) ) #set( $sortKeyValue = "$ctx.args.createdAtStatus.beginsWith.createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.beginsWith.status) ) #set( $sortKeyValue = "$sortKeyValue#$ctx.args.createdAtStatus.beginsWith.status" ) #end
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND begins_with(#sortKey, :sortKey)" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "createdAt#status"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$sortKeyValue" }))
+#end
+#if( !$util.isNull($ctx.args.createdAtStatus) && !$util.isNull($ctx.args.createdAtStatus.between) )
+  #if( $ctx.args.createdAtStatus.between.size() != 2 )
+    $util.error("Argument createdAtStatus.between expects exactly 2 elements.")
+  #end
+#if( !$util.isNull($ctx.args.createdAtStatus.between[0].createdAt) ) #set( $sortKeyValue = "$ctx.args.createdAtStatus.between[0].createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.between[0].status) ) #set( $sortKeyValue = "$sortKeyValue#$ctx.args.createdAtStatus.between[0].status" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.between[1].createdAt) ) #set( $sortKeyValue2 = "$ctx.args.createdAtStatus.between[1].createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.between[1].status) ) #set( $sortKeyValue2 = "$sortKeyValue2#$ctx.args.createdAtStatus.between[1].status" ) #end
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey BETWEEN :sortKey0 AND :sortKey1" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "createdAt#status"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey0", { "S": "$sortKeyValue" }))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey1", { "S": "$sortKeyValue2" }))
+#end
+#if( !$util.isNull($ctx.args.createdAtStatus) && !$util.isNull($ctx.args.createdAtStatus.eq) )
+#if( !$util.isNull($ctx.args.createdAtStatus.eq.createdAt) ) #set( $sortKeyValue = "$ctx.args.createdAtStatus.eq.createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.eq.status) ) #set( $sortKeyValue = "$sortKeyValue#$ctx.args.createdAtStatus.eq.status" ) #end
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey = :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "createdAt#status"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$sortKeyValue" }))
+#end
+#if( !$util.isNull($ctx.args.createdAtStatus) && !$util.isNull($ctx.args.createdAtStatus.lt) )
+#if( !$util.isNull($ctx.args.createdAtStatus.lt.createdAt) ) #set( $sortKeyValue = "$ctx.args.createdAtStatus.lt.createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.lt.status) ) #set( $sortKeyValue = "$sortKeyValue#$ctx.args.createdAtStatus.lt.status" ) #end
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey < :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "createdAt#status"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$sortKeyValue" }))
+#end
+#if( !$util.isNull($ctx.args.createdAtStatus) && !$util.isNull($ctx.args.createdAtStatus.le) )
+#if( !$util.isNull($ctx.args.createdAtStatus.le.createdAt) ) #set( $sortKeyValue = "$ctx.args.createdAtStatus.le.createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.le.status) ) #set( $sortKeyValue = "$sortKeyValue#$ctx.args.createdAtStatus.le.status" ) #end
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey <= :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "createdAt#status"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$sortKeyValue" }))
+#end
+#if( !$util.isNull($ctx.args.createdAtStatus) && !$util.isNull($ctx.args.createdAtStatus.gt) )
+#if( !$util.isNull($ctx.args.createdAtStatus.gt.createdAt) ) #set( $sortKeyValue = "$ctx.args.createdAtStatus.gt.createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.gt.status) ) #set( $sortKeyValue = "$sortKeyValue#$ctx.args.createdAtStatus.gt.status" ) #end
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey > :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "createdAt#status"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$sortKeyValue" }))
+#end
+#if( !$util.isNull($ctx.args.createdAtStatus) && !$util.isNull($ctx.args.createdAtStatus.ge) )
+#if( !$util.isNull($ctx.args.createdAtStatus.ge.createdAt) ) #set( $sortKeyValue = "$ctx.args.createdAtStatus.ge.createdAt" ) #end
+#if( !$util.isNull($ctx.args.createdAtStatus.ge.status) ) #set( $sortKeyValue = "$sortKeyValue#$ctx.args.createdAtStatus.ge.status" ) #end
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey >= :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "createdAt#status"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$sortKeyValue" }))
+#end
+
+
+## [End] Applying Key Condition **
+## [End] Set query expression for @key **
+#set( $limit = $util.defaultIfNull($context.args.limit, 100) )
+#set( $QueryRequest = {
+  "version": "2018-05-29",
+  "operation": "Query",
+  "limit": $limit,
+  "query": $modelQueryExpression,
+  "index": "orderByPropertyByCreatedAtByStatus"
+} )
+#if( !$util.isNull($ctx.args.sortDirection)
+                    && $ctx.args.sortDirection == "DESC" )
+  #set( $QueryRequest.scanIndexForward = false )
+#else
+  #set( $QueryRequest.scanIndexForward = true )
+#end
+#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end
+#if( $context.args.filter ) #set( $QueryRequest.filter = $util.parseJson("$util.transform.toDynamoDBFilterExpression($ctx.args.filter)") ) #end
+$util.toJson($QueryRequest)

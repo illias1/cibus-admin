@@ -31,8 +31,6 @@
   "delete": "Delete",
   "confirm": "Confirm",
   "help": "Help",
-  "menu_page_translated_languages": "Your menu is translated to the following languages :",
-  "menu_page_new_translation": "Add new translation",
   "menu_page_your_translation_in": "Your translation in:",
   "menu_create_new_item": "Create new item",
   "menu_price_helper": "For decimals, use DOT like 12.99",
@@ -80,5 +78,24 @@
   "create_property_register_button": "Register Property",
   "create_property_label_address_country": "Country",
   "create_property_label_address_city": "City",
-  "create_property_label_address_exact": "Street number"
+  "create_property_label_address_exact": "Street number",
+  "title_components": "Components",
+  "components_explanation": "Components are a set of options you can attach to specific menu items. Your customers will be able to select different options like: size [small, medium, large...]",
+  "add_new": "Add New",
+  "title_component_details": "Component details",
+  "components": {
+    "labels": {
+      "details_in_language": "Details in {{language}}",
+      "component_type": "Component Type",
+      "option": "Option (Small, Large,..)",
+      "name": "Name (Size, Topping,..)"
+    }
+  },
+  "label_translation": "Translation",
+  "errors": {
+    "components": {
+      "set_language": "You have to set at least one language and the component explanation to the customer",
+      "set_option": "You have to set at least one option"
+    }
+  }
 }
