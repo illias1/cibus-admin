@@ -73,7 +73,6 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     selectedProperty,
     menu: { menuComponents, languages },
   } = useTypedSelector((state) => state);
-  const [generalError, setgeneralError] = React.useState<string>("");
   // needed to set up existing fields only once in the begnning
   const [langs, setlangs] = React.useState<Language[]>([]);
   // needed to actually draw the fields and dynamically change langugegs
@@ -104,10 +103,12 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     if (item) {
       setupExistingFields(setValue, item, append);
     } else {
-      append({
-        addPrice: 0,
-        name: [],
-      });
+      if (fields.length === 0) {
+        append({
+          addPrice: 0,
+          name: [],
+        });
+      }
     }
   }, [langs]);
 
@@ -161,18 +162,12 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
       if (data && data.updateProperty) {
         dispatch(setupMenuComponents(data.updateProperty.menuComponents));
         reset();
+        setlangs([]);
         setaddEditState({
           open: false,
           item: undefined,
         });
       }
-      return;
-    }
-    if (!formResult.labels) {
-      setgeneralError(t("errors.components.set_language"));
-    }
-    if (!formResult.options) {
-      setgeneralError(t("errors.components.set_option"));
     }
   };
 
@@ -327,7 +322,11 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 <IconButton
                   color="inherit"
                   style={{ marginTop: 12, paddingLeft: 5 }}
-                  onClick={() => remove(optionIndex)}
+                  onClick={() => {
+                    if (fields.length > 1) {
+                      remove(optionIndex);
+                    }
+                  }}
                 >
                   <DeleteOutlineIcon />
                 </IconButton>
@@ -358,6 +357,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
           size="large"
           className={`${classes.absoluteRight} ${classes.save}`}
           type="submit"
+          disabled={fields.length === 0 || mappedLangs.length === 0}
         >
           {t("save")}
         </Button>
@@ -368,7 +368,11 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
           />
         )}
       </form>
-      <Typography color="error">{generalError}</Typography>
+      <Typography color="error">
+        {fields.length === 0 && t("errors.components.set_option")}
+        <br />
+        {mappedLangs.length === 0 && t("errors.components.set_language")}
+      </Typography>
     </Box>
   );
 };
