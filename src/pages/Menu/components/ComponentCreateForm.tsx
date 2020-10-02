@@ -73,6 +73,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     selectedProperty,
     menu: { menuComponents, languages },
   } = useTypedSelector((state) => state);
+  const [generalError, setgeneralError] = React.useState<string>("");
   // needed to set up existing fields only once in the begnning
   const [langs, setlangs] = React.useState<Language[]>([]);
   // needed to actually draw the fields and dynamically change langugegs
@@ -134,33 +135,44 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
     }
   };
   const onSubmit: SubmitHandler<TFormInputs> = async (formResult) => {
-    const inputReady = prepareFormFieldsToSubmission(formResult, item);
-    const newMenuComponents = [...menuComponents];
-    if (item) {
-      const itemIndexInMenuComp = menuComponents.findIndex((comp) => comp.id === item?.id);
-      newMenuComponents.splice(itemIndexInMenuComp, 1, inputReady);
-    } else {
-      newMenuComponents.push(inputReady);
-    }
-    const { data, error } = await mutation<UpdatePropertyMutation, UpdatePropertyMutationVariables>(
-      updatePropertyForMenuComponents,
-      {
+    console.log("from resut", formResult);
+    if (formResult.labels && formResult.options) {
+      const inputReady = prepareFormFieldsToSubmission(formResult, item);
+      console.log("input ready", inputReady);
+      const newMenuComponents = [...menuComponents];
+      if (item) {
+        const itemIndexInMenuComp = menuComponents.findIndex((comp) => comp.id === item?.id);
+        newMenuComponents.splice(itemIndexInMenuComp, 1, inputReady);
+      } else {
+        newMenuComponents.push(inputReady);
+      }
+      const { data, error } = await mutation<
+        UpdatePropertyMutation,
+        UpdatePropertyMutationVariables
+      >(updatePropertyForMenuComponents, {
         input: {
           name: selectedProperty.name,
           menuComponents: newMenuComponents,
         },
-      }
-    );
-    if (error) {
-      alert(error);
-    }
-    if (data && data.updateProperty) {
-      dispatch(setupMenuComponents(data.updateProperty.menuComponents));
-      reset();
-      setaddEditState({
-        open: false,
-        item: undefined,
       });
+      if (error) {
+        alert(JSON.stringify(error));
+      }
+      if (data && data.updateProperty) {
+        dispatch(setupMenuComponents(data.updateProperty.menuComponents));
+        reset();
+        setaddEditState({
+          open: false,
+          item: undefined,
+        });
+      }
+      return;
+    }
+    if (!formResult.labels) {
+      setgeneralError(t("errors.components.set_language"));
+    }
+    if (!formResult.options) {
+      setgeneralError(t("errors.components.set_option"));
     }
   };
 
@@ -356,6 +368,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
           />
         )}
       </form>
+      <Typography color="error">{generalError}</Typography>
     </Box>
   );
 };
