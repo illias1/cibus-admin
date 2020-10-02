@@ -1,4 +1,6 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, Theme } from "@material-ui/core/styles";
+import { Palette } from "@material-ui/core/styles/createPalette";
+import { Typography } from "@material-ui/core/styles/createTypography";
 export const theme = createMuiTheme(
   /* src/ui/theme/theme.json */
 
@@ -138,9 +140,12 @@ export const theme = createMuiTheme(
     //   mobileStepper: 1000,
     //   tooltip: 1500,
     // },
-    shape: { borderRadius: 4 },
+    shape: { borderRadius: 20 },
     props: {},
     spacing: 8,
+    typography: {
+      fontFamily: "Josefin Sans",
+    },
     palette: {
       // tonalOffset: 0.2,
       // contrastThreshold: 3,
@@ -166,6 +171,9 @@ export const theme = createMuiTheme(
         disabled: "rgba(0, 0, 0, 0.38)",
         hint: "rgba(0, 0, 0, 0.38)",
       },
+      background: {
+        paper: "#747474",
+      },
       divider: "rgba(0, 0, 0, 0.12)",
       secondary: {
         main: "#585CFF",
@@ -186,7 +194,7 @@ export const theme = createMuiTheme(
         hover: "rgba(0, 0, 0, 0.08)",
         selected: "rgba(0, 0, 0, 0.14)",
         disabledBackground: "rgba(0, 0, 0, 0.12)",
-        disabled: "rgba(0, 0, 0, 0.26)",
+        disabled: "#6F8395",
         active: "rgba(0, 0, 0, 0.54)",
       },
       primary: {
@@ -198,3 +206,42 @@ export const theme = createMuiTheme(
     },
   }
 );
+
+type Modify<T, R> = Omit<T, keyof R> & R;
+
+export type CustomTypography = Modify<
+  Typography,
+  {
+    secondaryFontFamily: string;
+  }
+>;
+export type CustomPalette = Modify<
+  Palette,
+  {
+    primaryBlack: string;
+  }
+>;
+
+export type CustomTheme = Modify<
+  Theme,
+  {
+    typography: CustomTypography;
+    palette: CustomPalette;
+  }
+>;
+
+export const createMyTheme = (): CustomTheme => {
+  return {
+    ...theme,
+    typography: {
+      ...theme.typography,
+      secondaryFontFamily: "Muli",
+    },
+    palette: {
+      ...theme.palette,
+      primaryBlack: "#191A39",
+    },
+  };
+};
+
+export const augmentedTheme = createMyTheme();

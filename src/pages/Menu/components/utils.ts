@@ -205,7 +205,10 @@ export const setupExistingFields = (
     append(
       item.translations[0].optionChoice.map((option, optionIndex) => ({
         addPrice: option.addPrice,
-        name: item.translations.map((trans) => trans.optionChoice[optionIndex].name),
+        name: item.translations.reduce(
+          (prev, trans) => ({ ...prev, [trans.language]: trans.optionChoice[optionIndex].name }),
+          {} as Record<Language, string>
+        ),
       }))
     );
   }

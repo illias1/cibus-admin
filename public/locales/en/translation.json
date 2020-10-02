@@ -31,8 +31,6 @@
   "delete": "Delete",
   "confirm": "Confirm",
   "help": "Help",
-  "menu_page_translated_languages": "Your menu is translated to the following languages :",
-  "menu_page_new_translation": "Add new translation",
   "menu_page_your_translation_in": "Your translation in:",
   "menu_create_new_item": "Create new item",
   "menu_price_helper": "For decimals, use DOT like 12.99",
@@ -69,5 +67,16 @@
   "explication_components_in_create_menu_item": "If you want to give options or make the customer to make a choice (eg. choose a size or add an ingredient) - you can do this by adding a 'Component' which has all these options. After you created a component, you can 'attach' it to each existent or new menu item",
   "stuff_call": "Stuff call",
   "call_stuff_table": "Table",
-  "call_stuff_time": "Time"
+  "call_stuff_time": "Time",
+  "title_components": "Components",
+  "components_explanation": "Components are a set of options you can attach to specific menu items. Your customers will be able to select different options like: size [small, medium, large...]",
+  "add_new": "Add New",
+  "title_component_details": "Component details",
+  "components": {
+    "labels": {
+      "details_in_language": "Details in {{language}}",
+      "component_type": "Component Type"
+    }
+  },
+  "label_translation": "Translation"
 }
