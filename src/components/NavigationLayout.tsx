@@ -126,9 +126,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       height: "100%",
       [theme.breakpoints.down("xs")]: {
-        marginBottom: "56px",
-        overflow: "hidden",
-        overflowY: "scroll",
+        marginBottom: 70,
       },
     },
     icon: {

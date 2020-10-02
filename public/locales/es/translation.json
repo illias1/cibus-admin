@@ -32,8 +32,6 @@
   "confirm": "Confirmar",
   "help": "Ayuda",
   "advanced": "Avanzado",
-  "menu_page_translated_languages": "Su menú está traducido a los siguientes idiomas:",
-  "menu_page_new_translation": "Agregar nueva traducción",
   "menu_page_your_translation_in": "su traducción en:",
   "menu_create_new_item": "Agregar un nuevo item",
   "menu_upload_photo": "Subir una foto",
@@ -65,5 +63,16 @@
   "menu_form_back_to_components": "Volver a los Componentes",
   "stuff_call": "Camarero llamado",
   "call_stuff_table": "Mesa",
-  "call_stuff_time": "Tiempo"
+  "call_stuff_time": "Tiempo",
+  "title_components": "Components",
+  "components_explanation": "Components are a set of options you can attach to specific menu items. Your customers will be able to select different options like: size [small, medium, large...]",
+  "add_new": "Add New",
+  "title_component_details": "Component details",
+  "components": {
+    "labels": {
+      "details_in_language": "Details in {{language}}",
+      "component_type": "Component Type"
+    }
+  },
+  "label_translation": "Translation"
 }

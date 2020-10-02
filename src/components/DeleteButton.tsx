@@ -4,9 +4,10 @@ import { useTranslation } from "react-i18next";
 
 type IDeleteButtonProps = {
   onClick: () => void;
+  classname?: string;
 };
 
-const DeleteButton: React.FC<IDeleteButtonProps> = ({ onClick }) => {
+const DeleteButton: React.FC<IDeleteButtonProps> = ({ onClick, classname }) => {
   const [deleteOn, setdeleteOn] = React.useState<boolean>(false);
   const classes = useStyles();
   const { t } = useTranslation();
@@ -21,8 +22,9 @@ const DeleteButton: React.FC<IDeleteButtonProps> = ({ onClick }) => {
     <ClickAwayListener onClickAway={() => setdeleteOn(false)}>
       <Button
         onClick={handleDelete}
+        type="button"
         variant={deleteOn ? "contained" : "outlined"}
-        className={classes.delete}
+        className={`${classname} ${classes.delete}`}
       >
         {deleteOn ? t("confirm") : t("delete")}
       </Button>

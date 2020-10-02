@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Collapse,
   createStyles,
@@ -18,6 +19,8 @@ import { TDrawerState } from "../Menu";
 import ComponentCreateForm from "./ComponentCreateForm";
 import EditIcon from "@material-ui/icons/Edit";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Typography from "@material-ui/core/Typography";
+import { CustomTheme } from "../../../utils/theme";
 
 type IComponentCreateFormWithLanguagesProps = {
   setopenDrawer: React.Dispatch<React.SetStateAction<TDrawerState>>;
@@ -37,7 +40,13 @@ const ComponentCreateFormWithLanguages: React.FC<IComponentCreateFormWithLanguag
     open: false,
   });
   return (
-    <>
+    <Box className={classes.text}>
+      <Typography style={{ padding: 16 }} color="primary" variant="h4">
+        {t("title_components")}
+      </Typography>
+      <Typography className={classes.text} gutterBottom paragraph color="primary">
+        {t("components_explanation")}
+      </Typography>
       <Collapse in={!addEditState.open}>
         <List>
           {menuComponents.map((comp) => (
@@ -52,17 +61,17 @@ const ComponentCreateFormWithLanguages: React.FC<IComponentCreateFormWithLanguag
               <ListItemIcon>
                 <EditIcon style={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText secondary={comp.type} primary={comp.translations[0].label} />
+              <ListItemText primary={comp.translations[0].label} />
             </ListItem>
           ))}
         </List>
-        <IconButton
-          style={{ width: "100%" }}
-          color="primary"
+        <Button
+          variant="contained"
+          className={classes.createNew}
           onClick={() => setaddEditState({ open: true })}
         >
-          <AddCircleIcon />
-        </IconButton>
+          {t("add_new")}
+        </Button>
       </Collapse>
       <Collapse in={addEditState.open}>
         <ComponentCreateForm setaddEditState={setaddEditState} item={addEditState.item} />{" "}
@@ -76,7 +85,7 @@ const ComponentCreateFormWithLanguages: React.FC<IComponentCreateFormWithLanguag
       <Button
         variant="contained"
         color="secondary"
-        style={{ position: "absolute", right: 0 }}
+        className={classes.cancel}
         onClick={() =>
           setopenDrawer({
             open: false,
@@ -87,15 +96,33 @@ const ComponentCreateFormWithLanguages: React.FC<IComponentCreateFormWithLanguag
       >
         {t("cancel")}
       </Button>
-    </>
+    </Box>
   );
 };
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: CustomTheme) =>
   createStyles({
     comeBackToComp: {
       display: "block",
       margin: "10px auto",
+    },
+    createNew: {
+      color: "white",
+      background: "#191A39",
+      textTransform: "none",
+      position: "absolute",
+      right: "10px",
+      bottom: "20px",
+      padding: "10px 20px",
+    },
+    cancel: {
+      position: "absolute",
+      right: "10px",
+      top: "20px",
+    },
+    text: {
+      paddingRight: 16,
+      paddingLeft: 16,
     },
   })
 );

@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "flex-end",
-      height: "100%",
+      height: "100vh",
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), #000),
           url(${background})`,
       backgroundPosition: "center",
