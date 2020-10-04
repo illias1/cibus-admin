@@ -11,6 +11,7 @@ import {
   Select,
   TextField,
   Typography,
+  withStyles,
 } from "@material-ui/core";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
@@ -36,7 +37,7 @@ import {
 import { TAddEditState } from "./ComponentCreateFormWithLanguages";
 import { TMutationError } from "../../../types";
 import MenuLanguagesManage from "./MenuLanguagesManage";
-import { CustomTheme } from "../../../utils/theme";
+import { customWithStyles, CustomTheme } from "../../../utils/theme";
 // icons
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
@@ -52,6 +53,7 @@ export const ititialMenuComponentInput: MenuComponentInput = {
 type IAppProps = {
   item: MenuComponentInput | undefined;
   setaddEditState: React.Dispatch<React.SetStateAction<TAddEditState>>;
+  classes: any;
 };
 export type TFormInputs = {
   type: MenuCompType;
@@ -65,8 +67,8 @@ type TFormOption = {
   name: Record<Language, string>;
 };
 
-const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => {
-  const classes = useStyles();
+const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState, classes }) => {
+  const useClasses = useStyles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const {
@@ -177,16 +179,16 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
   // UI
 
   return (
-    <Box className={classes.layout}>
+    <Box className={useClasses.layout}>
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-        <Typography style={{ marginLeft: 8 }} className={classes.label}>
+        <Typography style={{ marginLeft: 8 }} className={useClasses.label}>
           {t("components.labels.component_type")}
         </Typography>
         <Box style={{ position: "relative" }}>
           <FormControl
             variant="outlined"
             required
-            className={`${classes.customized} ${classes.firstRow}`}
+            className={`${classes.customizedTextFieldPaper} ${useClasses.firstRow}`}
           >
             <InputLabel id="demo-simple-select-label">type</InputLabel>
             <Controller
@@ -204,7 +206,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
           {typeSelected && typeSelected === MenuCompType.CHECKBOX && (
             <>
               <TextField
-                className={`${classes.customized} ${classes.firstRow}`}
+                className={`${classes.customizedTextFieldPaper} ${useClasses.firstRow}`}
                 variant="outlined"
                 label={t("menu_form_max")}
                 type="number"
@@ -216,7 +218,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 helperText={Boolean(errors.max) && t("has_to_be_a_positive_integer_number")}
               />
               <TextField
-                className={`${classes.customized} ${classes.firstRow}`}
+                className={`${classes.customizedTextFieldPaper} ${useClasses.firstRow}`}
                 variant="outlined"
                 label={t("menu_form_exact")}
                 type="number"
@@ -230,17 +232,17 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
             </>
           )}
           <MenuLanguagesManage
-            controlClassname={classes.customized}
-            labelClassname={classes.label}
+            controlClassname={classes.customizedTextFieldPaper}
+            labelClassname={useClasses.label}
             langs={mappedLangs}
             setlangs={setmappedLangs}
           />
         </Box>
-        <Box className={classes.multilang}>
+        <Box className={useClasses.multilang}>
           <Box style={{ flex: "0 0 auto" }}>
             <Box style={{ display: "flex" }}>
-              <Box style={{ marginRight: 200 }} className={classes.titleIconInline}>
-                <Typography className={classes.label}>{t("title_component_details")}</Typography>
+              <Box style={{ marginRight: 200 }} className={useClasses.titleIconInline}>
+                <Typography className={useClasses.label}>{t("title_component_details")}</Typography>
                 <IconButton
                   color="inherit"
                   onClick={() =>
@@ -254,8 +256,8 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 </IconButton>
               </Box>
               {mappedLangs.slice(1).map((lang) => (
-                <Box key={lang} className={classes.titleIconInline}>
-                  <Typography className={classes.label}>
+                <Box key={lang} className={useClasses.titleIconInline}>
+                  <Typography className={useClasses.label}>
                     {t("components.labels.details_in_language", {
                       language: ISO6391.getName(lang),
                     })}
@@ -276,7 +278,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 <React.Fragment key={lang}>
                   <TextField
                     style={langIndex === 0 ? { marginRight: 200 } : {}}
-                    className={`${classes.customized} ${classes.textField}`}
+                    className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
                     variant="outlined"
                     label={t("components.labels.name")}
                     placeholder={t("menu_form_component_label_placeholder")}
@@ -291,7 +293,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
             {fields.map(({ id, addPrice, name }, optionIndex) => (
               <Box key={id}>
                 <TextField
-                  className={`${classes.customized} ${classes.textField}`}
+                  className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
                   variant="outlined"
                   name={`options[${optionIndex}].name.${mappedLangs[0]}`}
                   inputRef={register({ required: true })}
@@ -305,7 +307,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                     false
                   }
                   variant="outlined"
-                  className={`${classes.customized} ${classes.price}`}
+                  className={`${classes.customizedTextFieldPaper} ${useClasses.price}`}
                   name={`options[${optionIndex}].addPrice`}
                   inputRef={register()}
                   label={t("menu_form_extra_price")}
@@ -333,7 +335,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 {mappedLangs.slice(1).map((lang, langIndex) => (
                   <React.Fragment key={lang}>
                     <TextField
-                      className={`${classes.customized} ${classes.textField}`}
+                      className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
                       variant="outlined"
                       name={`options[${optionIndex}].name.${lang}`}
                       inputRef={register({ required: true })}
@@ -345,8 +347,8 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
                 ))}
               </Box>
             ))}
-            <Box className={classes.titleIconInline}>
-              <Box className={classes.textField} />
+            <Box className={useClasses.titleIconInline}>
+              <Box className={useClasses.textField} />
               <Typography variant="caption">{t("menu_price_helper")}</Typography>
             </Box>
           </Box>
@@ -355,7 +357,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
           color="primary"
           variant="contained"
           size="large"
-          className={`${classes.absoluteRight} ${classes.save}`}
+          className={`${useClasses.absoluteRight} ${useClasses.save}`}
           type="submit"
           disabled={fields.length === 0 || mappedLangs.length === 0}
         >
@@ -363,7 +365,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState }) => 
         </Button>
         {item && (
           <DeleteButton
-            classname={`${classes.absoluteRight} ${classes.delete}`}
+            classname={`${useClasses.absoluteRight} ${useClasses.delete}`}
             onClick={handleDelete}
           />
         )}
@@ -385,22 +387,6 @@ const useStyles = makeStyles((theme: CustomTheme) =>
       width: "50%",
       [theme.breakpoints.down("xs")]: {
         width: "90%",
-      },
-    },
-    customized: {
-      "& div": {
-        background: "#EFF4F8",
-        color: theme.palette.primaryBlack,
-        borderRadius: 5,
-      },
-      "& label": {
-        color: theme.palette.primaryBlack,
-      },
-      "& label.MuiInputLabel-shrink": {
-        color: theme.palette.primaryBlack,
-        padding: "3px 5px",
-        background: "#EFF4F8",
-        borderRadius: 8,
       },
     },
     // when changing here - change as well titleIconInline
@@ -453,4 +439,4 @@ const useStyles = makeStyles((theme: CustomTheme) =>
   })
 );
 
-export default ComponentCreateForm;
+export default customWithStyles(ComponentCreateForm);

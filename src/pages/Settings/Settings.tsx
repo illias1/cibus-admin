@@ -16,7 +16,17 @@ const Settings: React.FC<ISettingsProps> = ({ ...props }) => {
     <Box className={classes.root}>
       <LanguageSwitch />
       <Button
-        onClick={() => dispatch(setSelectedProperty({ name: "", open: false, currency: "" }))}
+        onClick={() =>
+          dispatch(
+            setSelectedProperty({
+              name: "",
+              open: false,
+              currency: "",
+              nonUniqueName: "",
+              address: { exact: "", country: "", city: "" },
+            })
+          )
+        }
       >
         Go to properties list
       </Button>

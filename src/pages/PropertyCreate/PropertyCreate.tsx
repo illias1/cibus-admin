@@ -13,6 +13,8 @@ import { GRAPHQL_AUTH_MODE, typedQuery } from "../../utils/useQuery";
 import { SubmitHandler } from "react-hook-form";
 import PropertyCreateUi from "./components/CreatePropertyUi";
 import { getIsUrlValid } from "./utils";
+import { stringify } from "querystring";
+import { useTranslation } from "react-i18next";
 const RegisterTables = React.lazy(() => import("../PropertyCreate/components/RegisterTables"));
 
 type IPropertyCreateProps = {};
@@ -70,11 +72,14 @@ const PropertyCreate: React.FC<IPropertyCreateProps> = ({ ...props }) => {
         name: data.createProperty.name,
         open: data.createProperty.open,
         currency: data.createProperty.currency,
+        nonUniqueName: data.createProperty.NonUniqueName,
+        address: data.createProperty.address,
       });
     } else {
       seterror(JSON.stringify(error));
     }
   };
+  const { t } = useTranslation();
   const handleUniquenessAndCorrectnessCheck = async () => {
     const isUrlValid = getIsUrlValid(urlName);
     if (isUrlValid === "") {
@@ -96,7 +101,7 @@ const PropertyCreate: React.FC<IPropertyCreateProps> = ({ ...props }) => {
         });
       }
     } else {
-      seterror(isUrlValid);
+      seterror(t(isUrlValid));
     }
   };
   const handleInput = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -108,6 +113,12 @@ const PropertyCreate: React.FC<IPropertyCreateProps> = ({ ...props }) => {
     name: "",
     open: false,
     currency: Currency["KRW"],
+    nonUniqueName: "",
+    address: {
+      exact: "",
+      city: "",
+      country: "",
+    },
   });
   const [error, seterror] = React.useState<string>("");
   if (propertyCreated.name) {

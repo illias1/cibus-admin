@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme, createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
@@ -10,10 +10,21 @@ import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../.
 import { updateProperty } from "../../../graphql/mutations";
 import AddImage from "./AddImage";
 import { TStore } from "../../../store/types";
-
-type IRegisterTablesProps = {
+import Title from "./Title";
+import FormTitle from "./FormTitle";
+import { customStyles, customWithStyles } from "../../../utils/theme";
+import SmallActionButton from "./SmallActionButton";
+// icons
+import BackspaceOutlinedIcon from "@material-ui/icons/BackspaceOutlined";
+import PlaylistAddOutlinedIcon from "@material-ui/icons/PlaylistAddOutlined";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import IconButton from "@material-ui/core/IconButton";
+import MainActionButton from "./MainActionButton";
+import ExplanationMessage from "./ExplanationMessage";
+import { useTranslation } from "react-i18next";
+interface IRegisterTablesProps extends WithStyles<typeof customStyles> {
   property: TStore["selectedProperty"];
-};
+}
 
 type TRegisterTablesInputs = {
   tables: { name: string }[];
@@ -23,7 +34,7 @@ function checkForUniqueness(array: string[]) {
   return new Set(array).size === array.length;
 }
 
-const RegisterTables: React.FC<IRegisterTablesProps> = ({ property }) => {
+const RegisterTables: React.FC<IRegisterTablesProps> = ({ property, classes }) => {
   const { control, register, handleSubmit, getValues, trigger, errors } = useForm<
     TRegisterTablesInputs
   >();
@@ -31,8 +42,9 @@ const RegisterTables: React.FC<IRegisterTablesProps> = ({ property }) => {
     control,
     name: "tables",
   });
-  const [tablesNumber, settablesNumber] = React.useState<number>(0);
+  const [tablesNumber, settablesNumber] = React.useState<number | string>("");
   const [errorMessage, seterrorMessage] = React.useState<string>("");
+  const { t } = useTranslation();
 
   const handleGenerate = () => {
     const appendTablesArray = [...Array(tablesNumber)].map((_, index) => ({
@@ -63,32 +75,45 @@ const RegisterTables: React.FC<IRegisterTablesProps> = ({ property }) => {
     const tablesValues = getValues();
     return checkForUniqueness(tablesValues.tables.map((obj) => obj.name));
   };
-  const classes = useStyles();
+  const useClasses = useStyles();
   const [tablesRegistered, settablesRegistered] = React.useState<boolean>(false);
   if (tablesRegistered) {
     return <AddImage settablesRegistered={settablesRegistered} property={property} />;
   }
 
   return (
-    <Box style={{ marginTop: 50 }} className={classes.root}>
-      <TextField
-        type="number"
-        value={tablesNumber}
-        onChange={(e) => settablesNumber(Number(e.target.value))}
-        label="number of tables"
+    <>
+      <Title
+        subtitle={t("registerProperty.subtitles.register_tables")}
+        title={t("registerProperty.titles.register_tables", { location: property.name })}
       />
-      <Button onClick={handleGenerate}>Generate</Button>
+      <FormTitle title={t("registerProperty.form_titles.tables_info")} />
+      <Box className={useClasses.line}>
+        <TextField
+          style={{ marginRight: 30 }}
+          className={classes.customizedTextFieldMainBack}
+          type="number"
+          variant="outlined"
+          value={tablesNumber}
+          onChange={(e) => settablesNumber(Number(e.target.value))}
+          label={t("registerProperty.labels.number_of_tables")}
+        />
+        <SmallActionButton onClick={handleGenerate}>
+          {t("registerProperty.actions.generate_tables")}
+        </SmallActionButton>
+      </Box>
 
-      <Typography>Give your tables unique names</Typography>
-
-      {errors?.tables && errors.tables[0]?.name?.type === "validate" && (
-        <Typography color="error">must be unqiue</Typography>
-      )}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <FormTitle title={t("registerProperty.form_titles.table_names")} />
+      <ExplanationMessage
+        message={t("registerProperty.explanations.tables_convenience_numbered")}
+      />
+      <form style={{ position: "relative", marginBottom: 50 }} onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
-          <li key={field.id}>
+          <Box className={useClasses.line} key={field.id}>
             <TextField
+              className={`${useClasses.tableName} ${classes.customizedTextFieldMainBack}`}
               variant="outlined"
+              error={Boolean(errors && errors.tables && errors.tables[index]?.name)}
               name={`tables[${index}].name`}
               inputRef={register({
                 required: true,
@@ -97,33 +122,71 @@ const RegisterTables: React.FC<IRegisterTablesProps> = ({ property }) => {
               onChange={() => trigger(`tables[0].name`)}
               defaultValue={field.name}
             />
-            <Button type="button" onClick={() => remove(index)}>
-              Remove
-            </Button>
-            <Button onClick={() => insert(index + 1, { name: "" })}>Insert a table after</Button>
-          </li>
+            <IconButton color="inherit" type="button" onClick={() => remove(index)}>
+              <BackspaceOutlinedIcon />
+            </IconButton>
+            <IconButton
+              color="inherit"
+              type="button"
+              onClick={() => insert(index + 1, { name: "" })}
+            >
+              <PlaylistAddOutlinedIcon fontSize="large" />
+              {index === 0 && (
+                <Typography>[{t("registerProperty.actions.insert_a_table")}]</Typography>
+              )}
+            </IconButton>
+          </Box>
         ))}
-        <Button onClick={() => append({ name: "" })}>Add one more table</Button>
-        <Typography>
-          The order doesn't matter to the program, it's here only for your own convenince
-        </Typography>
-        {fields.length > 0 && <Button type="submit">register</Button>}
+        <Button
+          type="button"
+          className={useClasses.addExtra}
+          endIcon={<AddCircleOutlineIcon />}
+          onClick={() => append({ name: "" })}
+        >
+          {t("registerProperty.actions.add_extra_table")}
+        </Button>
+        <MainActionButton disabled={fields.length === 0}>
+          {t("registerProperty.actions.register")}
+        </MainActionButton>
       </form>
 
-      <Typography>
-        You don't need to do this now but without registered tables your establishement won't be
-        online. So you will have to do this later anyway. Of course, you can change it later as well
+      <Typography className={useClasses.error} color="error">
+        {errorMessage} <br />{" "}
+        {Boolean(errors.tables) && "Each field is required and has to be unique"}
       </Typography>
-      <Typography color="error">{errorMessage}</Typography>
-      <Button onClick={() => settablesRegistered(true)}>Skip</Button>
-    </Box>
+    </>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    line: {
+      display: "flex",
+      alignItems: "center",
+      color: theme.palette.text.disabled,
+    },
+    tableName: {
+      width: 145,
+      "& div input": {
+        textAlign: "center",
+      },
+    },
+    addExtra: {
+      color: theme.palette.text.hint,
+      textTransform: "none",
+      fontSize: 20,
+      padding: 0,
+      marginTop: 50,
+    },
+
+    error: {
+      color: "#f44336",
+      position: "fixed",
+      right: "0",
+      top: "300px",
+      width: "28%",
+    },
   })
 );
 
-export default RegisterTables;
+export default customWithStyles(RegisterTables);

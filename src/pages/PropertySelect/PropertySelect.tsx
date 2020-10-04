@@ -1,13 +1,23 @@
 import React from "react";
 import { useGetUser } from "./useGetUser";
 import Loader from "../../components/Loader";
-import { Container, createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Container,
+  createStyles,
+  makeStyles,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { setSelectedProperty } from "../../store/actions";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import DoubleArrowOutlinedIcon from "@material-ui/icons/DoubleArrowOutlined";
-import AddIcon from "@material-ui/icons/Add";
+// icons
+import EditSharpIcon from "@material-ui/icons/EditSharp";
+import LaunchIcon from "@material-ui/icons/Launch";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import useTypedHistory from "../../utils/useTypedHistory";
 
 const PropertyCreate = React.lazy(() => import("../PropertyCreate"));
@@ -24,58 +34,52 @@ const PrepareOrder: React.FC<IPrepareOrderProps> = ({ ...props }) => {
     console.log("loading, data, error", loading, data, error);
   }, [loading, data, error]);
   if (registerNewProperty) {
-    return <PropertyCreate />;
+    return (
+      <Container maxWidth="md" style={{ marginTop: 50 }}>
+        <PropertyCreate />
+      </Container>
+    );
   }
   return (
-    <Container>
-      <Typography gutterBottom variant="h1" className={classes.welcome} align="center">
-        Welcome {data.getUser?.name}
+    <Container maxWidth="md" style={{ marginTop: 50 }}>
+      <Typography gutterBottom variant="h5" align="center">
+        Location list
+      </Typography>
+      <Typography>
+        Have multiple locations? You can manage all your locations in this page.
+      </Typography>
+      <Typography>
+        Need to delete a location? Please contact admin@cibus.online for support.{" "}
       </Typography>
       {loading ? (
         <Loader />
       ) : (
-        <Grid container spacing={4}>
+        <>
           {data.getUser?.properties?.items?.map((item) => (
             <React.Fragment key={item?.name}>
               {item && item.name && (
-                <Grid item xs={12} sm={6}>
-                  <Paper
-                    onClick={() =>
-                      dispatch(
-                        setSelectedProperty({
-                          name: item?.name,
-                          open: item.open,
-                          currency: item.currency,
-                        })
-                      )
-                    }
-                    className={classes.paper}
-                  >
-                    {`menu.cibus.onilne/${item?.name}`}
-                    <br />
-                    {item.NonUniqueName}
-                    <br />
-                    {item.address?.city} {item.address?.exact}
-                    <br />
-                    <br />
-                    <br />
-                    <DoubleArrowOutlinedIcon />
-                  </Paper>
-                </Grid>
+                <Box key={item.name} className={classes.row}>
+                  <EditSharpIcon />
+                  <Typography>{item.name}</Typography>
+                  <Typography>
+                    {item.address?.country}, {item.address?.city}, {item.address?.exact}
+                  </Typography>
+                  <Typography>{item.tables?.length}</Typography>
+                  <LaunchIcon />
+                </Box>
               )}
             </React.Fragment>
           ))}
-          <Grid item sm={6} xs={12}>
-            <Paper
-              onClick={() => setregisterNewProperty(true)}
-              style={{ padding: "4em", textAlign: "center" }}
-              className={classes.paper}
-            >
-              <Typography>Create New Property</Typography>
-              <AddIcon />
-            </Paper>
-          </Grid>
-        </Grid>
+
+          <Button
+            onClick={() => setregisterNewProperty(true)}
+            variant="text"
+            color="secondary"
+            startIcon={<AddCircleOutlineIcon />}
+          >
+            Register a new location
+          </Button>
+        </>
       )}
     </Container>
   );
@@ -83,15 +87,10 @@ const PrepareOrder: React.FC<IPrepareOrderProps> = ({ ...props }) => {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    paper: {
-      padding: theme.spacing(2),
-      color: theme.palette.text.secondary,
-      marginLeft: theme.spacing(5),
-      marginRight: theme.spacing(5),
-      minHeight: "10em",
-      cursor: "pointer",
+    row: {
+      display: "flex",
+      justifyContent: "space-between",
     },
-    welcome: {},
   })
 );
 

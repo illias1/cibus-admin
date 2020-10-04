@@ -1,22 +1,36 @@
 import React, { ChangeEvent } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import { FormControl, InputLabel, Select, MenuItem, Typography } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
+  Container,
+  WithStyles,
+} from "@material-ui/core";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { TPropertyCreateInputs, TuniquenessChecked } from "../PropertyCreate";
 import { Currency } from "../../../API";
 import { useTranslation } from "react-i18next";
+import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
+import { customStyles, customWithStyles } from "../../../utils/theme";
+import Title from "./Title";
+import FormTitle from "./FormTitle";
+import SmallActionButton from "./SmallActionButton";
+import MainActionButton from "./MainActionButton";
 
-type ICreatePropertyUiProps = {
+interface ICreatePropertyUiProps extends WithStyles<typeof customStyles> {
   handleUniquenessAndCorrectnessCheck: () => Promise<void>;
   uniquenessChecked: TuniquenessChecked;
   handleInput: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   urlName: string;
   onSubmit: SubmitHandler<TPropertyCreateInputs>;
   error: string;
-};
+}
 
 const CreatePropertyUi: React.FC<ICreatePropertyUiProps> = ({
   handleUniquenessAndCorrectnessCheck,
@@ -25,53 +39,58 @@ const CreatePropertyUi: React.FC<ICreatePropertyUiProps> = ({
   urlName,
   onSubmit,
   error,
+  classes,
 }) => {
-  const classes = useStyles();
+  const useClasses = useStyles();
   const { t } = useTranslation();
   const { register, handleSubmit, control } = useForm<TPropertyCreateInputs>();
 
   return (
-    <Box className={classes.root} style={{ marginTop: 50 }}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleUniquenessAndCorrectnessCheck();
-        }}
-      >
-        <TextField
-          error={uniquenessChecked.alreadyChecked && !uniquenessChecked.unique}
-          onChange={handleInput}
-          name="name"
-          label={t("create_property_label_unique_name_url")}
-          helperText={
-            uniquenessChecked.alreadyChecked && !uniquenessChecked.unique
-              ? t("create_property_helper_unique_name_url_error")
-              : t("create_property_helper_unique_name_url")
-          }
-          value={urlName}
-          variant="outlined"
-        />
-        <Button type="submit" variant="contained">
-          {t("create_property_button_check_name_url_availability")}
-        </Button>
-      </form>
-
-      <Typography color="error">{error}</Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <Title
+        subtitle={t("registerProperty.subtitles.create_new_property")}
+        title={t("registerProperty.titles.create_new_property")}
+      />
+      <form className={useClasses.form} onSubmit={handleSubmit(onSubmit)}>
+        <FormTitle title={t("registerProperty.form_titles.new_property")} />
         <TextField
           name="NonUniqueName"
-          label={t("create_property_label_non_unique_name")}
-          helperText={t("create_property_helper_non_unique_name")}
+          className={`${classes.customizedTextFieldMainBack} ${useClasses.customized}`}
+          label={t("registerProperty.labels.property_name")}
           variant="outlined"
           required={true}
           inputRef={register({ required: true })}
-          disabled={!uniquenessChecked.unique}
         />
+        <Box className={useClasses.hor}>
+          <TextField
+            className={`${classes.customizedTextFieldMainBack} ${useClasses.customized}`}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment disableTypography position="start">
+                  https://menu.cibus.online/
+                </InputAdornment>
+              ),
+            }}
+            error={uniquenessChecked.alreadyChecked && !uniquenessChecked.unique}
+            onChange={handleInput}
+            name="name"
+            label={t("registerProperty.labels.unique_url_name")}
+            value={urlName}
+            variant="outlined"
+          />
+          <SmallActionButton onClick={handleUniquenessAndCorrectnessCheck}>
+            {t("registerProperty.actions.check_availability")}
+          </SmallActionButton>
+        </Box>
+
+        <Typography color="error">{error}</Typography>
+        {uniquenessChecked.alreadyChecked && !uniquenessChecked.unique && (
+          <Typography color="error">{t("registerProperty.errors.url_taken")}</Typography>
+        )}
         <FormControl
           variant="outlined"
           required
-          className={classes.formControl}
-          disabled={!uniquenessChecked.unique}
+          className={`${classes.customizedTextFieldMainBack} ${useClasses.short}`}
         >
           <InputLabel id="currency-input-label">{t("currency")}</InputLabel>
           <Controller
@@ -91,52 +110,64 @@ const CreatePropertyUi: React.FC<ICreatePropertyUiProps> = ({
             }
           />
         </FormControl>
-        <Typography>Address</Typography>
-        <TextField
-          name="address.country"
-          required
-          inputRef={register({ required: true })}
-          variant="outlined"
-          disabled={!uniquenessChecked.unique}
-          label={t("create_property_label_address_country")}
-        />
-        <TextField
-          name="address.city"
-          required
-          inputRef={register({ required: true })}
-          variant="outlined"
-          disabled={!uniquenessChecked.unique}
-          label={t("create_property_label_address_city")}
-        />
-        <TextField
-          name="address.exact"
-          required
-          inputRef={register({ required: true })}
-          variant="outlined"
-          disabled={!uniquenessChecked.unique}
-          label={t("create_property_label_address_exact")}
-        />
-
-        <Button disabled={!uniquenessChecked.unique} variant="contained" type="submit">
-          {t("create_property_register_button")}
-        </Button>
+        <Box>
+          <TextField
+            className={`${classes.customizedTextFieldMainBack} ${useClasses.short}`}
+            name="address.country"
+            required
+            inputRef={register({ required: true })}
+            variant="outlined"
+            label={t("registerProperty.labels.address_country")}
+          />
+          <TextField
+            className={`${classes.customizedTextFieldMainBack} ${useClasses.short}`}
+            name="address.city"
+            required
+            inputRef={register({ required: true })}
+            variant="outlined"
+            label={t("registerProperty.labels.address_city")}
+          />
+          <TextField
+            className={`${classes.customizedTextFieldMainBack} ${useClasses.short}`}
+            name="address.exact"
+            required
+            inputRef={register({ required: true })}
+            variant="outlined"
+            // disabled={!uniquenessChecked.unique}
+            label={t("registerProperty.labels.address_exact")}
+          />
+        </Box>
+        <MainActionButton disabled={!uniquenessChecked.unique}>
+          {t("registerProperty.actions.register_property")}
+        </MainActionButton>
       </form>
-    </Box>
+    </>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
+    hor: {
       display: "flex",
-      flexDirection: "column",
       alignItems: "center",
+      padding: "2px",
     },
-    formControl: {
+
+    customized: {
+      minWidth: 400,
       margin: theme.spacing(1),
-      minWidth: 120,
+      marginLeft: 0,
+    },
+    short: {
+      margin: theme.spacing(1),
+      marginLeft: 0,
+      minWidth: 220,
+    },
+    form: {
+      position: "relative",
+      minHeight: 500,
     },
   })
 );
 
-export default CreatePropertyUi;
+export default customWithStyles(CreatePropertyUi);
