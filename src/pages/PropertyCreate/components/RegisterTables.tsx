@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Theme, createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme, createStyles, WithStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
@@ -10,10 +10,10 @@ import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../.
 import { updateProperty } from "../../../graphql/mutations";
 import AddImage from "./AddImage";
 import { TStore } from "../../../store/types";
-import Title from "./Title";
+import Title from "../../../components/Title";
 import FormTitle from "./FormTitle";
 import { customStyles, customWithStyles } from "../../../utils/theme";
-import SmallActionButton from "./SmallActionButton";
+import SmallActionButton from "../../../components/SmallActionButton";
 // icons
 import BackspaceOutlinedIcon from "@material-ui/icons/BackspaceOutlined";
 import PlaylistAddOutlinedIcon from "@material-ui/icons/PlaylistAddOutlined";

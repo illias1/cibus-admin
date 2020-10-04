@@ -1,6 +1,5 @@
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import {
   Box,
   FormControl,
@@ -11,7 +10,6 @@ import {
   Select,
   TextField,
   Typography,
-  withStyles,
 } from "@material-ui/core";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
@@ -40,7 +38,8 @@ import MenuLanguagesManage from "./MenuLanguagesManage";
 import { customWithStyles, CustomTheme } from "../../../utils/theme";
 // icons
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import BackspaceOutlinedIcon from "@material-ui/icons/BackspaceOutlined";
+import SaveButton from "./SaveButton";
 
 export const ititialMenuComponentInput: MenuComponentInput = {
   id: "",
@@ -238,25 +237,29 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState, class
             setlangs={setmappedLangs}
           />
         </Box>
+        <Box className={useClasses.titleIconInline}>
+          <Typography className={useClasses.label}>{t("title_component_details")}</Typography>
+          <IconButton
+            color="inherit"
+            onClick={() =>
+              append({
+                addPrice: 0,
+                name: mappedLangs.map((item) => ""),
+              })
+            }
+          >
+            <AddCircleOutlineIcon />
+          </IconButton>
+        </Box>
         <Box className={useClasses.multilang}>
           <Box style={{ flex: "0 0 auto" }}>
             <Box style={{ display: "flex" }}>
-              <Box style={{ marginRight: 200 }} className={useClasses.titleIconInline}>
-                <Typography className={useClasses.label}>{t("title_component_details")}</Typography>
-                <IconButton
-                  color="inherit"
-                  onClick={() =>
-                    append({
-                      addPrice: 0,
-                      name: mappedLangs.map((item) => ""),
-                    })
-                  }
+              {mappedLangs.map((lang, langIndex) => (
+                <Box
+                  style={langIndex === 0 ? { marginRight: 200 } : {}}
+                  key={lang}
+                  className={useClasses.titleIconInline}
                 >
-                  <AddCircleOutlineIcon />
-                </IconButton>
-              </Box>
-              {mappedLangs.slice(1).map((lang) => (
-                <Box key={lang} className={useClasses.titleIconInline}>
                   <Typography className={useClasses.label}>
                     {t("components.labels.details_in_language", {
                       language: ISO6391.getName(lang),
@@ -268,7 +271,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState, class
                       setmappedLangs(mappedLangs.filter((language) => language !== lang))
                     }
                   >
-                    <DeleteOutlineIcon />
+                    <BackspaceOutlinedIcon />
                   </IconButton>
                 </Box>
               ))}
@@ -330,7 +333,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState, class
                     }
                   }}
                 >
-                  <DeleteOutlineIcon />
+                  <BackspaceOutlinedIcon />
                 </IconButton>
                 {mappedLangs.slice(1).map((lang, langIndex) => (
                   <React.Fragment key={lang}>
@@ -347,28 +350,17 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState, class
                 ))}
               </Box>
             ))}
-            <Box className={useClasses.titleIconInline}>
+            <Box style={{ display: "flex" }}>
               <Box className={useClasses.textField} />
               <Typography variant="caption">{t("menu_price_helper")}</Typography>
             </Box>
           </Box>
         </Box>
-        <Button
-          color="primary"
-          variant="contained"
-          size="large"
-          className={`${useClasses.absoluteRight} ${useClasses.save}`}
-          type="submit"
-          disabled={fields.length === 0 || mappedLangs.length === 0}
-        >
+        <SaveButton disabled={fields.length === 0 || mappedLangs.length === 0}>
           {t("save")}
-        </Button>
-        {item && (
-          <DeleteButton
-            classname={`${useClasses.absoluteRight} ${useClasses.delete}`}
-            onClick={handleDelete}
-          />
-        )}
+        </SaveButton>
+
+        {item && <DeleteButton classname={useClasses.delete} onClick={handleDelete} />}
       </form>
       <Typography color="error">
         {fields.length === 0 && t("errors.components.set_option")}
@@ -409,17 +401,9 @@ const useStyles = makeStyles((theme: CustomTheme) =>
       flexDirection: "column",
       alignItems: "center",
     },
-    save: {
-      textTransform: "none",
-      background: theme.palette.primaryBlack,
-      color: "white",
-      marginTop: 40,
-    },
-    absoluteRight: {
+    delete: {
       position: "absolute",
       right: 10,
-    },
-    delete: {
       marginTop: 100,
       marginBottom: 40,
       textTransform: "none",
@@ -430,7 +414,7 @@ const useStyles = makeStyles((theme: CustomTheme) =>
       // has to be the same as textfield
       marginLeft: theme.spacing(1),
       minWidth: 208,
-      maxWidth: 320,
+      maxWidth: 208,
     },
     label: {
       fontSize: 17,

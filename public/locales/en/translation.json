@@ -85,6 +85,9 @@
     "components": {
       "set_language": "You have to set at least one language and the component explanation to the customer",
       "set_option": "You have to set at least one option"
+    },
+    "connection": {
+      "websocket": "Error to connect with Web Socket"
     }
   },
   "property_select": {
@@ -145,5 +148,28 @@
   },
   "general": {
     "skip": "Skip"
+  },
+  "menu": {
+    "item_form": {
+      "title": "Menu Item",
+      "subtitle": "In this section you will create/update the your menu item.",
+      "section_titles": {
+        "details": "Details",
+        "price": "Price",
+        "item_components": "Item’s Components"
+      },
+      "explanations": {
+        "item_components": "Components are useful to attach “pre-determined” options to your menu items [ie. your restaurants has 20 different pizza flavors [items] and the costumer can choose between 3 different options [components: small, medium and large]. You can set-up new components in the components page. ",
+        "details_explanation": "By categorizing your menu items,  it will allow your customers to navigate through the menu easily [ie. Coca-Cola, Water, etc can be categorized as “beverages”]. It's case sensitive!"
+      },
+      "labels": {
+        "name": "Name [The Amazing Pizza]",
+        "description": "Description [Combination of 3 types...]",
+        "category": "Category [beverages]"
+      },
+      "placeholders": {
+        "description": "Combination of 3 types of cheese and 3 …"
+      }
+    }
   }
 }
