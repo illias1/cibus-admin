@@ -87,6 +87,12 @@
       "set_option": "You have to set at least one option"
     }
   },
+  "property_select": {
+    "tables_registered": "{{number}} Tables Registered",
+    "title": "Location list",
+    "subtitle": "Have multiple locations? You can manage all your locations in this page.",
+    "delete_location_contact_admin": "Need to delete a location? Please contact admin@cibus.online for support."
+  },
   "registerProperty": {
     "errors": {
       "uploading_image": "Error uploading image",

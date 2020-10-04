@@ -3,8 +3,8 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 type ITitleProps = {
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
 };
 
 const Title: React.FC<ITitleProps> = ({ title, subtitle }) => {

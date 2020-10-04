@@ -7,11 +7,9 @@ import {
   Select,
   MenuItem,
   Typography,
-  Container,
   WithStyles,
 } from "@material-ui/core";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { TPropertyCreateInputs, TuniquenessChecked } from "../PropertyCreate";
 import { Currency } from "../../../API";
@@ -151,12 +149,19 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       padding: "2px",
+      [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
+        alignItems: "flex-start",
+      },
     },
-
     customized: {
       minWidth: 400,
       margin: theme.spacing(1),
       marginLeft: 0,
+      [theme.breakpoints.down("xs")]: {
+        minWidth: 300,
+        maxWidth: 300,
+      },
     },
     short: {
       margin: theme.spacing(1),
@@ -166,6 +171,7 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       position: "relative",
       minHeight: 500,
+      paddingBottom: 80,
     },
   })
 );

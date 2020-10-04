@@ -22,9 +22,11 @@ export const getUser = /* GraphQL */ `
       properties {
         items {
           address {
+            country
             city
             exact
           }
+          tables
           name
           currency
           NonUniqueName

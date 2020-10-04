@@ -21,6 +21,7 @@ import ExplanationMessage from "./ExplanationMessage";
 // import { ReactComponent as Placeholder } from "../../../assets/placeholderMenu.svg";
 import placeholder from "../../../assets/placeholderMenu.png";
 import { useTranslation } from "react-i18next";
+import ContentPreview from "./ImagePreview";
 
 interface IAddImageProps extends WithStyles<typeof customStyles> {
   property: TStore["selectedProperty"];
@@ -190,6 +191,7 @@ const AddImage: React.FC<IAddImageProps> = ({ property, settablesRegistered, cla
             {property.address?.city} {property.address?.exact}
           </Typography>
         </div>
+        <ContentPreview />
       </div>
       <Typography color="error">{errorMessage}</Typography>
       <Box className={useClasses.actions}>
@@ -228,6 +230,8 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 533,
       background: "white",
       marginTop: 40,
+      marginBottom: 40,
+      overflow: "hidden",
     },
     restName: {
       color: theme.palette.common.white,
