@@ -39,6 +39,10 @@ export const getUser = /* GraphQL */ `
           image {
             main
           }
+          info {
+            Facebook
+            Instagram
+          }
           createdAt
           updatedAt
           menu {
@@ -111,6 +115,10 @@ export const listUsers = /* GraphQL */ `
             image {
               main
             }
+            info {
+              Facebook
+              Instagram
+            }
             createdAt
             updatedAt
             menu {
@@ -159,6 +167,10 @@ export const getProperty = /* GraphQL */ `
       }
       image {
         main
+      }
+      info {
+        Facebook
+        Instagram
       }
       createdAt
       updatedAt
@@ -258,6 +270,10 @@ export const listPropertys = /* GraphQL */ `
         }
         image {
           main
+        }
+        info {
+          Facebook
+          Instagram
         }
         createdAt
         updatedAt
