@@ -16,9 +16,9 @@ import { Currency } from "../../../API";
 import { useTranslation } from "react-i18next";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import { customStyles, customWithStyles } from "../../../utils/theme";
-import Title from "./Title";
+import Title from "../../../components/Title";
 import FormTitle from "./FormTitle";
-import SmallActionButton from "./SmallActionButton";
+import SmallActionButton from "../../../components/SmallActionButton";
 import MainActionButton from "./MainActionButton";
 
 interface ICreatePropertyUiProps extends WithStyles<typeof customStyles> {

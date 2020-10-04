@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import {
   CreateMenuItemMutation,
   CreateMenuItemMutationVariables,
@@ -9,8 +8,6 @@ import {
   UpdateMenuItemMutation,
 } from "../../../API";
 import AddMenuItemForm, { Inputs } from "./CreateMenuItemForm";
-import Box from "@material-ui/core/Box";
-import MenuLanguageManage from "./MenuLanguagesManage";
 import { useTypedSelector } from "../../../store/types";
 import { TAppSyncError, TNonNullMenuItem } from "../../../types";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -23,6 +20,11 @@ import { prepareInputsForUpdateMutation, prepareInputsForCreateMutation } from "
 import { Storage } from "aws-amplify";
 import { v4 as uuid } from "uuid";
 
+export type TUploadPicture = {
+  selected: boolean;
+  image: File | null | undefined;
+};
+
 type ICreateMenuItemFormWithlangsProps = {
   setopenDrawer: React.Dispatch<
     React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
@@ -34,7 +36,6 @@ const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> =
   setopenDrawer,
   openDrawer,
 }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { languages, menuComponents } = useTypedSelector((state) => state.menu);
   const { name, currency } = useTypedSelector((state) => state.selectedProperty);
@@ -51,44 +52,36 @@ const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> =
   const { register, handleSubmit, reset } = useForm<Inputs>();
   const [creating, setcreating] = React.useState<boolean>(false);
   const [showComponents, setshowComponents] = React.useState<boolean>(false);
-  const [deleteOn, setdeleteOn] = React.useState<boolean>(false);
   const [errorMessage, seterrorMessage] = React.useState<string>("");
-  const [photo, setphoto] = React.useState<{
-    selected: boolean;
-    image: File | null | undefined;
-  }>({
+  const [photo, setphoto] = React.useState<TUploadPicture>({
     selected: false,
     image: null,
   });
   const { item } = openDrawer;
 
   const handleDelete = async (id: string, category: string) => {
-    if (deleteOn) {
-      const { error, data } = await mutation<
-        DeleteMenuItemMutation,
-        DeleteMenuItemMutationVariables
-      >(deleteMenuItem, {
+    const { error, data } = await mutation<DeleteMenuItemMutation, DeleteMenuItemMutationVariables>(
+      deleteMenuItem,
+      {
         input: {
           id,
         },
+      }
+    );
+    if (error) {
+      console.log("dlete unsuccessful");
+    }
+    if (data) {
+      dispatch(
+        setDeleteMenuItem({
+          category: item!.i18n[0].category || UNCATEGORIZED,
+          id: item!.id,
+        })
+      );
+      setopenDrawer({
+        open: false,
+        item: null,
       });
-      if (error) {
-        console.log("dlete unsuccessful");
-      }
-      if (data) {
-        dispatch(
-          setDeleteMenuItem({
-            category: item!.i18n[0].category || UNCATEGORIZED,
-            id: item!.id,
-          })
-        );
-        setopenDrawer({
-          open: false,
-          item: null,
-        });
-      }
-    } else {
-      setdeleteOn(true);
     }
   };
   const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
@@ -153,38 +146,25 @@ const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> =
   };
 
   return (
-    <Box className={classes.root}>
-      <MenuLanguageManage langs={langs} setlangs={setlangs} />
-      <AddMenuItemForm
-        errorMessage={errorMessage}
-        register={register}
-        deleteOn={deleteOn}
-        onSubmit={onSubmit}
-        currency={currency}
-        setphoto={setphoto}
-        item={item}
-        creating={creating}
-        setdeleteOn={setdeleteOn}
-        setshowComponents={setshowComponents}
-        showComponents={showComponents}
-        menuComponents={menuComponents}
-        handleDelete={handleDelete}
-        handleSubmit={handleSubmit}
-        setopenDrawer={setopenDrawer}
-        languages={langs}
-      />
-    </Box>
+    <AddMenuItemForm
+      picture={photo}
+      setlangs={setlangs}
+      errorMessage={errorMessage}
+      register={register}
+      onSubmit={onSubmit}
+      currency={currency}
+      setphoto={setphoto}
+      item={item}
+      creating={creating}
+      setshowComponents={setshowComponents}
+      showComponents={showComponents}
+      menuComponents={menuComponents}
+      handleDelete={handleDelete}
+      handleSubmit={handleSubmit}
+      setopenDrawer={setopenDrawer}
+      languages={langs}
+    />
   );
 };
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-  })
-);
 
 export default React.memo(CreateMenuItemFormWithlangs);

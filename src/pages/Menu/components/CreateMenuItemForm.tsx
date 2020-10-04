@@ -10,28 +10,40 @@ import {
   Box,
   CircularProgress,
   Typography,
-  ClickAwayListener,
   InputAdornment,
   Collapse,
   FormGroup,
   FormControlLabel,
   Checkbox,
+  WithStyles,
+  IconButton,
 } from "@material-ui/core";
 import { UNCATEGORIZED } from "../../../utils/_constants";
 import ISO6391 from "iso-639-1";
 import { TNonNullMenuItem } from "../../../types";
-
-type IaddMenuItemFormProps = {
+import Title from "../../../components/Title";
+import DeleteButton from "../../../components/DeleteButton";
+import MenuLanguageManage from "./MenuLanguagesManage";
+import SectionTitle from "./SectionTitle";
+import { customStyles, customWithStyles } from "../../../utils/theme";
+import SmallActionButton from "../../../components/SmallActionButton";
+import { TUploadPicture } from "./CreateMenuItemFormWithLanguages";
+// icons
+import BackspaceOutlinedIcon from "@material-ui/icons/BackspaceOutlined";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SaveButton from "./SaveButton";
+import CancelButton from "./CancelButton";
+interface IaddMenuItemFormProps extends WithStyles<typeof customStyles> {
   languages: Language[];
+  setlangs: React.Dispatch<React.SetStateAction<Language[]>>;
   setopenDrawer: React.Dispatch<
     React.SetStateAction<{ open: boolean; item: TNonNullMenuItem | null }>
   >;
   handleSubmit: any;
   register: any;
-  deleteOn: boolean;
   handleDelete: (id: string, category: string) => Promise<void>;
   onSubmit: SubmitHandler<Inputs>;
-  setdeleteOn: React.Dispatch<React.SetStateAction<boolean>>;
   item: TNonNullMenuItem | null;
   currency: string;
   setshowComponents: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,11 +57,12 @@ type IaddMenuItemFormProps = {
       image: File | null | undefined;
     }>
   >;
-};
+  picture: TUploadPicture;
+}
 
 export type Inputs = {
-  callories: string;
-  notes: string;
+  // callories: string;
+  // notes: string;
   price: number;
   i18n: Record<
     Language,
@@ -64,13 +77,12 @@ export type Inputs = {
 
 const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
   languages,
+  setlangs,
   setopenDrawer,
   handleDelete,
   handleSubmit,
   register,
-  deleteOn,
   onSubmit,
-  setdeleteOn,
   item,
   currency,
   setphoto,
@@ -79,117 +91,64 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
   menuComponents,
   errorMessage,
   creating,
+  picture,
+  classes,
 }) => {
-  const classes = useStyles();
+  const useClasses = useStyles();
   const { t } = useTranslation();
 
   return (
-    <FormControl>
-      <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
-        <Box>
-          <ClickAwayListener onClickAway={() => setdeleteOn(false)}>
-            <Button
-              onClick={() => handleDelete(item!.id, item!.i18n[0].category || UNCATEGORIZED)}
-              variant={deleteOn ? "contained" : "outlined"}
-              className={classes.delete}
-            >
-              {deleteOn ? t("confirm") : t("delete")}
-            </Button>
-          </ClickAwayListener>
-        </Box>
+    <FormControl className={useClasses.root}>
+      <CancelButton onClick={() => setopenDrawer((prev) => ({ ...prev, open: false, item: null }))}>
+        {t("cancel")}
+      </CancelButton>
 
-        <TextField
-          className={classes.textField}
+      <Title title={t("menu.item_form.title")} subtitle={t("menu.item_form.subtitle")} />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* <TextField
+          className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
           variant="outlined"
           label={t("menu_form_notes")}
           name="notes"
           inputRef={register}
           defaultValue={item && item.notes ? item.notes : ""}
-        />
+        /> */}
+        {/* <TextField
+            className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
+            variant="outlined"
+            label={t("menu_form_callories")}
+            name="callories"
+            inputRef={register}
+            defaultValue={item && item.callories ? item.callories : ""}
+          /> */}
+        <SectionTitle title={t("menu.item_form.section_titles.price")} />
         <TextField
-          className={classes.textField}
+          className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
           variant="outlined"
           label={t("menu_form_price")}
           name="price"
           inputRef={register({ required: true })}
           InputProps={{
-            startAdornment: <InputAdornment position="start">{currency}</InputAdornment>,
+            startAdornment: (
+              <InputAdornment disableTypography position="start">
+                {currency}
+              </InputAdornment>
+            ),
           }}
           required={true}
           defaultValue={item ? item.price : ""}
           helperText={t("menu_price_helper")}
         />
-        <TextField
-          className={classes.textField}
-          variant="outlined"
-          label={t("menu_form_callories")}
-          name="callories"
-          inputRef={register}
-          defaultValue={item && item.callories ? item.callories : ""}
+        <SectionTitle
+          title={t("menu.item_form.section_titles.item_components")}
+          explanation={t("menu.item_form.explanations.item_components")}
         />
-        <input
-          onChange={async (e) => {
-            // if (e.target.files && e.target.files.item(0)) {
-            setphoto({
-              selected: true,
-              image: e.target.files?.item(0),
-            });
-            // }
-          }}
-          accept="image/*"
-          id="uploadPhotoMenuItem"
-          style={{ display: "none" }}
-          type="file"
-        />
-        <Typography>{t("menu_page_your_translation_in")}</Typography>
-        <Box className={classes.languagesBox}>
-          {languages.map((language, index) => (
-            <Box key={language} className={classes.root} style={{ paddingTop: 30 }}>
-              <Typography>{ISO6391.getName(language)}</Typography>
-              <TextField
-                className={classes.textField}
-                variant="outlined"
-                label={t("menu_form_name")}
-                name={`i18n.${language}.name`}
-                inputRef={register({ required: true })}
-                required={true}
-                defaultValue={
-                  item ? item.i18n.find((transl) => transl.language === language)?.name : ""
-                }
-              />
-              <TextField
-                className={classes.textField}
-                variant="outlined"
-                label={t("menu_form_description")}
-                name={`i18n.${language}.description`}
-                multiline={true}
-                inputRef={register}
-                defaultValue={
-                  item ? item.i18n.find((transl) => transl.language === language)?.description : ""
-                }
-              />
-              <TextField
-                className={classes.textField}
-                variant="outlined"
-                label={t("menu_form_category")}
-                helperText={t("menu_category_helper")}
-                name={`i18n.${language}.category`}
-                inputRef={register}
-                defaultValue={
-                  item ? item.i18n.find((transl) => transl.language === language)?.category : ""
-                }
-              />
-            </Box>
-          ))}
-        </Box>
         <Button
-          variant="outlined"
-          onClick={() => document.getElementById("uploadPhotoMenuItem")?.click()}
+          style={{ textTransform: "none", marginTop: 20 }}
+          endIcon={showComponents ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          onClick={() => setshowComponents(!showComponents)}
+          variant="contained"
         >
-          {item?.image ? t("menu_upload_new_photo") : t("menu_upload_photo")}
-        </Button>
-        <Typography>{t("explication_components_in_create_menu_item")}</Typography>
-        <Button onClick={() => setshowComponents(!showComponents)}>
           {showComponents ? t("menu_form_hide_components") : t("menu_form_show_components")}
         </Button>
         <Collapse in={showComponents}>
@@ -216,22 +175,121 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
               : t("menu_form_no_components_yet")}
           </FormGroup>
         </Collapse>
+        <SectionTitle title={t("label_translation")} />
+        <MenuLanguageManage
+          rootStyle={{ position: "relative" }}
+          langs={languages}
+          setlangs={setlangs}
+          labelClassname={useClasses.none}
+          controlClassname={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
+        />
+
+        <input
+          onChange={async (e) => {
+            // if (e.target.files && e.target.files.item(0)) {
+            setphoto({
+              selected: true,
+              image: e.target.files?.item(0),
+            });
+            // }
+          }}
+          accept="image/*"
+          id="uploadPhotoMenuItem"
+          style={{ display: "none" }}
+          type="file"
+        />
+        <SectionTitle
+          explanation={t("menu.item_form.explanations.details_explanation")}
+          title={t("menu.item_form.section_titles.details")}
+        />
+        <Box className={useClasses.upload}>
+          <SmallActionButton
+            onClick={() => document.getElementById("uploadPhotoMenuItem")?.click()}
+          >
+            {item?.image ? t("menu_upload_new_photo") : t("menu_upload_photo")}
+          </SmallActionButton>
+
+          <Typography style={{ marginLeft: 20 }}>{picture.image?.name || item?.image}</Typography>
+        </Box>
+        <Box className={useClasses.languagesBox}>
+          <Box style={{ flex: "0 0 auto" }}>
+            {languages.length === 0 && (
+              <Typography color="error">
+                {t("menu_feedback_need_select_at_least_one_language")}
+              </Typography>
+            )}
+            {languages.map((language, index) => (
+              <React.Fragment key={language}>
+                <Typography>
+                  {t("components.labels.details_in_language", {
+                    language: ISO6391.getName(language),
+                  })}
+                </Typography>
+                <Box display="flex">
+                  <TextField
+                    className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
+                    variant="outlined"
+                    label={t("menu.item_form.labels.name")}
+                    name={`i18n.${language}.name`}
+                    inputRef={register({ required: true })}
+                    required={true}
+                    defaultValue={
+                      item ? item.i18n.find((transl) => transl.language === language)?.name : ""
+                    }
+                  />
+                  <TextField
+                    className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
+                    variant="outlined"
+                    label={t("menu.item_form.labels.category")}
+                    // helperText={t("menu_category_helper")}
+                    name={`i18n.${language}.category`}
+                    inputRef={register}
+                    defaultValue={
+                      item ? item.i18n.find((transl) => transl.language === language)?.category : ""
+                    }
+                  />
+                  <TextField
+                    style={{ minWidth: 350 }}
+                    className={`${classes.customizedTextFieldPaper} ${useClasses.textField}`}
+                    variant="outlined"
+                    label={t("menu.item_form.labels.description")}
+                    placeholder={t("menu.item_form.placeholders.description")}
+                    name={`i18n.${language}.description`}
+                    multiline={true}
+                    inputRef={register}
+                    defaultValue={
+                      item
+                        ? item.i18n.find((transl) => transl.language === language)?.description
+                        : ""
+                    }
+                  />
+                  <IconButton
+                    color="inherit"
+                    onClick={() =>
+                      setlangs(languages.slice(0, index).concat(languages.slice(index + 1)))
+                    }
+                  >
+                    <BackspaceOutlinedIcon />
+                  </IconButton>
+                </Box>
+              </React.Fragment>
+            ))}
+          </Box>
+        </Box>
+
         {errorMessage.length > 0 && <Typography color="error">{errorMessage}</Typography>}
-        {languages.length > 0 ? (
-          creating ? (
-            <CircularProgress color="secondary" />
-          ) : (
-            <Button className={classes.save} color="primary" variant="contained" type="submit">
-              {t("save")}
-            </Button>
-          )
+        <DeleteButton
+          classname={useClasses.delete}
+          onClick={() => handleDelete(item!.id, item!.i18n[0].category || UNCATEGORIZED)}
+        >
+          {t("delete")}
+        </DeleteButton>
+        {creating ? (
+          <CircularProgress color="secondary" />
         ) : (
-          <Typography>{t("menu_feedback_need_select_at_least_one_language")}</Typography>
+          <SaveButton disabled={languages.length === 0}>{t("save")}</SaveButton>
         )}
       </form>
-      <Button onClick={() => setopenDrawer((prev) => ({ ...prev, open: false, item: null }))}>
-        Cancel
-      </Button>
     </FormControl>
   );
 };
@@ -239,27 +297,34 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      padding: 30,
     },
     languagesBox: {
       display: "flex",
       flexWrap: "wrap",
-      justifyContent: "center",
+      overflow: "auto",
     },
     textField: {
       margin: theme.spacing(1),
-      minWidth: 200,
+      marginLeft: 0,
+      minWidth: 250,
     },
     delete: {
-      color: theme.palette.error.main,
+      position: "absolute",
+      right: 10,
+      marginTop: 100,
+      marginBottom: 40,
+      textTransform: "none",
     },
-    save: {
+    none: {
+      display: "none",
+    },
+    upload: {
+      display: "flex",
       marginTop: 20,
-      marginBottom: 10,
+      marginBottom: 20,
     },
   })
 );
 
-export default AddMenuItemForm;
+export default customWithStyles(AddMenuItemForm);

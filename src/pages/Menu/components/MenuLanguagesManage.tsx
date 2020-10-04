@@ -5,9 +5,7 @@ import ISO6391 from "iso-639-1";
 // material
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import Select from "@material-ui/core/Select";
@@ -18,6 +16,7 @@ type IMenuLanguagesManageProps = {
   setlangs: React.Dispatch<React.SetStateAction<Language[]>>;
   controlClassname?: string;
   labelClassname?: string;
+  rootStyle?: React.CSSProperties;
 };
 
 const MenuLanguagesManage: React.FC<IMenuLanguagesManageProps> = ({
@@ -25,13 +24,14 @@ const MenuLanguagesManage: React.FC<IMenuLanguagesManageProps> = ({
   setlangs,
   controlClassname,
   labelClassname,
+  rootStyle,
 }) => {
   const classes = useStyles();
   const { i18n, t } = useTranslation();
   const [newLanguage, setnewLanguage] = React.useState<Language>(i18n.language as Language);
 
   return (
-    <Box className={classes.root}>
+    <Box style={rootStyle} className={classes.root}>
       <Typography style={{ marginLeft: 8 }} className={labelClassname}>
         {t("label_translation")}
       </Typography>

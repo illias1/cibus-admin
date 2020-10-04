@@ -3,24 +3,22 @@ import {
   Button,
   Collapse,
   createStyles,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Theme,
 } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Language, MenuComponentInput } from "../../../API";
+import { MenuComponentInput } from "../../../API";
 import { useTypedSelector } from "../../../store/types";
 import { TDrawerState } from "../Menu";
 import ComponentCreateForm from "./ComponentCreateForm";
 import EditIcon from "@material-ui/icons/Edit";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Typography from "@material-ui/core/Typography";
 import { CustomTheme } from "../../../utils/theme";
+import CancelButton from "./CancelButton";
 
 type IComponentCreateFormWithLanguagesProps = {
   setopenDrawer: React.Dispatch<React.SetStateAction<TDrawerState>>;
@@ -82,10 +80,7 @@ const ComponentCreateFormWithLanguages: React.FC<IComponentCreateFormWithLanguag
           {t("menu_form_back_to_components")}
         </Button>
       </Collapse>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.cancel}
+      <CancelButton
         onClick={() =>
           setopenDrawer({
             open: false,
@@ -95,7 +90,7 @@ const ComponentCreateFormWithLanguages: React.FC<IComponentCreateFormWithLanguag
         }
       >
         {t("cancel")}
-      </Button>
+      </CancelButton>
     </Box>
   );
 };
@@ -115,11 +110,7 @@ const useStyles = makeStyles((theme: CustomTheme) =>
       bottom: "20px",
       padding: "10px 20px",
     },
-    cancel: {
-      position: "absolute",
-      right: "10px",
-      top: "20px",
-    },
+
     text: {
       paddingRight: 16,
       paddingLeft: 16,

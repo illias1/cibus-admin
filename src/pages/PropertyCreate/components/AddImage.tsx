@@ -10,16 +10,14 @@ import { mutation } from "../../../utils/mutation";
 import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../../API";
 import { updateProperty } from "../../../graphql/mutations";
 import { Typography, WithStyles } from "@material-ui/core";
-import Title from "./Title";
+import Title from "../../../components/Title";
 import MainActionButton from "./MainActionButton";
 import TextField from "@material-ui/core/TextField/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import { customStyles, customWithStyles } from "../../../utils/theme";
-import SmallActionButton from "./SmallActionButton";
+import SmallActionButton from "../../../components/SmallActionButton";
 import FormTitle from "./FormTitle";
 import ExplanationMessage from "./ExplanationMessage";
-// import { ReactComponent as Placeholder } from "../../../assets/placeholderMenu.svg";
-import placeholder from "../../../assets/placeholderMenu.png";
 import { useTranslation } from "react-i18next";
 import ContentPreview from "./ImagePreview";
 

@@ -10,7 +10,7 @@ import EditSharpIcon from "@material-ui/icons/EditSharp";
 import LaunchIcon from "@material-ui/icons/Launch";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { useTranslation } from "react-i18next";
-import Title from "../PropertyCreate/components/Title";
+import Title from "../../components/Title";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import { Currency, GetPropertyQuery, GetUserQuery } from "../../API";
 import useTypedHistory from "../../utils/useTypedHistory";

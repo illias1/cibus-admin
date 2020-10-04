@@ -23,6 +23,7 @@ import {
 import { onCreateOrder } from "../graphql/subscriptions";
 import useAudio from "react-use/lib/useAudio";
 import { useTypedSelector } from "../store/types";
+import { useTranslation } from "react-i18next";
 
 type TResponseOnCreateOrder = {
   provider: any;
@@ -50,6 +51,7 @@ export const onCreateStuffCall = /* GraphQL */ `
 const App: React.FC<{}> = ({ children }) => {
   const { push } = useTypedHistory();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { selectedProperty } = useTypedSelector((state) => state);
 
   // ============================================================================================================================================
@@ -84,6 +86,9 @@ const App: React.FC<{}> = ({ children }) => {
     )
       // @ts-ignore
       .subscribe({
+        error: (e: any) => {
+          alert(t("errors.connection.websocket"));
+        },
         next: (data: TResponseOnCreateOrder) => {
           console.log("data", data);
           if (data.value.data.onCreateOrder) {
@@ -99,6 +104,9 @@ const App: React.FC<{}> = ({ children }) => {
     )
       // @ts-ignore
       .subscribe({
+        error: (e: any) => {
+          alert(t(""));
+        },
         next: (data: TResponseOnCreatezstuffCall) => {
           console.log("data", data);
           if (data.value.data.onCreateStuffCall) {
