@@ -6,16 +6,16 @@ type User @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Admi
 }
 
 type Property
-@model
-@key(fields: ["name"])
-@key(name: "propertyByUser", fields: ["ownerId"])
-@auth(
-  rules: [
-    { allow: owner, ownerField: "ownerId", operations: [create, update, delete, read] }
-    { allow: groups, groups: ["Admin"], operations: [create, update, delete, read] }
-    { allow: public, provider: iam, operations: [read] }
-  ]
-) {
+  @model
+  @key(fields: ["name"])
+  @key(name: "propertyByUser", fields: ["ownerId"])
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "ownerId", operations: [create, update, delete, read] }
+      { allow: groups, groups: ["Admin"], operations: [create, update, delete, read] }
+      { allow: public, provider: iam, operations: [read] }
+    ]
+  ) {
   name: String!
   NonUniqueName: String!
   open: Boolean!
@@ -27,6 +27,11 @@ type Property
   currency: Currency!
   address: Address
   image: PropertyImage
+  info: Info
+}
+type Info {
+  Facebook: String
+  Instagram: String
 }
 type MenuComponent {
   id: ID!
@@ -61,15 +66,15 @@ type Address {
 }
 
 type MenuItem
-@model
-@auth(
-  rules: [
-    { allow: public, provider: iam, operations: [read] }
-    { allow: owner, operations: [create, update, delete, read] }
-    { allow: groups, groups: ["Admin"], operations: [create, update, delete, read] }
-  ]
-)
-@key(name: "menuItemsByProperty", fields: ["propertyName"], queryField: "menuItemsByProperty") {
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: iam, operations: [read] }
+      { allow: owner, operations: [create, update, delete, read] }
+      { allow: groups, groups: ["Admin"], operations: [create, update, delete, read] }
+    ]
+  )
+  @key(name: "menuItemsByProperty", fields: ["propertyName"], queryField: "menuItemsByProperty") {
   id: ID!
   propertyName: String!
   i18n: [I18nMenuItem!]!
@@ -94,25 +99,25 @@ enum MenuItemStatus {
 }
 
 type Order
-@model(subscriptions: null)
-@auth(rules: [{ allow: public, provider: iam, operations: [read, create] }, { allow: private }])
-@aws_iam
-@aws_cognito_user_pools
-@key(
-  name: "orderByProperty"
-  fields: ["propertyName", "createdAt"]
-  queryField: "orderByPropertyByCreatedAt"
-)
-@key(
-  name: "orderByPropertyByCreatedAtByStatus"
-  fields: ["propertyName", "createdAt", "status"]
-  queryField: "orderByPropertyByCreatedAtByStatus"
-)
-@key(
-  name: "orderByPropertyByStatus"
-  fields: ["propertyName", "status"]
-  queryField: "orderByPropertyByStatus"
-) {
+  @model(subscriptions: null)
+  @auth(rules: [{ allow: public, provider: iam, operations: [read, create] }, { allow: private }])
+  @aws_iam
+  @aws_cognito_user_pools
+  @key(
+    name: "orderByProperty"
+    fields: ["propertyName", "createdAt"]
+    queryField: "orderByPropertyByCreatedAt"
+  )
+  @key(
+    name: "orderByPropertyByCreatedAtByStatus"
+    fields: ["propertyName", "createdAt", "status"]
+    queryField: "orderByPropertyByCreatedAtByStatus"
+  )
+  @key(
+    name: "orderByPropertyByStatus"
+    fields: ["propertyName", "status"]
+    queryField: "orderByPropertyByStatus"
+  ) {
   id: ID!
   propertyName: String!
   orderItem: [OrderItem!]!
@@ -126,9 +131,9 @@ type Order
 type Subscription {
   onCreateOrder(propertyName: String): Order @aws_subscribe(mutations: ["createOrder"])
   onUpdateOrder(id: ID, propertyName: String): Order
-  @aws_subscribe(mutations: ["updateOrder"])
-  @aws_iam
-  @aws_cognito_user_pools
+    @aws_subscribe(mutations: ["updateOrder"])
+    @aws_iam
+    @aws_cognito_user_pools
   onCreateStuffCall(propertyName: String): StuffCall @aws_subscribe(mutations: ["createStuffCall"])
 }
 # cannot be enum in order to sort
@@ -156,9 +161,9 @@ type TComponentChosenOptions {
 }
 
 type StuffCall
-@model(subscriptions: null)
-@key(name: "orderStuffCallByProperty", fields: ["propertyName"])
-@auth(rules: [{ allow: public, provider: iam, operations: [read, create] }, { allow: private }]) {
+  @model(subscriptions: null)
+  @key(name: "orderStuffCallByProperty", fields: ["propertyName"])
+  @auth(rules: [{ allow: public, provider: iam, operations: [read, create] }, { allow: private }]) {
   id: ID!
   propertyName: String!
   tableName: String!

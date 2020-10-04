@@ -73,6 +73,9 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       right: 0,
       bottom: 0,
+      [theme.breakpoints.down("xs")]: {
+        position: "relative",
+      },
     },
     item: {
       display: "flex",

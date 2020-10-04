@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 export type IuseTypedHistoryProps =
   | "/new-order"
   | "/prepare-order"
+  | "/create-new-property"
   | "/delivered-order"
   | "/tables"
   | "/menu"

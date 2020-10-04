@@ -42,6 +42,10 @@ export const createUser = /* GraphQL */ `
           image {
             main
           }
+          info {
+            Facebook
+            Instagram
+          }
           createdAt
           updatedAt
           menu {
@@ -119,6 +123,10 @@ export const updateUser = /* GraphQL */ `
           }
           image {
             main
+          }
+          info {
+            Facebook
+            Instagram
           }
           createdAt
           updatedAt
@@ -198,6 +206,10 @@ export const deleteUser = /* GraphQL */ `
           image {
             main
           }
+          info {
+            Facebook
+            Instagram
+          }
           createdAt
           updatedAt
           menu {
@@ -271,6 +283,10 @@ export const createProperty = /* GraphQL */ `
       }
       image {
         main
+      }
+      info {
+        Facebook
+        Instagram
       }
       createdAt
       updatedAt
@@ -361,6 +377,10 @@ export const updateProperty = /* GraphQL */ `
       image {
         main
       }
+      info {
+        Facebook
+        Instagram
+      }
       createdAt
       updatedAt
       menu {
@@ -449,6 +469,10 @@ export const deleteProperty = /* GraphQL */ `
       }
       image {
         main
+      }
+      info {
+        Facebook
+        Instagram
       }
       createdAt
       updatedAt

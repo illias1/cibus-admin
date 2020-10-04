@@ -145,6 +145,8 @@ const App: React.FC<{}> = ({ children }) => {
           name: selectedProperty.name,
           open: data.getProperty.open,
           currency: data.getProperty.currency,
+          address: data.getProperty.address,
+          nonUniqueName: data.getProperty.NonUniqueName,
         })
       );
     }

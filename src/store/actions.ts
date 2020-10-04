@@ -32,3 +32,4 @@ export const setupMenuComponents = actionCreator<
 >("setupMenuComponents");
 export const setAddStuffCall = actionCreator<TStore["stuffCalls"][number]>("setAddStuffCall");
 export const setRemoveStuffCall = actionCreator<number>("setRemoveStuffCall");
+export const setUser = actionCreator<{ id: string }>("setUser");

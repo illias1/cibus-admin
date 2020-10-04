@@ -7,6 +7,12 @@ export const initialState: TStore = {
     name: localStorage.getItem(LOCAL_STORAGE_PROPERTY) || "",
     open: false,
     currency: "",
+    address: {
+      exact: "",
+      city: "",
+      country: "",
+    },
+    nonUniqueName: "",
   },
   menu: {
     categorizedItems: {},
@@ -15,4 +21,7 @@ export const initialState: TStore = {
     menuComponents: [],
   },
   stuffCalls: JSON.parse(localStorage.getItem(LOCAL_STORAGE_STUFF_CALLS) || "[]"),
+  user: {
+    id: "",
+  },
 };

@@ -1,4 +1,10 @@
-import { createMuiTheme, Theme } from "@material-ui/core/styles";
+import {
+  createMuiTheme,
+  createStyles,
+  makeStyles,
+  Theme,
+  withStyles,
+} from "@material-ui/core/styles";
 import { Palette } from "@material-ui/core/styles/createPalette";
 import { Typography } from "@material-ui/core/styles/createTypography";
 export const theme = createMuiTheme(
@@ -168,11 +174,12 @@ export const theme = createMuiTheme(
       text: {
         primary: "#fff",
         secondary: "#fff",
-        disabled: "rgba(0, 0, 0, 0.38)",
-        hint: "rgba(0, 0, 0, 0.38)",
+        disabled: "#A6BCD0",
+        hint: "#748A9D",
       },
       background: {
         paper: "#747474",
+        default: "#0A0918",
       },
       divider: "rgba(0, 0, 0, 0.12)",
       secondary: {
@@ -245,3 +252,40 @@ export const createMyTheme = (): CustomTheme => {
 };
 
 export const augmentedTheme = createMyTheme();
+
+export const customStyles = {
+  customizedTextFieldPaper: {
+    "& div": {
+      background: "#EFF4F8",
+      color: augmentedTheme.palette.primaryBlack,
+      borderRadius: 8,
+    },
+    "& label": {
+      color: augmentedTheme.palette.primaryBlack,
+    },
+    "& label.MuiInputLabel-shrink": {
+      color: augmentedTheme.palette.primaryBlack,
+      padding: "3px 5px",
+      background: "#EFF4F8",
+      borderRadius: 8,
+    },
+  },
+  customizedTextFieldMainBack: {
+    "& div": {
+      background: "#F0F4F8",
+      color: augmentedTheme.palette.primaryBlack,
+      borderRadius: 8,
+    },
+    "& label": {
+      color: augmentedTheme.palette.text.disabled,
+    },
+    "& label.MuiInputLabel-shrink": {
+      color: augmentedTheme.palette.text.disabled,
+      padding: "3px 5px",
+      background: "#F0F4F8",
+      borderRadius: 8,
+    },
+  },
+};
+
+export const customWithStyles = withStyles(customStyles);

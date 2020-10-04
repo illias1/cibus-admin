@@ -75,7 +75,9 @@
   "components": {
     "labels": {
       "details_in_language": "Details in {{language}}",
-      "component_type": "Component Type"
+      "component_type": "Component Type",
+      "option": "Option (Small, Large,..)",
+      "name": "Name (Size, Topping,..)"
     }
   },
   "label_translation": "Translation",
@@ -84,5 +86,64 @@
       "set_language": "You have to set at least one language and the component explanation to the customer",
       "set_option": "You have to set at least one option"
     }
+  },
+  "property_select": {
+    "tables_registered": "{{number}} Tables Registered",
+    "title": "Location list",
+    "subtitle": "Have multiple locations? You can manage all your locations in this page.",
+    "delete_location_contact_admin": "Need to delete a location? Please contact admin@cibus.online for support."
+  },
+  "registerProperty": {
+    "errors": {
+      "uploading_image": "Error uploading image",
+      "facebookUrl": "Has to be a url (http included) and have no spaces",
+      "instagramId": "Shouldn't contain spaces",
+      "no_spaces": "Shouldn't contain spaces",
+      "no_backslash": "Shouldn't contain /",
+      "url_taken": "This url is already taken!",
+      "connection": "Connection error"
+    },
+    "titles": {
+      "register_image": "Register {{location}} image",
+      "register_tables": "Register Tables for {{location}}",
+      "create_new_property": "Create New Property"
+    },
+    "subtitles": {
+      "register_image": "Add a personalized image for your restaurant. This will be the welcome image for your menu. Choose a nice one! And make sure the image is compressed as much as possiblem since otherwise your customers will have to wait longtime!",
+      "register_tables": "Have multiple locations? You can create as many locations needed. Each location will have anindependent menu and admin control.",
+      "create_new_property": "Have multiple locations? You can create as many locations needed. Each location will have anindependent menu and admin control."
+    },
+    "explanations": {
+      "image_preview": "Below is the preview of how your image would appear to customers",
+      "social_media": "When your customers make an order, they would be invitd to follow you on the social media, if you input your contacts below",
+      "tables_convenience_numbered": "You can change the name of the table for your convenience. By default, the table arenumbered."
+    },
+    "form_titles": {
+      "social_media": "Social media links",
+      "select_image": "Select Image",
+      "tables_info": "Table Information",
+      "table_names": "Table Names",
+      "new_property": "New Property"
+    },
+    "actions": {
+      "choose_image": "Choose",
+      "register": "Register",
+      "generate_tables": "Generate",
+      "add_extra_table": "Add an extra table",
+      "insert_a_table": "Insert a table",
+      "register_property": "Register Property",
+      "check_availability": "Check availability"
+    },
+    "labels": {
+      "number_of_tables": "Number of tables",
+      "address_country": "Country",
+      "address_city": "City",
+      "address_exact": "Street number",
+      "unique_url_name": "Unique URL Name",
+      "property_name": "Name"
+    }
+  },
+  "general": {
+    "skip": "Skip"
   }
 }

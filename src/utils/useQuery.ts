@@ -50,3 +50,43 @@ export const useQuery = <ResultType extends {}, VariablesType extends {} = {}>(
     refetch,
   };
 };
+
+export enum GRAPHQL_AUTH_MODE {
+  API_KEY = "API_KEY",
+  AWS_IAM = "AWS_IAM",
+  OPENID_CONNECT = "OPENID_CONNECT",
+  AMAZON_COGNITO_USER_POOLS = "AMAZON_COGNITO_USER_POOLS",
+}
+type TtypedQuery<DataType> = {
+  data: DataType | null;
+  queryError: any | null;
+};
+export const typedQuery = async <ResultType extends {}, VariablesType extends {} = {}>(
+  query: string,
+  variables?: VariablesType,
+  authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+) => {
+  const fetchQuery = async (query: string, variables?: VariablesType) => {
+    try {
+      const { data } = (await API.graphql({
+        query,
+        variables,
+        authMode,
+      })) as {
+        data: ResultType;
+      };
+      return {
+        query: data,
+        queryError: null,
+      };
+    } catch (error) {
+      console.warn(error);
+      return {
+        query: null,
+        queryError: error,
+      };
+    }
+  };
+
+  return fetchQuery(query, variables);
+};

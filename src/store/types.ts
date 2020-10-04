@@ -9,6 +9,12 @@ export type TStore = {
     name: string;
     open: boolean;
     currency: string;
+    nonUniqueName: string;
+    address: {
+      city: string | undefined | null;
+      exact: string | undefined | null;
+      country: string | undefined | null;
+    } | null;
   };
   menu: {
     categorizedItems: TcategorizedMenuItems;
@@ -20,6 +26,9 @@ export type TStore = {
     table: string;
     createdAt: string;
   }[];
+  user: {
+    id: string;
+  };
 };
 
 export type OrderStatus =

@@ -12,6 +12,7 @@ import {
   setupMenuComponents,
   setAddStuffCall,
   setRemoveStuffCall,
+  setUser,
 } from "./actions";
 import {
   LOCAL_STORAGE_PROPERTY,
@@ -173,4 +174,8 @@ export const reducer = reducerWithInitialState(initialState)
       ...state,
       stuffCalls: newStuffCalls,
     };
-  });
+  })
+  .case(setUser, (state, user) => ({
+    ...state,
+    user,
+  }));
