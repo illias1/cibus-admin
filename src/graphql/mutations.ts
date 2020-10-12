@@ -46,6 +46,9 @@ export const createUser = /* GraphQL */ `
             Facebook
             Instagram
           }
+          booleans {
+            subscribeCustomerToOrder
+          }
           createdAt
           updatedAt
           menu {
@@ -127,6 +130,9 @@ export const updateUser = /* GraphQL */ `
           info {
             Facebook
             Instagram
+          }
+          booleans {
+            subscribeCustomerToOrder
           }
           createdAt
           updatedAt
@@ -210,6 +216,9 @@ export const deleteUser = /* GraphQL */ `
             Facebook
             Instagram
           }
+          booleans {
+            subscribeCustomerToOrder
+          }
           createdAt
           updatedAt
           menu {
@@ -287,6 +296,9 @@ export const createProperty = /* GraphQL */ `
       info {
         Facebook
         Instagram
+      }
+      booleans {
+        subscribeCustomerToOrder
       }
       createdAt
       updatedAt
@@ -381,6 +393,9 @@ export const updateProperty = /* GraphQL */ `
         Facebook
         Instagram
       }
+      booleans {
+        subscribeCustomerToOrder
+      }
       createdAt
       updatedAt
       menu {
@@ -473,6 +488,9 @@ export const deleteProperty = /* GraphQL */ `
       info {
         Facebook
         Instagram
+      }
+      booleans {
+        subscribeCustomerToOrder
       }
       createdAt
       updatedAt

@@ -34,6 +34,9 @@ const PrepareOrder: React.FC<IPrepareOrderProps> = ({ ...props }) => {
       setSelectedProperty({
         open: item?.open || false,
         currency: item?.currency || Currency["USD"],
+        booleans: {
+          subscribeCustomerToOrder: item?.booleans?.subscribeCustomerToOrder,
+        },
         address: {
           city: item?.address?.city,
           exact: item?.address?.exact,

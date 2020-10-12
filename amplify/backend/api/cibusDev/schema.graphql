@@ -28,6 +28,11 @@ type Property
   address: Address
   image: PropertyImage
   info: Info
+  booleans: PropertyBooleans
+}
+
+type PropertyBooleans {
+  subscribeCustomerToOrder: Boolean
 }
 type Info {
   Facebook: String
@@ -130,10 +135,7 @@ type Order
 
 type Subscription {
   onCreateOrder(propertyName: String): Order @aws_subscribe(mutations: ["createOrder"])
-  onUpdateOrder(id: ID, propertyName: String): Order
-    @aws_subscribe(mutations: ["updateOrder"])
-    @aws_iam
-    @aws_cognito_user_pools
+  onUpdateOrder(id: ID, propertyName: String): Order @aws_subscribe(mutations: ["updateOrder"])
   onCreateStuffCall(propertyName: String): StuffCall @aws_subscribe(mutations: ["createStuffCall"])
 }
 # cannot be enum in order to sort
@@ -551,85 +553,3 @@ enum Language {
   zh
   vi
 }
-
-# mutation createUser {
-#   createUser(input: {name: "khomko illia"}) {
-#     name
-#   }
-# }
-
-# query listusers {
-#   listUsers {
-#     items {
-#       name
-#       owner
-#       properties {
-#         items {
-#           name
-#         }
-#       }
-#       id
-#     }
-#   }
-# }
-
-# mutation createProperty {
-#   createProperty(input: {name: "prop2", ownerId: "user1", menu: {categories: {name: "", menuItems: {name: "", price: 1.5, status: AVAILABLE}}}}) {
-#     name
-#   }
-# }
-
-# query listProperties {
-#   listPropertys {
-#     items {
-#       name
-#       menu {
-#         categories {
-#           name
-#         }
-#       }
-#       orders {
-#         items {
-#           id
-#           orderItem {
-#             name
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
-
-# mutation createOrder {
-#   createOrder(input: {propertyName: "prop2", orderItem: [{name: "item3", price: 1.5, quantity: 10}, {name: "item4", price: 1.5, quantity: 10}]}) {
-#     id
-#   }
-# }
-
-# query listOrders {
-#   listOrders {
-#     items {
-#       id
-#       propertyName
-#       createdAt
-#     }
-#   }
-# }
-
-# mutation deleteOrder {
-#   deleteOrder(input: {id: "415e85ff-aab4-4c90-b319-044d41324ece"}) {
-#     id
-#   }
-# }
-
-# query ordersByProp {
-#   orderByProperty(propertyName: "prop2") {
-#     items {
-#       id
-#       orderItem {
-#         name
-#       }
-#       createdAt
-#     }
-#   }
-# }

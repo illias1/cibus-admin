@@ -155,6 +155,9 @@ const App: React.FC<{}> = ({ children }) => {
           currency: data.getProperty.currency,
           address: data.getProperty.address,
           nonUniqueName: data.getProperty.NonUniqueName,
+          booleans: {
+            subscribeCustomerToOrder: data.getProperty.booleans?.subscribeCustomerToOrder,
+          },
         })
       );
     }

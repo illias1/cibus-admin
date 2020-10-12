@@ -43,6 +43,9 @@ export const getUser = /* GraphQL */ `
             Facebook
             Instagram
           }
+          booleans {
+            subscribeCustomerToOrder
+          }
           createdAt
           updatedAt
           menu {
@@ -119,6 +122,9 @@ export const listUsers = /* GraphQL */ `
               Facebook
               Instagram
             }
+            booleans {
+              subscribeCustomerToOrder
+            }
             createdAt
             updatedAt
             menu {
@@ -171,6 +177,9 @@ export const getProperty = /* GraphQL */ `
       info {
         Facebook
         Instagram
+      }
+      booleans {
+        subscribeCustomerToOrder
       }
       createdAt
       updatedAt
@@ -274,6 +283,9 @@ export const listPropertys = /* GraphQL */ `
         info {
           Facebook
           Instagram
+        }
+        booleans {
+          subscribeCustomerToOrder
         }
         createdAt
         updatedAt

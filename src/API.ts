@@ -312,6 +312,7 @@ export type CreatePropertyInput = {
   address?: AddressInput | null,
   image?: PropertyImageInput | null,
   info?: InfoInput | null,
+  booleans?: PropertyBooleansInput | null,
 };
 
 export type MenuComponentInput = {
@@ -352,6 +353,10 @@ export type InfoInput = {
   Instagram?: string | null,
 };
 
+export type PropertyBooleansInput = {
+  subscribeCustomerToOrder?: boolean | null,
+};
+
 export type ModelPropertyConditionInput = {
   NonUniqueName?: ModelStringInput | null,
   open?: ModelBooleanInput | null,
@@ -385,6 +390,7 @@ export type UpdatePropertyInput = {
   address?: AddressInput | null,
   image?: PropertyImageInput | null,
   info?: InfoInput | null,
+  booleans?: PropertyBooleansInput | null,
 };
 
 export type DeletePropertyInput = {
@@ -696,6 +702,10 @@ export type CreateUserMutation = {
           Facebook: string | null,
           Instagram: string | null,
         } | null,
+        booleans:  {
+          __typename: "PropertyBooleans",
+          subscribeCustomerToOrder: boolean | null,
+        } | null,
         createdAt: string,
         updatedAt: string,
         menu:  {
@@ -791,6 +801,10 @@ export type UpdateUserMutation = {
           __typename: "Info",
           Facebook: string | null,
           Instagram: string | null,
+        } | null,
+        booleans:  {
+          __typename: "PropertyBooleans",
+          subscribeCustomerToOrder: boolean | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -888,6 +902,10 @@ export type DeleteUserMutation = {
           Facebook: string | null,
           Instagram: string | null,
         } | null,
+        booleans:  {
+          __typename: "PropertyBooleans",
+          subscribeCustomerToOrder: boolean | null,
+        } | null,
         createdAt: string,
         updatedAt: string,
         menu:  {
@@ -978,6 +996,10 @@ export type CreatePropertyMutation = {
       __typename: "Info",
       Facebook: string | null,
       Instagram: string | null,
+    } | null,
+    booleans:  {
+      __typename: "PropertyBooleans",
+      subscribeCustomerToOrder: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1088,6 +1110,10 @@ export type UpdatePropertyMutation = {
       Facebook: string | null,
       Instagram: string | null,
     } | null,
+    booleans:  {
+      __typename: "PropertyBooleans",
+      subscribeCustomerToOrder: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     menu:  {
@@ -1196,6 +1222,10 @@ export type DeletePropertyMutation = {
       __typename: "Info",
       Facebook: string | null,
       Instagram: string | null,
+    } | null,
+    booleans:  {
+      __typename: "PropertyBooleans",
+      subscribeCustomerToOrder: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1562,6 +1592,10 @@ export type GetUserQuery = {
           Facebook: string | null,
           Instagram: string | null,
         } | null,
+        booleans:  {
+          __typename: "PropertyBooleans",
+          subscribeCustomerToOrder: boolean | null,
+        } | null,
         createdAt: string,
         updatedAt: string,
         menu:  {
@@ -1651,6 +1685,10 @@ export type ListUsersQuery = {
             Facebook: string | null,
             Instagram: string | null,
           } | null,
+          booleans:  {
+            __typename: "PropertyBooleans",
+            subscribeCustomerToOrder: boolean | null,
+          } | null,
           createdAt: string,
           updatedAt: string,
           menu:  {
@@ -1716,6 +1754,10 @@ export type GetPropertyQuery = {
       __typename: "Info",
       Facebook: string | null,
       Instagram: string | null,
+    } | null,
+    booleans:  {
+      __typename: "PropertyBooleans",
+      subscribeCustomerToOrder: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1830,6 +1872,10 @@ export type ListPropertysQuery = {
         __typename: "Info",
         Facebook: string | null,
         Instagram: string | null,
+      } | null,
+      booleans:  {
+        __typename: "PropertyBooleans",
+        subscribeCustomerToOrder: boolean | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2386,6 +2432,10 @@ export type OnCreateUserSubscription = {
           Facebook: string | null,
           Instagram: string | null,
         } | null,
+        booleans:  {
+          __typename: "PropertyBooleans",
+          subscribeCustomerToOrder: boolean | null,
+        } | null,
         createdAt: string,
         updatedAt: string,
         menu:  {
@@ -2480,6 +2530,10 @@ export type OnUpdateUserSubscription = {
           __typename: "Info",
           Facebook: string | null,
           Instagram: string | null,
+        } | null,
+        booleans:  {
+          __typename: "PropertyBooleans",
+          subscribeCustomerToOrder: boolean | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -2576,6 +2630,10 @@ export type OnDeleteUserSubscription = {
           Facebook: string | null,
           Instagram: string | null,
         } | null,
+        booleans:  {
+          __typename: "PropertyBooleans",
+          subscribeCustomerToOrder: boolean | null,
+        } | null,
         createdAt: string,
         updatedAt: string,
         menu:  {
@@ -2665,6 +2723,10 @@ export type OnCreatePropertySubscription = {
       __typename: "Info",
       Facebook: string | null,
       Instagram: string | null,
+    } | null,
+    booleans:  {
+      __typename: "PropertyBooleans",
+      subscribeCustomerToOrder: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2774,6 +2836,10 @@ export type OnUpdatePropertySubscription = {
       Facebook: string | null,
       Instagram: string | null,
     } | null,
+    booleans:  {
+      __typename: "PropertyBooleans",
+      subscribeCustomerToOrder: boolean | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     menu:  {
@@ -2881,6 +2947,10 @@ export type OnDeletePropertySubscription = {
       __typename: "Info",
       Facebook: string | null,
       Instagram: string | null,
+    } | null,
+    booleans:  {
+      __typename: "PropertyBooleans",
+      subscribeCustomerToOrder: boolean | null,
     } | null,
     createdAt: string,
     updatedAt: string,

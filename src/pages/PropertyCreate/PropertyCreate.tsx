@@ -74,6 +74,9 @@ const PropertyCreate: React.FC<IPropertyCreateProps> = ({ ...props }) => {
         currency: data.createProperty.currency,
         nonUniqueName: data.createProperty.NonUniqueName,
         address: data.createProperty.address,
+        booleans: {
+          subscribeCustomerToOrder: data.createProperty.booleans?.subscribeCustomerToOrder,
+        },
       });
     } else {
       seterror(JSON.stringify(error));
@@ -118,6 +121,9 @@ const PropertyCreate: React.FC<IPropertyCreateProps> = ({ ...props }) => {
       exact: "",
       city: "",
       country: "",
+    },
+    booleans: {
+      subscribeCustomerToOrder: false,
     },
   });
   const [error, seterror] = React.useState<string>("");

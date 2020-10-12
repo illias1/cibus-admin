@@ -5,6 +5,9 @@ export const getPropertyAtInit = /* GraphQL */ `
       ownerId
       currency
       open
+      booleans {
+        subscribeCustomerToOrder
+      }
       orders(
         createdAtStatus: { beginsWith: { createdAt: $date } }
         filter: { status: { beginsWith: "R" } }
