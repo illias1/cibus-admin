@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       position: "absolute",
-      top: "20%",
+      top: "10%",
       color: "white",
       left: "10%",
     },
@@ -67,6 +67,10 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: "bolder",
       fontSize: "137px",
       lineHeight: "120px",
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "50px",
+        lineHeight: "50px",
+      }
     },
     TittleTwo : {
       fontFamily: "Josefin Sans",
@@ -74,6 +78,10 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "110px",
       lineHeight: "120px",
       color: theme.palette.primary.light,
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "50px",
+        lineHeight: "50px",
+      }
     },
 
   })
