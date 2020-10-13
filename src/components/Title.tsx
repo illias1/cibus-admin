@@ -11,10 +11,10 @@ const Title: React.FC<ITitleProps> = ({ title, subtitle }) => {
   const classes = useStyles();
   return (
     <>
-      <Typography color="primary" gutterBottom variant="h4">
+      <Typography color="primary" gutterBottom variant="h1">
         {title}
       </Typography>
-      <Typography color="primary" className={classes.intro} variant="h5">
+      <Typography color="primary" className={classes.intro} variant="body1">
         {subtitle}
       </Typography>
     </>
@@ -24,7 +24,7 @@ const Title: React.FC<ITitleProps> = ({ title, subtitle }) => {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     intro: {
-      fontWeight: 300,
+      //fontWeight: 100,
       marginBottom: 40,
     },
   })
