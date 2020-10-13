@@ -132,7 +132,7 @@ const RegisterTables: React.FC<IRegisterTablesProps> = ({ property, classes }) =
             >
               <PlaylistAddOutlinedIcon fontSize="large" />
               {index === 0 && (
-                <Typography>[{t("registerProperty.actions.insert_a_table")}]</Typography>
+                <Typography variant="caption"> [{t("registerProperty.actions.insert_a_table")}] </Typography>
               )}
             </IconButton>
           </Box>

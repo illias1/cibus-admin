@@ -9,7 +9,7 @@ type IExplanationMessageProps = {
 const ExplanationMessage: React.FC<IExplanationMessageProps> = ({ message }) => {
   const classes = useStyles();
   return (
-    <Typography className={classes.help} color="inherit">
+    <Typography className={classes.help} variant="caption" color="inherit">
       {message}
     </Typography>
   );

@@ -9,7 +9,7 @@ type IFormTitleProps = {
 const FormTitle: React.FC<IFormTitleProps> = ({ title }) => {
   const classes = useStyles();
   return (
-    <Typography gutterBottom className={classes.formTitle} variant="h6">
+    <Typography gutterBottom className={classes.formTitle} variant="h5">
       {title}
     </Typography>
   );

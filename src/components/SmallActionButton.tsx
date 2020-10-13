@@ -19,7 +19,7 @@ const SmallActionButton: React.FC<ISmallActionButtonProps> = ({ onClick, childre
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     check: {
-      padding: "2px 20px",
+      padding: "7px 20px",
       textTransform: "none",
     },
   })
