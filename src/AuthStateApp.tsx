@@ -22,8 +22,8 @@ const AuthStateApp: React.FunctionComponent = () => {
   ) : (
     <div className={classes.auth}>
       <div className={classes.title}>
-        <Typography variant="h1">Welcome to</Typography>
-        <Typography variant="h1">cibus.online</Typography>
+        <Typography className={classes.TittleOne} >Welcome to</Typography> 
+        <Typography className={classes.TittleTwo} >cibus.online</Typography>
       </div>
       <AmplifyAuthenticator usernameAlias="email">
         <AmplifySignUp
@@ -61,6 +61,21 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "white",
       left: "10%",
     },
+
+    TittleOne : {
+      fontFamily: "Josefin Sans",
+      fontWeight: "bolder",
+      fontSize: "137px",
+      lineHeight: "120px",
+    },
+    TittleTwo : {
+      fontFamily: "Josefin Sans",
+      fontWeight: "bolder",
+      fontSize: "110px",
+      lineHeight: "120px",
+      color: theme.palette.primary.light,
+    },
+
   })
 );
 
