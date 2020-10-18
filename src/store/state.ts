@@ -1,5 +1,6 @@
 import { TStore } from "./types";
 import { LOCAL_STORAGE_PROPERTY, LOCAL_STORAGE_STUFF_CALLS } from "../utils/_constants";
+import { Language } from "../API";
 
 export const initialState: TStore = {
   orders: [],
@@ -7,6 +8,7 @@ export const initialState: TStore = {
     name: localStorage.getItem(LOCAL_STORAGE_PROPERTY) || "",
     open: false,
     currency: "",
+    language: Language.ko,
     booleans: {
       subscribeCustomerToOrder: null,
     },

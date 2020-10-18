@@ -9,6 +9,7 @@ export type TStore = {
     name: string;
     open: boolean;
     currency: string;
+    language: Language | null | undefined;
     nonUniqueName: string;
     booleans: {
       subscribeCustomerToOrder: boolean | null | undefined;

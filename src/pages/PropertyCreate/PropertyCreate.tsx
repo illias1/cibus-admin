@@ -5,6 +5,7 @@ import {
   Currency,
   GetPropertyQuery,
   GetPropertyQueryVariables,
+  Language,
 } from "../../API";
 import { TStore, useTypedSelector } from "../../store/types";
 import { mutation } from "../../utils/mutation";
@@ -33,6 +34,7 @@ export type TPropertyCreateInputs = {
     exact: string;
   };
   currency: Currency;
+  language: Language;
 };
 
 export type TuniquenessChecked = {
@@ -72,6 +74,7 @@ const PropertyCreate: React.FC<IPropertyCreateProps> = ({ ...props }) => {
         name: data.createProperty.name,
         open: data.createProperty.open,
         currency: data.createProperty.currency,
+        language: data.createProperty.language,
         nonUniqueName: data.createProperty.NonUniqueName,
         address: data.createProperty.address,
         booleans: {
@@ -116,6 +119,7 @@ const PropertyCreate: React.FC<IPropertyCreateProps> = ({ ...props }) => {
     name: "",
     open: false,
     currency: Currency["KRW"],
+    language: Language.ko,
     nonUniqueName: "",
     address: {
       exact: "",

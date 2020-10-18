@@ -25,6 +25,7 @@ type Property
   orders: [Order!]! @connection(keyName: "orderByPropertyByCreatedAtByStatus", fields: ["name"])
   tables: [String]!
   currency: Currency!
+  language: Language
   address: Address
   image: PropertyImage
   info: Info

@@ -31,6 +31,7 @@ export const getUser = /* GraphQL */ `
           }
           tables
           currency
+          language
           address {
             country
             city
@@ -110,6 +111,7 @@ export const listUsers = /* GraphQL */ `
             }
             tables
             currency
+            language
             address {
               country
               city
@@ -166,6 +168,7 @@ export const getProperty = /* GraphQL */ `
       }
       tables
       currency
+      language
       address {
         country
         city
@@ -272,6 +275,7 @@ export const listPropertys = /* GraphQL */ `
         }
         tables
         currency
+        language
         address {
           country
           city

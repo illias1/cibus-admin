@@ -34,6 +34,7 @@ export const createUser = /* GraphQL */ `
           }
           tables
           currency
+          language
           address {
             country
             city
@@ -119,6 +120,7 @@ export const updateUser = /* GraphQL */ `
           }
           tables
           currency
+          language
           address {
             country
             city
@@ -204,6 +206,7 @@ export const deleteUser = /* GraphQL */ `
           }
           tables
           currency
+          language
           address {
             country
             city
@@ -285,6 +288,7 @@ export const createProperty = /* GraphQL */ `
       }
       tables
       currency
+      language
       address {
         country
         city
@@ -381,6 +385,7 @@ export const updateProperty = /* GraphQL */ `
       }
       tables
       currency
+      language
       address {
         country
         city
@@ -477,6 +482,7 @@ export const deleteProperty = /* GraphQL */ `
       }
       tables
       currency
+      language
       address {
         country
         city

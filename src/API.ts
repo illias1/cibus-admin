@@ -309,6 +309,7 @@ export type CreatePropertyInput = {
   menuComponents?: Array< MenuComponentInput > | null,
   tables: Array< string | null >,
   currency: Currency,
+  language?: Language | null,
   address?: AddressInput | null,
   image?: PropertyImageInput | null,
   info?: InfoInput | null,
@@ -362,6 +363,7 @@ export type ModelPropertyConditionInput = {
   open?: ModelBooleanInput | null,
   tables?: ModelStringInput | null,
   currency?: ModelCurrencyInput | null,
+  language?: ModelLanguageInput | null,
   and?: Array< ModelPropertyConditionInput | null > | null,
   or?: Array< ModelPropertyConditionInput | null > | null,
   not?: ModelPropertyConditionInput | null,
@@ -379,6 +381,11 @@ export type ModelCurrencyInput = {
   ne?: Currency | null,
 };
 
+export type ModelLanguageInput = {
+  eq?: Language | null,
+  ne?: Language | null,
+};
+
 export type UpdatePropertyInput = {
   name: string,
   NonUniqueName?: string | null,
@@ -387,6 +394,7 @@ export type UpdatePropertyInput = {
   menuComponents?: Array< MenuComponentInput > | null,
   tables?: Array< string | null > | null,
   currency?: Currency | null,
+  language?: Language | null,
   address?: AddressInput | null,
   image?: PropertyImageInput | null,
   info?: InfoInput | null,
@@ -575,6 +583,7 @@ export type ModelPropertyFilterInput = {
   ownerId?: ModelIDInput | null,
   tables?: ModelStringInput | null,
   currency?: ModelCurrencyInput | null,
+  language?: ModelLanguageInput | null,
   and?: Array< ModelPropertyFilterInput | null > | null,
   or?: Array< ModelPropertyFilterInput | null > | null,
   not?: ModelPropertyFilterInput | null,
@@ -687,6 +696,7 @@ export type CreateUserMutation = {
         } > | null,
         tables: Array< string | null >,
         currency: Currency,
+        language: Language | null,
         address:  {
           __typename: "Address",
           country: string | null,
@@ -787,6 +797,7 @@ export type UpdateUserMutation = {
         } > | null,
         tables: Array< string | null >,
         currency: Currency,
+        language: Language | null,
         address:  {
           __typename: "Address",
           country: string | null,
@@ -887,6 +898,7 @@ export type DeleteUserMutation = {
         } > | null,
         tables: Array< string | null >,
         currency: Currency,
+        language: Language | null,
         address:  {
           __typename: "Address",
           country: string | null,
@@ -982,6 +994,7 @@ export type CreatePropertyMutation = {
     } > | null,
     tables: Array< string | null >,
     currency: Currency,
+    language: Language | null,
     address:  {
       __typename: "Address",
       country: string | null,
@@ -1095,6 +1108,7 @@ export type UpdatePropertyMutation = {
     } > | null,
     tables: Array< string | null >,
     currency: Currency,
+    language: Language | null,
     address:  {
       __typename: "Address",
       country: string | null,
@@ -1208,6 +1222,7 @@ export type DeletePropertyMutation = {
     } > | null,
     tables: Array< string | null >,
     currency: Currency,
+    language: Language | null,
     address:  {
       __typename: "Address",
       country: string | null,
@@ -1577,6 +1592,7 @@ export type GetUserQuery = {
         } > | null,
         tables: Array< string | null >,
         currency: Currency,
+        language: Language | null,
         address:  {
           __typename: "Address",
           country: string | null,
@@ -1670,6 +1686,7 @@ export type ListUsersQuery = {
           } > | null,
           tables: Array< string | null >,
           currency: Currency,
+          language: Language | null,
           address:  {
             __typename: "Address",
             country: string | null,
@@ -1740,6 +1757,7 @@ export type GetPropertyQuery = {
     } > | null,
     tables: Array< string | null >,
     currency: Currency,
+    language: Language | null,
     address:  {
       __typename: "Address",
       country: string | null,
@@ -1858,6 +1876,7 @@ export type ListPropertysQuery = {
       } > | null,
       tables: Array< string | null >,
       currency: Currency,
+      language: Language | null,
       address:  {
         __typename: "Address",
         country: string | null,
@@ -2417,6 +2436,7 @@ export type OnCreateUserSubscription = {
         } > | null,
         tables: Array< string | null >,
         currency: Currency,
+        language: Language | null,
         address:  {
           __typename: "Address",
           country: string | null,
@@ -2516,6 +2536,7 @@ export type OnUpdateUserSubscription = {
         } > | null,
         tables: Array< string | null >,
         currency: Currency,
+        language: Language | null,
         address:  {
           __typename: "Address",
           country: string | null,
@@ -2615,6 +2636,7 @@ export type OnDeleteUserSubscription = {
         } > | null,
         tables: Array< string | null >,
         currency: Currency,
+        language: Language | null,
         address:  {
           __typename: "Address",
           country: string | null,
@@ -2709,6 +2731,7 @@ export type OnCreatePropertySubscription = {
     } > | null,
     tables: Array< string | null >,
     currency: Currency,
+    language: Language | null,
     address:  {
       __typename: "Address",
       country: string | null,
@@ -2821,6 +2844,7 @@ export type OnUpdatePropertySubscription = {
     } > | null,
     tables: Array< string | null >,
     currency: Currency,
+    language: Language | null,
     address:  {
       __typename: "Address",
       country: string | null,
@@ -2933,6 +2957,7 @@ export type OnDeletePropertySubscription = {
     } > | null,
     tables: Array< string | null >,
     currency: Currency,
+    language: Language | null,
     address:  {
       __typename: "Address",
       country: string | null,

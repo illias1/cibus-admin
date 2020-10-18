@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedProperty } from "../../store/actions";
 import LanguageSwitch from "../../components/LanguageSwitch";
 import { mutation } from "../../utils/mutation";
-import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../API";
+import { Language, UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../API";
 import { useTypedSelector } from "../../store/types";
 
 type ISettingsProps = {};
@@ -75,6 +75,7 @@ const Settings: React.FC<ISettingsProps> = ({ ...props }) => {
               name: "",
               open: false,
               currency: "",
+              language: Language.ko,
               nonUniqueName: "",
               address: { exact: "", country: "", city: "" },
               booleans: {

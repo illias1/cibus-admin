@@ -4,6 +4,7 @@ export const getPropertyAtInit = /* GraphQL */ `
       name
       ownerId
       currency
+      language
       open
       booleans {
         subscribeCustomerToOrder

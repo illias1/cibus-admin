@@ -34,6 +34,7 @@ const PrepareOrder: React.FC<IPrepareOrderProps> = ({ ...props }) => {
       setSelectedProperty({
         open: item?.open || false,
         currency: item?.currency || Currency["USD"],
+        language: item?.language,
         booleans: {
           subscribeCustomerToOrder: item?.booleans?.subscribeCustomerToOrder,
         },
@@ -81,15 +82,15 @@ const PrepareOrder: React.FC<IPrepareOrderProps> = ({ ...props }) => {
                     </IconButton>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography variant="subtitle1">{item.name}</Typography>
+                    <Typography variant="h4">{item.name}</Typography>
                   </Grid>
                   <Grid item xs={4}>
-                    <Typography variant="subtitle1">
+                    <Typography variant="h4">
                       {item.address?.country}, {item.address?.city}, {item.address?.exact}
                     </Typography>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography variant="subtitle1">
+                    <Typography variant="h4">
                       {t("property_select.tables_registered", { number: item.tables?.length })}
                     </Typography>
                   </Grid>

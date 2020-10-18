@@ -12,7 +12,7 @@ import {
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
 import { TPropertyCreateInputs, TuniquenessChecked } from "../PropertyCreate";
-import { Currency } from "../../../API";
+import { Currency, Language } from "../../../API";
 import { useTranslation } from "react-i18next";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import { customStyles, customWithStyles } from "../../../utils/theme";
@@ -20,6 +20,7 @@ import Title from "../../../components/Title";
 import FormTitle from "./FormTitle";
 import SmallActionButton from "../../../components/SmallActionButton";
 import MainActionButton from "./MainActionButton";
+import ISO from "iso-639-1";
 
 interface ICreatePropertyUiProps extends WithStyles<typeof customStyles> {
   handleUniquenessAndCorrectnessCheck: () => Promise<void>;
@@ -102,6 +103,29 @@ const CreatePropertyUi: React.FC<ICreatePropertyUiProps> = ({
                 {Object.keys(Currency).map((currency) => (
                   <MenuItem key={currency} value={currency}>
                     {currency}
+                  </MenuItem>
+                ))}
+              </Select>
+            }
+          />
+        </FormControl>
+        <FormControl
+          variant="outlined"
+          required
+          className={`${classes.customizedTextFieldMainBack} ${useClasses.short}`}
+        >
+          <InputLabel id="currency-input-label">{t("language")}</InputLabel>
+          <Controller
+            // @ts-ignore
+            name="language"
+            control={control}
+            rules={{ required: true }}
+            defaultValue={Language.ko}
+            as={
+              <Select label={t("currency")} labelId="currency-input-label">
+                {Object.keys(Language).map((lang) => (
+                  <MenuItem key={lang} value={lang}>
+                    {ISO.getName(lang)}
                   </MenuItem>
                 ))}
               </Select>
