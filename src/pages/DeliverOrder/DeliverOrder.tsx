@@ -7,6 +7,9 @@ import Box from "@material-ui/core/Box";
 import { makeStyles, Theme, createStyles, Typography, Divider } from "@material-ui/core";
 
 import { sortByTableOrTime } from "../../components/OrderBy";
+import { CustomTheme } from "../../utils/theme";
+import Grid from "@material-ui/core/Grid/Grid";
+import CenteredTitle from "../../components/CenteredTitle";
 
 type INewOrderProps = {};
 
@@ -16,23 +19,25 @@ const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
   const { t } = useTranslation();
   const classes = useStyles();
   return (
-    <Box className={classes.root}>
-      {RECEIVEDOrders.sort((a, b) => sortByTableOrTime(a, b, "table")).length > 0
-        ? Object.entries(groupBy(RECEIVEDOrders, "tableName")).map(([tableName, orderArray]) => (
-            <Box key={tableName} className={classes.tableBox}>
-              <Typography>
-                Total table #{tableName} -{" "}
-                {(orderArray as TStore["orders"])
-                  .reduce((prev, curr) => prev + curr.priceTotal, 0)
-                  .toFixed(2)}
-                {currency}
-              </Typography>
-              {(orderArray as TStore["orders"]).map((item, index) => (
-                <OrderCard status="PAYED" key={item.id} order={item} />
-              ))}
-            </Box>
-          ))
-        : t("no_orders_being_deliverd_today")}
+    <Box>
+      {RECEIVEDOrders.sort((a, b) => sortByTableOrTime(a, b, "table")).length > 0 ? (
+        Object.entries(groupBy(RECEIVEDOrders, "tableName")).map(([tableName, orderArray]) => (
+          <Box key={tableName} className={classes.tableBox}>
+            <Typography>
+              Total table #{tableName} -{" "}
+              {(orderArray as TStore["orders"])
+                .reduce((prev, curr) => prev + curr.priceTotal, 0)
+                .toFixed(2)}
+              {currency}
+            </Typography>
+            {(orderArray as TStore["orders"]).map((item, index) => (
+              <OrderCard status="PAYED" key={item.id} order={item} />
+            ))}
+          </Box>
+        ))
+      ) : (
+        <CenteredTitle title={t("no_orders_being_deliverd_today")} />
+      )}
     </Box>
   );
 };
@@ -43,13 +48,8 @@ const groupBy = function (xs: any[], key: keyof typeof xs[number]) {
   }, {});
 };
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: CustomTheme) =>
   createStyles({
-    root: {
-      // display: "flex",
-      // flexDirection: "column",
-      // alignItems: "center",
-    },
     tableBox: {
       display: "flex",
       flexDirection: "column",

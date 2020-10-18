@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
 
 import OrderBy, { sortByTableOrTime } from "../../components/OrderBy";
+import CenteredTitle from "../../components/CenteredTitle";
 
 type INewOrderProps = {};
 
@@ -24,14 +25,15 @@ const NewOrder: React.FC<INewOrderProps> = ({ ...props }) => {
   const handleOrderByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setorderBy((event.target as HTMLInputElement).value as "time" | "table");
   };
+  if (REQUESTEDOrders.length === 0) {
+    return <CenteredTitle title={t("no_new_orders_today")} />;
+  }
   return (
     <Box className={classes.root}>
       <OrderBy orderBy={orderBy} handleOrderByChange={handleOrderByChange} />
-      {REQUESTEDOrders.length > 0
-        ? REQUESTEDOrders.sort((a, b) => sortByTableOrTime(a, b, orderBy)).map((item, index) => (
-            <OrderCard status="RECEIVED_BY_RESTAURANT" key={item.id} order={item} />
-          ))
-        : t("no_new_orders_today")}
+      {REQUESTEDOrders.sort((a, b) => sortByTableOrTime(a, b, orderBy)).map((item, index) => (
+        <OrderCard status="RECEIVED_BY_RESTAURANT" key={item.id} order={item} />
+      ))}
     </Box>
   );
 };

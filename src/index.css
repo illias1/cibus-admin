@@ -2,3 +2,11 @@ amplify-s3-image {
   --height: 100%;
   --width: 100%;
 }
+:root {
+  --amplify-font-family: "Josefin Sans";
+  --amplify-primary-color: #5663ff;
+}
+
+.button {
+  border-radius: 10px;
+}

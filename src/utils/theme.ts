@@ -18,55 +18,55 @@ export const theme = createMuiTheme(
     typography: {
       fontFamily: "Josefin Sans",
 
-      h1 : {
+      h1: {
         fontFamily: "Josefin Sans",
         fontWeight: "bolder",
         fontSize: "43px",
         lineHeight: "43px",
       },
-      h2 : {
+      h2: {
         fontFamily: "Josefin Sans",
         fontWeight: "bold",
         fontSize: "29px",
         lineHeight: "29px",
       },
-      h3 : {
+      h3: {
         fontFamily: "Josefin Sans",
         fontWeight: "lighter",
         fontSize: "25px",
         lineHeight: "25px",
       },
-      h4 : {
-        fontFamily: "Josefin Sans",
-        fontWeight: "normal",
-        fontSize: "20",
-        lineHeight: "20px",
-      },  
-      body1 : {
-        fontFamily: "Josefin Sans",
-        fontWeight: 300,
-        fontSize: "23px",
-        lineHeight: "23px",
-      },
-      body2 : {
-        fontFamily: "Josefin Sans",
-        fontWeight: "normal",
-        fontSize: "16px",
-        lineHeight: "16px",
-      },
-      button : {
+      h4: {
         fontFamily: "Josefin Sans",
         fontWeight: "normal",
         fontSize: "20px",
         lineHeight: "20px",
       },
-      caption : {
+      body1: {
+        fontFamily: "Josefin Sans",
+        fontWeight: 300,
+        fontSize: "23px",
+        lineHeight: "23px",
+      },
+      body2: {
+        fontFamily: "Josefin Sans",
+        fontWeight: "normal",
+        fontSize: "16px",
+        lineHeight: "16px",
+      },
+      button: {
+        fontFamily: "Josefin Sans",
+        fontWeight: "normal",
+        fontSize: "20px",
+        lineHeight: "20px",
+      },
+      caption: {
         fontFamily: "Josefin Sans",
         fontWeight: "normal",
         fontSize: "15px",
         lineHeight: "15px",
       },
-      overline : {
+      overline: {
         fontFamily: "Josefin Sans",
         fontWeight: "normal",
         fontSize: "12px",
@@ -142,8 +142,8 @@ export type CustomTypography = Modify<
   {
     secondaryFontFamily: string;
     smallButton: TypographyStyleOptions;
-    logInTittle: TypographyStyleOptions;
-    homeTittle: TypographyStyleOptions;
+    hugest: TypographyStyleOptions;
+    homeTitle: TypographyStyleOptions;
   }
 >;
 export type CustomPalette = Modify<
@@ -167,26 +167,25 @@ export const createMyTheme = (): CustomTheme => {
     typography: {
       ...theme.typography,
       secondaryFontFamily: "Muli",
-      
-      smallButton : {
+
+      smallButton: {
         fontFamily: "Josefin Sans",
         fontWeight: "normal",
         fontSize: "15px",
         lineHeight: "15px",
       },
-      logInTittle : {
+      hugest: {
         fontFamily: "Josefin Sans",
         fontWeight: "bold",
         fontSize: "137px",
         lineHeight: "137px",
       },
-      homeTittle : {
+      homeTitle: {
         fontFamily: "Josefin Sans",
         fontWeight: "bold",
         fontSize: "80px",
         lineHeight: "80px",
       },
-
     },
     palette: {
       ...theme.palette,
