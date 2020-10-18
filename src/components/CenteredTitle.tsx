@@ -7,11 +7,18 @@ type ICenteredTitleProps = {
   title: string;
 };
 
-const CenteredTitle: React.FC<ICenteredTitleProps> = ({ title }) => {
+const CenteredTitle: React.FC<ICenteredTitleProps> = ({ title, children }) => {
   const classes = useStyles();
   return (
-    <Grid style={{ height: "100vh" }} container alignItems="center">
+    <Grid
+      style={{ height: "100vh" }}
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
       <Typography className={classes.root}>{title}</Typography>
+      {children}
     </Grid>
   );
 };
@@ -19,8 +26,8 @@ const CenteredTitle: React.FC<ICenteredTitleProps> = ({ title }) => {
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      fontSize: theme.typography.homeTitle.fontSize,
-      lineHeight: theme.typography.homeTitle.lineHeight,
+      fontSize: theme.typography.subtitle1.fontSize,
+      lineHeight: theme.typography.subtitle1.lineHeight,
       textAlign: "center",
     },
   })

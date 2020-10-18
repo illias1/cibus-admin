@@ -3,13 +3,18 @@ import { Typography, Grid, Switch, Box, makeStyles, Theme, createStyles } from "
 import { useTranslation } from "react-i18next";
 import { mutation } from "../../utils/mutation";
 import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../API";
-import { updateProperty } from "../../graphql/mutations";
 import { useTypedSelector } from "../../store/types";
+import CenteredTitle from "../../components/CenteredTitle";
 
 type ISampleProps = {};
 const hours = new Date().getHours();
-console.log(hours, "hours");
-
+export const updateProperty = /* GraphQL */ `
+  mutation UpdateProperty($input: UpdatePropertyInput!, $condition: ModelPropertyConditionInput) {
+    updateProperty(input: $input, condition: $condition) {
+      open
+    }
+  }
+`;
 const Sample: React.FC<ISampleProps> = ({ ...props }) => {
   const { open, name } = useTypedSelector((state) => state.selectedProperty);
   const [state, setState] = React.useState({
@@ -28,25 +33,28 @@ const Sample: React.FC<ISampleProps> = ({ ...props }) => {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
-      <Typography variant="h3">
-        {hours < 12 ? t("good_morning") : hours < 17 ? t("good_afternoon") : t("good_evening")}
-      </Typography>
-      <Typography component="div">
-        <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>
-            <Typography>Close</Typography>
+      <CenteredTitle
+        title={
+          hours < 12 ? t("good_morning") : hours < 17 ? t("good_afternoon") : t("good_evening")
+        }
+      >
+        <Typography component="div">
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>
+              <Typography>Close</Typography>
+            </Grid>
+            <Grid item>
+              <Switch
+                color="primary"
+                checked={state.checkedC}
+                onChange={handleChange}
+                name="checkedC"
+              />
+            </Grid>
+            <Grid item>On</Grid>
           </Grid>
-          <Grid item>
-            <Switch
-              color="primary"
-              checked={state.checkedC}
-              onChange={handleChange}
-              name="checkedC"
-            />
-          </Grid>
-          <Grid item>On</Grid>
-        </Grid>
-      </Typography>
+        </Typography>
+      </CenteredTitle>
     </Box>
   );
 };

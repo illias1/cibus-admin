@@ -96,12 +96,10 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
 }) => {
   const useClasses = useStyles();
   const { t } = useTranslation();
-
+  const cancelCloseDrawer = () => setopenDrawer((prev) => ({ ...prev, open: false, item: null }));
   return (
     <FormControl className={useClasses.root}>
-      <CancelButton onClick={() => setopenDrawer((prev) => ({ ...prev, open: false, item: null }))}>
-        {t("cancel")}
-      </CancelButton>
+      <CancelButton onClick={cancelCloseDrawer}>{t("cancel")}</CancelButton>
 
       <Title title={t("menu.item_form.title")} subtitle={t("menu.item_form.subtitle")} />
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -278,12 +276,23 @@ const AddMenuItemForm: React.FC<IaddMenuItemFormProps> = ({
         </Box>
 
         {errorMessage.length > 0 && <Typography color="error">{errorMessage}</Typography>}
-        <DeleteButton
-          classname={useClasses.delete}
-          onClick={() => handleDelete(item!.id, item!.i18n[0].category || UNCATEGORIZED)}
-        >
-          {t("delete")}
-        </DeleteButton>
+        {item ? (
+          <DeleteButton
+            classname={useClasses.delete}
+            onClick={() => handleDelete(item!.id, item!.i18n[0].category || UNCATEGORIZED)}
+          >
+            {t("delete")}
+          </DeleteButton>
+        ) : (
+          <Button
+            color="secondary"
+            variant="contained"
+            className={useClasses.delete}
+            onClick={cancelCloseDrawer}
+          >
+            Cancel
+          </Button>
+        )}
         {creating ? (
           <CircularProgress color="secondary" />
         ) : (

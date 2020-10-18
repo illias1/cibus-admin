@@ -8,7 +8,6 @@ import { setSelectedProperty } from "../../../store/actions";
 import { TStore } from "../../../store/types";
 import { mutation } from "../../../utils/mutation";
 import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../../API";
-import { updateProperty } from "../../../graphql/mutations";
 import { Typography, WithStyles } from "@material-ui/core";
 import Title from "../../../components/Title";
 import MainActionButton from "./MainActionButton";
@@ -20,6 +19,7 @@ import FormTitle from "./FormTitle";
 import ExplanationMessage from "./ExplanationMessage";
 import { useTranslation } from "react-i18next";
 import ContentPreview from "./ImagePreview";
+import { updatePropertyForPropertyEdit } from "../utils";
 
 interface IAddImageProps extends WithStyles<typeof customStyles> {
   property: TStore["selectedProperty"];
@@ -98,7 +98,7 @@ const AddImage: React.FC<IAddImageProps> = ({ property, settablesRegistered, cla
       }
     }
     const { data } = await mutation<UpdatePropertyMutation, UpdatePropertyMutationVariables>(
-      updateProperty,
+      updatePropertyForPropertyEdit,
       {
         input: {
           name: property.name,

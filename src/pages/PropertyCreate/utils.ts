@@ -9,3 +9,34 @@ export const getIsUrlValid = (url: string): TIsUrlValid => {
   }
   return "";
 };
+
+export const updatePropertyForPropertyEdit = /* GraphQL */ `
+  mutation UpdateProperty($input: UpdatePropertyInput!, $condition: ModelPropertyConditionInput) {
+    updateProperty(input: $input, condition: $condition) {
+      name
+      NonUniqueName
+      open
+      ownerId
+      tables
+      currency
+      language
+      address {
+        country
+        city
+        exact
+      }
+      image {
+        main
+      }
+      info {
+        Facebook
+        Instagram
+      }
+      booleans {
+        subscribeCustomerToOrder
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;

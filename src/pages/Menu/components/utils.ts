@@ -22,7 +22,7 @@ export const priceDisplay = (currency: Currency, price: number, language: Langua
     case Currency["USD"]:
       return `$ ${price}`;
     case Currency["KRW"]:
-      return language === Language["ko"] ? `${price}원` : `$₩ {price}`;
+      return language === Language["ko"] ? `${price}원` : `₩ ${price}`;
     default:
       return `${price} ${currency}`;
   }

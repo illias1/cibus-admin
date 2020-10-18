@@ -22,6 +22,8 @@ import { updateMenuItem } from "../../../graphql/mutations";
 import "./styles.css";
 import { AmplifyS3Image } from "@aws-amplify/ui-react";
 import { TDrawerState } from "../Menu";
+import { useDispatch } from "react-redux";
+import { setUpdateMenuItem } from "../../../store/actions";
 
 type TItem = {
   item: TNonNullMenuItem;
@@ -62,10 +64,22 @@ const Item: React.FC<TItem> = ({ item, setopenDrawer }) => {
         setshakeOption(null);
       }, 1000);
     }
+    if (data.updateMenuItem) {
+      dispatch(
+        setUpdateMenuItem({
+          data: data.updateMenuItem,
+          previousItemData: {
+            category: data.updateMenuItem.i18n[0].category as string,
+            id: item.id,
+          },
+        })
+      );
+    }
   };
   const { price, image, id, favorite, status } = item;
   const classes = useStyles();
   const { i18n } = useTranslation();
+  const dispatch = useDispatch();
   const [FavStatusState, setFavStatusState] = React.useState<
     Record<"favorite" | "status", boolean>
   >({ favorite: false, status: false });

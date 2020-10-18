@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { mutation } from "../../../utils/mutation";
 import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../../API";
-import { updateProperty } from "../../../graphql/mutations";
 import AddImage from "./AddImage";
 import { TStore } from "../../../store/types";
 import Title from "../../../components/Title";
@@ -22,6 +21,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MainActionButton from "./MainActionButton";
 import ExplanationMessage from "./ExplanationMessage";
 import { useTranslation } from "react-i18next";
+import { updatePropertyForPropertyEdit } from "../utils";
 interface IRegisterTablesProps extends WithStyles<typeof customStyles> {
   property: TStore["selectedProperty"];
 }
@@ -54,7 +54,7 @@ const RegisterTables: React.FC<IRegisterTablesProps> = ({ property, classes }) =
   };
   const onSubmit: SubmitHandler<TRegisterTablesInputs> = async (formResult) => {
     const { data } = await mutation<UpdatePropertyMutation, UpdatePropertyMutationVariables>(
-      updateProperty,
+      updatePropertyForPropertyEdit,
       {
         input: {
           name: property.name,
@@ -132,7 +132,10 @@ const RegisterTables: React.FC<IRegisterTablesProps> = ({ property, classes }) =
             >
               <PlaylistAddOutlinedIcon fontSize="large" />
               {index === 0 && (
-                <Typography variant="caption"> [{t("registerProperty.actions.insert_a_table")}] </Typography>
+                <Typography variant="caption">
+                  {" "}
+                  [{t("registerProperty.actions.insert_a_table")}]{" "}
+                </Typography>
               )}
             </IconButton>
           </Box>

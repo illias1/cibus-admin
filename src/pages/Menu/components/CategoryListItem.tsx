@@ -34,7 +34,6 @@ const CategoryListItem: React.FC<ICategoryListItemProps> = ({ setopenDrawer }) =
   }, [categorizedItems]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
   const handleTooltipClose = () => {
     setOpen(false);
   };
@@ -95,20 +94,18 @@ const CategoryListItem: React.FC<ICategoryListItemProps> = ({ setopenDrawer }) =
           </Tooltip>
         </ClickAwayListener>
       </Box>
-      {/* <Typography
-              gutterBottom={true}
-              // className={classes.title}
-              variant="h4"
-            >
-              {category}
-            </Typography> */}
-      {/* { title, price, ingredients, allergy, img, cal, notes } */}
       {categorizedItems[activeCategory] &&
+      Object.entries(categorizedItems[activeCategory]).length > 0 ? (
         Object.entries(categorizedItems[activeCategory]).map(([id, item]) => (
           <React.Fragment key={id}>
             {item ? <MenuItem setopenDrawer={setopenDrawer} item={item} /> : null}
           </React.Fragment>
-        ))}
+        ))
+      ) : activeCategory ? (
+        <Typography>This category will automatically be deleted</Typography>
+      ) : (
+        <> </>
+      )}
     </Box>
   );
 };
