@@ -38,14 +38,18 @@ const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> =
 }) => {
   const dispatch = useDispatch();
   const { languages, menuComponents } = useTypedSelector((state) => state.menu);
-  const { name, currency } = useTypedSelector((state) => state.selectedProperty);
+  const { name, currency, language } = useTypedSelector((state) => state.selectedProperty);
   const [langs, setlangs] = React.useState<Language[]>([]);
   React.useEffect(() => {
     if (item) {
       const itemLangs = item.i18n.map((trnasl) => trnasl.language);
       setlangs(itemLangs);
     } else {
-      setlangs(languages);
+      if (languages.length > 0) {
+        setlangs(languages);
+      } else {
+        setlangs([language as Language]);
+      }
     }
   }, []);
 
@@ -88,7 +92,9 @@ const CreateMenuItemFormWithlangs: React.FC<ICreateMenuItemFormWithlangsProps> =
     let imageKey = { key: item?.image || "" };
     if (photo.selected) {
       try {
-        imageKey = (await Storage.put(`${name}/${uuid()}`, photo.image)) as { key: string };
+        imageKey = (await Storage.put(item?.image || `${name}/${uuid()}`, photo.image)) as {
+          key: string;
+        };
       } catch (error) {
         seterrorMessage("error uploading image");
         return;

@@ -86,15 +86,26 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState, class
     name: "options",
   });
   const typeSelected = watch("type");
-
+  /*
+===================
+if product editing => set the existing fields and languages
+if new one => use all the languages that exist in the menu so far
+if none is defined yet (very first product) => use the default language
+===================
+*/
   React.useEffect(() => {
     if (item) {
       const itemLangs = item.translations.map((trnasl) => trnasl.language);
       setlangs(itemLangs);
       setmappedLangs(itemLangs);
     } else {
-      setlangs(languages);
-      setmappedLangs(languages);
+      if (languages.length > 0) {
+        setlangs(languages);
+        setmappedLangs(languages);
+      } else {
+        setlangs([selectedProperty.language as Language]);
+        setmappedLangs([selectedProperty.language as Language]);
+      }
     }
     return () => {
       reset();

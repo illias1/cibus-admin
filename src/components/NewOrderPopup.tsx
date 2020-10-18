@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      fontSize: theme.typography.h2.fontSize,
+      fontSize: theme.typography.hugest.fontSize,
     },
   })
 );
