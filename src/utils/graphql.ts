@@ -2,6 +2,7 @@ export const getPropertyAtInit = /* GraphQL */ `
   query GetProperty($name: String!, $date: String!) {
     getProperty(name: $name) {
       name
+      NonUniqueName
       ownerId
       currency
       language

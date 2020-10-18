@@ -1,7 +1,7 @@
 {
-  "good_morning": "Good Morning!",
-  "good_afternoon": "Good Afternoon!",
-  "good_evening": "Good Evening!",
+  "good_morning": "Good Morning, {{name}}!",
+  "good_afternoon": "Good Afternoon, {{name}}!",
+  "good_evening": "Good Evening, {{name}}!",
   "tap_anywhere_to_accept": "Tap anywhere to accept",
   "time": "Time",
   "table": "Table",

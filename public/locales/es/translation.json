@@ -1,7 +1,7 @@
 {
-  "good_morning": "¡Buenos Días!",
-  "good_afternoon": "¡Buenas Tardes!",
-  "good_evening": "¡Buenas Noches!",
+  "good_morning": "¡Buenos Días, {{name}}!",
+  "good_afternoon": "¡Buenas Tardes, {{name}}!",
+  "good_evening": "¡Buenas Noches, {{name}}!",
   "time": "Tiempo",
   "table": "Mesa",
   "order_by": "Ordenar por",

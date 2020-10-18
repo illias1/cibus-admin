@@ -16,7 +16,7 @@ export const updateProperty = /* GraphQL */ `
   }
 `;
 const Sample: React.FC<ISampleProps> = ({ ...props }) => {
-  const { open, name } = useTypedSelector((state) => state.selectedProperty);
+  const { open, name, nonUniqueName } = useTypedSelector((state) => state.selectedProperty);
   const [state, setState] = React.useState({
     checkedC: open,
   });
@@ -35,7 +35,11 @@ const Sample: React.FC<ISampleProps> = ({ ...props }) => {
     <Box className={classes.root}>
       <CenteredTitle
         title={
-          hours < 12 ? t("good_morning") : hours < 17 ? t("good_afternoon") : t("good_evening")
+          hours < 12
+            ? t("good_morning", { name: nonUniqueName })
+            : hours < 17
+            ? t("good_afternoon", { name: nonUniqueName })
+            : t("good_evening", { name: nonUniqueName })
         }
       >
         <Typography component="div">
