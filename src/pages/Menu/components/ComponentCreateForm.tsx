@@ -35,7 +35,7 @@ import {
 import { TAddEditState } from "./ComponentCreateFormWithLanguages";
 import { TMutationError } from "../../../types";
 import MenuLanguagesManage from "./MenuLanguagesManage";
-import { customWithStyles, CustomTheme } from "../../../utils/theme";
+import { customWithStyles } from "../../../utils/theme";
 // icons
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import BackspaceOutlinedIcon from "@material-ui/icons/BackspaceOutlined";
@@ -371,7 +371,7 @@ const ComponentCreateForm: React.FC<IAppProps> = ({ item, setaddEditState, class
   );
 };
 
-const useStyles = makeStyles((theme: CustomTheme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     firstRow: {
       margin: theme.spacing(1),

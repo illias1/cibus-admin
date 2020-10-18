@@ -7,7 +7,6 @@ import Box from "@material-ui/core/Box";
 import { makeStyles, Theme, createStyles, Typography, Divider } from "@material-ui/core";
 
 import { sortByTableOrTime } from "../../components/OrderBy";
-import { CustomTheme } from "../../utils/theme";
 import Grid from "@material-ui/core/Grid/Grid";
 import CenteredTitle from "../../components/CenteredTitle";
 
@@ -48,7 +47,7 @@ const groupBy = function (xs: any[], key: keyof typeof xs[number]) {
   }, {});
 };
 
-const useStyles = makeStyles((theme: CustomTheme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     tableBox: {
       display: "flex",

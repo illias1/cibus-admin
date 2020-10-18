@@ -17,7 +17,6 @@ import { TDrawerState } from "../Menu";
 import ComponentCreateForm from "./ComponentCreateForm";
 import EditIcon from "@material-ui/icons/Edit";
 import Typography from "@material-ui/core/Typography";
-import { CustomTheme } from "../../../utils/theme";
 import CancelButton from "./CancelButton";
 
 type IComponentCreateFormWithLanguagesProps = {
@@ -95,7 +94,7 @@ const ComponentCreateFormWithLanguages: React.FC<IComponentCreateFormWithLanguag
   );
 };
 
-const useStyles = makeStyles((theme: CustomTheme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     comeBackToComp: {
       display: "block",

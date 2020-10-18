@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { CustomTheme } from "../utils/theme";
 
 type ICenteredTitleProps = {
   title: string;
@@ -17,7 +16,7 @@ const CenteredTitle: React.FC<ICenteredTitleProps> = ({ title }) => {
   );
 };
 
-const useStyles = makeStyles((theme: CustomTheme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       fontSize: theme.typography.homeTitle.fontSize,

@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { CustomTheme } from "../../../utils/theme";
 
 type ISaveButtonProps = {
   disabled?: boolean;
@@ -24,7 +23,7 @@ const SaveButton: React.FC<ISaveButtonProps> = ({ classname, disabled, children 
   );
 };
 
-const useStyles = makeStyles((theme: CustomTheme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     save: {
       textTransform: "none",

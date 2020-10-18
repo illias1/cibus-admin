@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import Amplify from "aws-amplify";
 import aws_exports from "./aws-exports";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { augmentedTheme, CustomTheme } from "./utils/theme";
+import { theme } from "./utils/theme";
 import { CssBaseline } from "@material-ui/core";
 import AuthStateApp from "./AuthStateApp";
 import { BrowserRouter } from "react-router-dom";
@@ -16,7 +16,7 @@ Amplify.configure(aws_exports);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider<CustomTheme> theme={augmentedTheme}>
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
           <CssBaseline />
           <AuthStateApp />
