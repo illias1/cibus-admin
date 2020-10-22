@@ -5,12 +5,24 @@ import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import { Typography, makeStyles, Theme, createStyles } from "@material-ui/core";
 import App from "./App";
 import background from "./assets/background.png";
+import { useLocation } from "react-router-dom";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 const AuthStateApp: React.FunctionComponent = () => {
+  const [affiliateName, setaffiliateName] = React.useState<string>("");
   const [authState, setAuthState] = React.useState<AuthState>();
   const [user, setUser] = React.useState<object | undefined>();
   const classes = useStyles();
+  let query = useQuery();
+  const affiliateQuery = query.get("affiliate");
+
   React.useEffect(() => {
+    if (affiliateQuery) {
+      setaffiliateName(affiliateQuery);
+    }
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState);
       setUser(authData);
@@ -22,14 +34,21 @@ const AuthStateApp: React.FunctionComponent = () => {
   ) : (
     <div className={classes.auth}>
       <div className={classes.title}>
-        <Typography className={classes.TittleOne} >Welcome to</Typography> 
-        <Typography className={classes.TittleTwo} >cibus.online</Typography>
+        <Typography className={classes.TittleOne}>Welcome to</Typography>
+        <Typography className={classes.TittleTwo}>cibus.online</Typography>
       </div>
-      <AmplifyAuthenticator usernameAlias="email">
+      <AmplifyAuthenticator
+        initialAuthState={affiliateQuery ? AuthState.SignUp : AuthState.SignIn}
+        usernameAlias="email"
+      >
         <AmplifySignUp
           usernameAlias="email"
           slot="sign-up"
-          formFields={[{ type: "email" }, { type: "password" }]}
+          formFields={[
+            { type: "email" },
+            { type: "password" },
+            { type: "custom:affiliate", label: "your reccomender", value: affiliateName },
+          ]}
         />
         <AmplifyConfirmSignIn
           formFields={[]}
@@ -62,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) =>
       left: "10%",
     },
 
-    TittleOne : {
+    TittleOne: {
       fontFamily: "Josefin Sans",
       fontWeight: "bolder",
       fontSize: "137px",
@@ -70,9 +89,9 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down("xs")]: {
         fontSize: "50px",
         lineHeight: "50px",
-      }
+      },
     },
-    TittleTwo : {
+    TittleTwo: {
       fontFamily: "Josefin Sans",
       fontWeight: "bolder",
       fontSize: "110px",
@@ -81,9 +100,8 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down("xs")]: {
         fontSize: "50px",
         lineHeight: "50px",
-      }
+      },
     },
-
   })
 );
 
