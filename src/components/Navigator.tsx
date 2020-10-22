@@ -21,38 +21,36 @@ const Navigator: React.FC = ({ ...props }) => {
 
   if (selectedProperty.name) {
     return (
-      <Suspense fallback={<Loader />}>
-        <Switch>
-          <PropertyWrapper>
-            <NavigationLayout>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/new-order">
-                <NewOrder />
-              </Route>
-              <Route path="/prepare-order">
-                <PrepareOrder />
-              </Route>
-              <Route path="/delivered-order">
-                <DeliveredOrder />
-              </Route>
-              <Route path="/tables">
-                <Tables />
-              </Route>
-              <Route path="/menu">
-                <Menu />
-              </Route>
-              <Route path="/stats">
-                <Stats />
-              </Route>
-              <Route path="/settings">
-                <Settings />
-              </Route>
-            </NavigationLayout>
-          </PropertyWrapper>
-        </Switch>
-      </Suspense>
+      <Switch>
+        <PropertyWrapper>
+          <NavigationLayout>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/new-order">
+              <NewOrder />
+            </Route>
+            <Route path="/prepare-order">
+              <PrepareOrder />
+            </Route>
+            <Route path="/delivered-order">
+              <DeliveredOrder />
+            </Route>
+            <Route path="/tables">
+              <Tables />
+            </Route>
+            <Route path="/menu">
+              <Menu />
+            </Route>
+            <Route path="/stats">
+              <Stats />
+            </Route>
+            <Route path="/settings">
+              <Settings />
+            </Route>
+          </NavigationLayout>
+        </PropertyWrapper>
+      </Switch>
     );
   }
   return (

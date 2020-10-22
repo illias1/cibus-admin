@@ -171,5 +171,12 @@
         "description": "Combination of 3 types of cheese and 3 …"
       }
     }
+  },
+  "sign_in": {
+    "label": {
+      "affiliate": "Your affiliate",
+      "email": "Email",
+      "password": "Password"
+    }
   }
 }

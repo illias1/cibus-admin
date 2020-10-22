@@ -1,3 +1,10 @@
 {
-  "home": "집"
+  "home": "집",
+  "sign_in": {
+    "label": {
+      "affiliate": "추천하신 분",
+      "email": "이메일",
+      "password": "비밀번호"
+    }
+  }
 }

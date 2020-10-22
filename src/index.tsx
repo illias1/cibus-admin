@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import "./i18n";
@@ -11,6 +11,7 @@ import { theme } from "./utils/theme";
 import { CssBaseline } from "@material-ui/core";
 import AuthStateApp from "./AuthStateApp";
 import { BrowserRouter } from "react-router-dom";
+import Loader from "./components/Loader";
 Amplify.configure(aws_exports);
 
 ReactDOM.render(
@@ -19,7 +20,9 @@ ReactDOM.render(
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <CssBaseline />
-          <AuthStateApp />
+          <Suspense fallback={<Loader />}>
+            <AuthStateApp />
+          </Suspense>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
