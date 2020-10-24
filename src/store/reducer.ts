@@ -1,5 +1,5 @@
 import { reducerWithInitialState } from "typescript-fsa-reducers";
-import { initialState } from "./state";
+import { initialByActiveStatus, initialState } from "./state";
 import {
   setOrders,
   setSelectedProperty,
@@ -22,7 +22,8 @@ import {
 
 import { TNonNullMenuItem } from "../types";
 import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
-import { Language } from "../API";
+import { CreateMenuItemMutation, Language } from "../API";
+import { byActiveStatus, OrderStatus, OrderStatusEnum, TStore } from "./types";
 
 export const reducer = reducerWithInitialState(initialState)
   .case(setSelectedProperty, (state, selectedProperty) => {
@@ -35,27 +36,56 @@ export const reducer = reducerWithInitialState(initialState)
   .case(setOrders, (state, orders) => ({
     ...state,
     orders,
+    ordersStats: {
+      byStatus: orders.reduce((acc, curr): byActiveStatus => {
+        switch (curr.status as OrderStatus) {
+          case "RECEIVED_BY_RESTAURANT":
+          case "REQUESTED_BY_CUSTOMER":
+          case "READY":
+            return {
+              ...acc,
+              [curr.status as keyof byActiveStatus]: acc[curr.status as keyof byActiveStatus] + 1,
+            };
+          default:
+            return acc;
+        }
+      }, initialByActiveStatus),
+    },
   }))
   .case(addRequestedOrder, (state, newRequestedOrder) => ({
     ...state,
     orders: [...state.orders, newRequestedOrder],
+    ordersStats: {
+      byStatus: {
+        ...state.ordersStats.byStatus,
+        REQUESTED_BY_CUSTOMER: state.ordersStats.byStatus.REQUESTED_BY_CUSTOMER + 1,
+      },
+    },
   }))
   // @ts-ignore
   .case(updateOrderStatus, (state, payload) => {
     // @ts-ignore
     const index = state.orders.findIndex((item) => item?.id === payload.id);
-    console.log("index", index);
     const ret = state.orders.slice(0);
     ret[index] = payload;
+    const newByActiveStatus =
+      payload.status === OrderStatusEnum.PAYED || payload.status === OrderStatusEnum.DENIED
+        ? { ...state.ordersStats?.byStatus }
+        : {
+            ...state.ordersStats?.byStatus,
+            [payload.status as keyof byActiveStatus]:
+              state.ordersStats.byStatus[payload.status as keyof byActiveStatus] + 1,
+          };
+    newByActiveStatus[state.orders[index].status as keyof byActiveStatus] =
+      newByActiveStatus[state.orders[index].status as keyof byActiveStatus] - 1;
     return {
       ...state,
       orders: ret,
+      ordersStats: {
+        byStatus: newByActiveStatus,
+      },
     };
   })
-  // .case(setupMenu, (state, menu) => ({
-  //   ...state,
-  //   menu,
-  // }));
   .case(setupMenu, (state, { menuComponents, menu }) => {
     const payload = menu;
     if (payload && payload.items) {
@@ -111,18 +141,13 @@ export const reducer = reducerWithInitialState(initialState)
     if (!state.menu.categorizedItems[category]) {
       state.menu.categoriesNumber = state.menu.categoriesNumber + 1;
     }
-    // if (!payload.i18n.every((transl) => state.menu.languages.includes(transl.language))) {
-    //   state.menu.languages = [
-    //     ...state.menu.languages,
-    //     ...payload.i18n.map((transl) => transl.language),
-    //   ].reduce((prev, curr) => {
-    //     return prev.includes(curr) ? prev : [...prev, curr];
-    //   }, [] as Language[]);
-    // }
+    let newLanguages = state.menu.languages;
+    addNewLanguageIfApplicable(payload, state, newLanguages);
     return {
       ...state,
       menu: {
         ...state.menu,
+        languages: newLanguages,
         categorizedItems: {
           ...state.menu.categorizedItems,
           [category]: {
@@ -137,6 +162,8 @@ export const reducer = reducerWithInitialState(initialState)
     if (previousItemData.category !== data.i18n[0].category) {
       delete state.menu.categorizedItems[previousItemData.category][previousItemData.id];
     }
+    let newLanguages = state.menu.languages;
+    addNewLanguageIfApplicable(data, state, newLanguages);
     return {
       ...state,
       menu: {
@@ -179,3 +206,17 @@ export const reducer = reducerWithInitialState(initialState)
     ...state,
     user,
   }));
+
+const addNewLanguageIfApplicable = (
+  payload: NonNullable<CreateMenuItemMutation["createMenuItem"]>,
+  state: TStore,
+  newLanguages: Language[]
+) => {
+  if (!payload.i18n.every((transl) => state.menu.languages.includes(transl.language))) {
+    newLanguages = newLanguages
+      .concat(payload.i18n.map((transl) => transl.language))
+      .reduce((prev, curr) => {
+        return prev.includes(curr) ? prev : prev.concat([curr]);
+      }, [] as Language[]);
+  }
+};

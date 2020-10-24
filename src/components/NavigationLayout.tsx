@@ -17,9 +17,28 @@ import { IuseTypedHistoryProps } from "../utils/useTypedHistory";
 import { Hidden } from "@material-ui/core";
 import MobileNavigation from "./MobileNavigation";
 import StuffCallDesktop from "./StuffCallDesktop";
+import { byActiveStatus, OrderStatus, TStore, useTypedSelector } from "../store/types";
 
-const tabMapping = (tab: TNavTabs[0]) => <NavigationTab key={tab.to} to={tab.to} Icon={tab.Icon} />;
-
+const tabMapping = (ordersByStatus?: TStore["ordersStats"]) => (tab: TNavTabs[0]) => (
+  <NavigationTab
+    number={ordersByStatus?.byStatus[urlToStatusMap(tab.to)]}
+    key={tab.to}
+    to={tab.to}
+    Icon={tab.Icon}
+  />
+);
+const urlToStatusMap = (url: IuseTypedHistoryProps): keyof byActiveStatus => {
+  switch (url) {
+    case "/new-order":
+      return "REQUESTED_BY_CUSTOMER";
+    case "/prepare-order":
+      return "RECEIVED_BY_RESTAURANT";
+    case "/delivered-order":
+      return "READY";
+    default:
+      return "READY";
+  }
+};
 type TNavTabs = {
   to: IuseTypedHistoryProps;
   Icon: React.FC;
@@ -78,17 +97,18 @@ type INavigationLayoutProps = {};
 
 const NavigationLayout: React.FC<INavigationLayoutProps> = ({ children }) => {
   const classes = useStyles();
+  const ordersByStatus = useTypedSelector((state) => state.ordersStats);
 
   return (
     <Box className={classes.root}>
       <Hidden xsDown>
         <StuffCallDesktop />
-        <Box className={classes.sidebar}>{navigationTabs.left.map(tabMapping)}</Box>
+        <Box className={classes.sidebar}>{navigationTabs.left.map(tabMapping(ordersByStatus))}</Box>
         <Box style={{ right: 0 }} className={classes.sidebar}>
           <Link style={{ top: 10 }} className={classes.cornerIcon} to="/">
             <HomeIcon fontSize="large" />
           </Link>
-          {navigationTabs.right.map(tabMapping)}
+          {navigationTabs.right.map(tabMapping())}
           <Link style={{ bottom: 10 }} className={classes.cornerIcon} to="settings">
             <SettingsIcon fontSize="large" />
           </Link>

@@ -1,3 +1,4 @@
+import { type } from "os";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { GetOrderQuery, Language, MenuComponentInput } from "../API";
 import { TcategorizedMenuItems } from "../pages/Menu/components/utils";
@@ -5,6 +6,9 @@ import { TNonNullPropertyQuery } from "../types";
 
 export type TStore = {
   orders: NonNullable<GetOrderQuery["getOrder"]>[];
+  ordersStats: {
+    byStatus: byActiveStatus;
+  };
   selectedProperty: {
     name: string;
     open: boolean;
@@ -48,5 +52,16 @@ export const OrderStatusEnum = {
   READY: "READY",
   PAYED: "PAYED",
 };
+interface OrderStatusEnumeration {
+  RECEIVED_BY_RESTAURANT: "RECEIVED_BY_RESTAURANT";
+  DENIED: "DENIED";
+  REQUESTED_BY_CUSTOMER: "REQUESTED_BY_CUSTOMER";
+  READY: "READY";
+  PAYED: "PAYED";
+}
+export type byActiveStatus = Record<
+  keyof Pick<OrderStatusEnumeration, "REQUESTED_BY_CUSTOMER" | "RECEIVED_BY_RESTAURANT" | "READY">,
+  number
+>;
 
 export const useTypedSelector: TypedUseSelectorHook<TStore> = useSelector;
