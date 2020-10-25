@@ -106,7 +106,8 @@
     "explanations": {
       "image_preview": "Below is the preview of how your image would appear to customers",
       "social_media": "When your customers make an order, they would be invitd to follow you on the social media, if you input your contacts below",
-      "tables_convenience_numbered": "You can change the name of the table for your convenience. By default, the table arenumbered."
+      "tables_convenience_numbered": "You can change the name of the table for your convenience. By default, the table arenumbered.",
+      "how_find_facebook_page_id": "Como encontrar ID de la pagina Facebook ?"
     },
     "form_titles": {
       "social_media": "Social media links",

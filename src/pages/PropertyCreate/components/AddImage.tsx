@@ -8,7 +8,7 @@ import { setSelectedProperty } from "../../../store/actions";
 import { TStore } from "../../../store/types";
 import { mutation } from "../../../utils/mutation";
 import { UpdatePropertyMutation, UpdatePropertyMutationVariables } from "../../../API";
-import { Typography, WithStyles } from "@material-ui/core";
+import { Link, Typography, WithStyles } from "@material-ui/core";
 import Title from "../../../components/Title";
 import MainActionButton from "./MainActionButton";
 import TextField from "@material-ui/core/TextField/TextField";
@@ -29,6 +29,8 @@ type TSocialMediaLinks = {
   facebookUrl: string;
   instagramId: string;
 };
+const facebookRegex = new RegExp("^[0-9]+$");
+
 const initialSocialMediaLinks: TSocialMediaLinks = {
   facebookUrl: "",
   instagramId: "",
@@ -59,8 +61,7 @@ const AddImage: React.FC<IAddImageProps> = ({ property, settablesRegistered, cla
   React.useEffect(() => {
     setsocialMediaErrors({
       errorFacebook:
-        (socialMedia.facebookUrl.includes("http") && !socialMedia.facebookUrl.includes(" ")) ||
-        socialMedia.facebookUrl.length < 5
+        socialMedia.facebookUrl.length === 0 || facebookRegex.test(socialMedia.facebookUrl)
           ? ""
           : t("registerProperty.errors.facebookUrl"),
       errorInstagram: socialMedia.instagramId.includes(" ")
@@ -126,9 +127,16 @@ const AddImage: React.FC<IAddImageProps> = ({ property, settablesRegistered, cla
       />
       <FormTitle title={t("registerProperty.form_titles.social_media")} />
       <ExplanationMessage message={t("registerProperty.explanations.social_media")} />
+      <br />
+      <br />
+      <Link target="blank" href="https://www.facebook.com/help/1503421039731588">
+        {t("registerProperty.explanations.how_find_facebook_page_id")}
+      </Link>
+      <br />
+      <br />
       <TextField
-        label="Facebook url"
-        placeholder="https://www.facebook.com/name"
+        label="Facebook page id"
+        placeholder="323043368150288"
         name="facebookUrl"
         value={socialMedia.facebookUrl}
         onChange={handleInput}
